@@ -324,6 +324,10 @@ main{position:relative;z-index:2}
 @media (max-width:760px){
   .doors{grid-template-columns:1fr}
   .door{min-height:150px}
+  /* phones: content taller than the screen must start at the top (flex-end clipped the intro), and the fixed bar needs a backdrop */
+  #home{justify-content:flex-start}
+  .view{padding-top:92px}
+  .bar{background:linear-gradient(var(--ink) 72%,rgba(11,11,13,0));padding-top:14px;padding-bottom:22px}
   .pt{grid-template-columns:40px 1fr}
   .pt .num{font-size:32px}
   .demo{display:none}
