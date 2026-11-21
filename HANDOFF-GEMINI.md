@@ -44,6 +44,12 @@ Project folder: **`/Users/noelabedin/Documents/burhan/`**. The `burhan/burhan/` 
 | `~/Downloads/burhan-media/subs/transcripts.json` | 48 YouTube transcripts used as sources. |
 | `PROGRESS.md` | **Detailed log of every block, the rules and the open scan list. Keep updating it.** |
 
+### Live site and deploy
+- Live: **https://damandam.github.io/burhan/** (password gate: `Noel`; it's a soft, client-side gate. The repo is public, so it isn't real security).
+- Code: **https://github.com/damandam/burhan** (branch `main`). Every push to `main` redeploys automatically through `.github/workflows/pages.yml` (GitHub Pages), in about 1 minute.
+- To let a friend edit: add their GitHub account as a collaborator (repo → Settings → Collaborators).
+- `burhan/` (an old copy) and `.claude/` are git-ignored.
+
 ### Run it
 ```bash
 cd /Users/noelabedin/Documents/burhan && python3 -m http.server 5179
