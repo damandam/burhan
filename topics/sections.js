@@ -1,0 +1,20 @@
+/* AUTO-GENERATED from tools/rules.js SECTIONS */
+topic(["islam","quran"],{"title":"The Qurʾān","k":"Scripture","blurb":"Preservation, readings, alleged errors and borrowed stories."});
+topic(["islam","prophet"],{"title":"The Prophet ﷺ","k":"Nubuwwah","blurb":"His truthfulness, prophecies, miracles and the attacks on his character."});
+topic(["islam","hadith"],{"title":"Hadith shubuhāt","k":"Sunnah","blurb":"Hadith that critics quote, one by one."});
+topic(["islam","morality"],{"title":"Law & morality","k":"Sharīʿa","blurb":"Marriage, women, war, slavery, apostasy and the law."});
+topic(["islam","morality","women"],{"title":"Women","k":"Fiqh","blurb":"Testimony, hijab, “deficient in intellect”, 4:34 and more."});
+topic(["islam","creed"],{"title":"Creed & theology","k":"ʿAqīda","blurb":"Allah's attributes, decree, and the logical 'dilemmas'."});
+topic(["islam","proofs"],{"title":"Proofs of Islam","k":"Dalāʾil","blurb":"Why Islam is true: the Qurʾān, prophecy, history."});
+topic(["islam","sects"],{"title":"Shia & Ahmadiyya","k":"Sects","blurb":"Answers to sectarian claims."});
+topic(["islam","general"],{"title":"Mixed objections","k":"Misc.","blurb":"Collections of shorter objections and answers."});
+topic(["christianity","bible"],{"title":"The Bible","k":"Scripture","blurb":"Preservation, authorship, contradictions, errors and the canon."});
+topic(["christianity","bible","contradictions"],{"title":"Bible contradictions","k":"Contradictions","blurb":"Passages that can't both be true."});
+topic(["christianity","bible","canon"],{"title":"Canon & apocrypha","k":"Canon","blurb":"Which books, decided by whom, and the lost gospels."});
+topic(["christianity","jesus"],{"title":"Jesus","k":"Christology","blurb":"What Jesus said and didn't say, prophecy and the Gospels."});
+topic(["christianity","church"],{"title":"Paul, councils & Church Fathers","k":"History","blurb":"How the doctrine developed after Jesus."});
+topic(["christianity","practice"],{"title":"Christian law & practice","k":"Ethics","blurb":"Women, divorce, slavery, violence: the tu quoque files."});
+topic(["christianity","islam-vs"],{"title":"Islam corrects Christianity","k":"Comparison","blurb":"Where the Qurʾān answers Christian belief, and Muhammad ﷺ in the Bible."});
+topic(["other"],{"title":"Other beliefs","n":"IV","k":"IV","color":"#b08ad9","hue":11569881,"blurb":"Hinduism and modern ideologies."});
+topic(["other","hinduism"],{"title":"Hinduism","k":"Dharma","blurb":"Karma, caste, the gods and scripture."});
+topic(["other","ideologies"],{"title":"Modern ideologies","k":"Politics","blurb":"Liberalism, feminism, secularism and more."});

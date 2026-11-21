@@ -1,0 +1,1138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Burhān — Refutations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter+Tight:wght@400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b0b0d; --ink2:#141418; --line:rgba(236,226,200,.12); --paper:#ece2c8; --mute:rgba(236,226,200,.58);
+  --gold:#d4a84b; --accent:#d4a84b; --accent-soft:rgba(212,168,75,.14);
+  --serif:'Cormorant Garamond',Georgia,serif; --sans:'Inter Tight',system-ui,sans-serif;
+  --e-out:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--ink);color:var(--paper);font-family:var(--sans);overflow-x:hidden}
+body{min-height:100vh}
+#gl{position:fixed;inset:0;z-index:0;width:100%;height:100%;display:block;transition:opacity .9s ease}
+body.reading #gl{opacity:.22}
+.grain{position:fixed;inset:-50%;z-index:1;pointer-events:none;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}50%{transform:translate(-3%,2%)}100%{transform:translate(2%,-3%)}}
+.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 30%,rgba(0,0,0,.75) 100%)}
+main{position:relative;z-index:2}
+
+/* top bar */
+.bar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:20px;padding:18px clamp(16px,4vw,48px);
+  font-size:13px;letter-spacing:.06em}
+.logo{font-family:var(--serif);font-size:22px;letter-spacing:.02em;cursor:pointer;display:flex;align-items:center;gap:10px;color:var(--paper);background:none;border:0}
+.logo b{font-family:'Amiri',serif;font-weight:700;color:var(--accent);font-size:20px;transition:color .6s}
+.crumbs{display:flex;gap:6px;flex-wrap:wrap;align-items:center;color:var(--mute);text-transform:uppercase;font-size:11px;letter-spacing:.14em}
+.crumbs button{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;cursor:pointer;padding:4px 2px}
+.crumbs button:hover,.crumbs button:focus-visible{color:var(--paper)}
+.crumbs .sep{opacity:.4}
+.crumbs .cur{color:var(--accent)}
+.search{margin-left:auto;position:relative;width:min(340px,40vw)}
+#q{width:100%;background:rgba(18,18,22,.9);border:1px solid var(--line);border-radius:99px;padding:9px 16px;color:var(--paper);font:inherit;font-size:13px;letter-spacing:.02em;outline:none;transition:border-color .3s}
+#q:focus{border-color:var(--accent)}
+#results{position:absolute;right:0;top:calc(100% + 8px);width:min(520px,92vw);max-height:70vh;overflow:auto;background:#121216;border:1px solid var(--line);border-radius:8px;display:none;z-index:60;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}
+#results.on{display:block}
+#results button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--paper);padding:12px 16px;font:inherit;cursor:pointer}
+#results button:hover,#results button:focus-visible{background:var(--accent-soft);outline:none}
+#results b{display:block;font-family:var(--serif);font-weight:500;font-size:18px;line-height:1.2}
+#results small{display:block;color:var(--mute);font-size:11px;margin-top:3px;letter-spacing:.04em}
+#results .none{padding:14px 16px;color:var(--mute);font-size:13px}
+.credit a{color:var(--accent)}
+@media (max-width:760px){.search{width:auto;flex:1}.crumbs{display:none}}
+
+/* views */
+.view{position:fixed;inset:0;overflow-y:auto;padding:110px clamp(16px,4vw,48px) 80px;visibility:hidden}
+.view.on{visibility:visible}
+
+/* hero */
+#home{display:flex;flex-direction:column;justify-content:flex-end}
+.eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);transition:color .6s}
+.h1{font-family:var(--serif);font-weight:500;font-size:clamp(54px,11vw,168px);line-height:.86;letter-spacing:-.02em;margin:14px 0 18px}
+.h1 .line{display:block;overflow:hidden;padding-bottom:.06em}
+.h1 .w{display:inline-block}
+.h1 i{font-style:italic;color:var(--accent)}
+.lede{max-width:46ch;color:var(--mute);font-size:16px;line-height:1.55}
+.doors{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:44px;perspective:1200px}
+.door{position:relative;text-align:left;border:1px solid var(--line);background:linear-gradient(160deg,rgba(28,28,33,.92),rgba(16,16,19,.88));color:var(--paper);padding:22px 22px 24px;border-radius:4px;cursor:pointer;
+  min-height:220px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transform-style:preserve-3d;font:inherit}
+.door::before{content:"";position:absolute;inset:0;background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%),var(--c),transparent 45%);opacity:0;transition:opacity .4s}
+.door:hover::before,.door:focus-visible::before{opacity:.35}
+.door:focus-visible{outline:1px solid var(--c)}
+.door .n{font-family:var(--serif);font-size:15px;color:var(--c)}
+.door h3{font-family:var(--serif);font-weight:500;font-size:clamp(30px,3.2vw,44px);line-height:1;margin-top:auto}
+.door p{color:var(--mute);font-size:13px;margin-top:10px;line-height:1.5}
+.door .ar{position:absolute;right:20px;top:20px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:transform .5s var(--e-out),background .3s}
+.door:hover .ar{transform:rotate(-45deg);background:var(--c);color:var(--ink)}
+
+/* list views */
+.head{max-width:1100px;margin:0 auto 34px}
+.head .h2{font-family:var(--serif);font-weight:500;font-size:clamp(44px,7vw,100px);line-height:.92;letter-spacing:-.015em;margin-top:10px}
+.head p{color:var(--mute);max-width:58ch;margin-top:14px;line-height:1.55}
+.grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;perspective:1000px}
+.card{position:relative;text-align:left;background:rgba(18,18,22,.86);border:1px solid var(--line);color:var(--paper);
+  padding:20px;border-radius:4px;cursor:pointer;min-height:150px;display:flex;flex-direction:column;font:inherit;transform-style:preserve-3d;overflow:hidden}
+.card::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--e-out)}
+.card:hover::after,.card:focus-visible::after{transform:scaleX(1)}
+.card:focus-visible{outline:1px solid var(--accent)}
+.card .k{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+.card h4{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.02;margin:12px 0 8px}
+.card p{color:var(--mute);font-size:13px;line-height:1.5}
+.card .cnt{margin-top:auto;padding-top:16px;font-size:11px;color:var(--mute);display:flex;justify-content:space-between}
+.card.soon{cursor:default;opacity:.55}
+.card.soon h4::after{content:" · soon";font-size:13px;font-family:var(--sans);color:var(--mute)}
+
+/* article */
+.art{max-width:880px;margin:0 auto}
+.claim{border:1px solid var(--line);border-left:2px solid #b5523b;background:rgba(181,82,59,.07);padding:22px 24px;border-radius:2px;margin:30px 0 40px}
+.claim .k,.resp-k{font-size:10px;letter-spacing:.24em;text-transform:uppercase}
+.claim .k{color:#d97a62}
+.claim q{display:block;font-family:var(--serif);font-size:clamp(22px,2.6vw,30px);line-height:1.25;margin-top:10px;quotes:"“" "”"}
+.resp-k{color:var(--accent);margin-bottom:6px}
+.pt{display:grid;grid-template-columns:56px 1fr;gap:16px;padding:26px 0;border-top:1px solid var(--line)}
+.pt .num{font-family:var(--serif);font-size:42px;line-height:.9;color:var(--accent)}
+.pt h5{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.15;margin-bottom:8px}
+.pt p{color:rgba(236,226,200,.8);line-height:1.65;font-size:15.5px}
+.src{display:inline-flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.src span{font-size:11px;border:1px solid var(--line);padding:4px 9px;border-radius:99px;color:var(--mute)}
+.quote{margin:12px 0 0;padding:14px 18px;border-left:2px solid var(--accent);background:var(--accent-soft);font-family:var(--serif);font-size:19px;line-height:1.4}
+.quote .ar{font-family:'Amiri',serif;direction:rtl;display:block;font-size:22px;margin-bottom:6px}
+.sum{margin-top:30px;padding:24px;border:1px solid var(--accent);border-radius:2px;font-family:var(--serif);font-size:22px;line-height:1.35}
+.sum small{display:block;font-family:var(--sans);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.back{margin-top:40px;background:none;border:1px solid var(--line);color:var(--paper);padding:12px 18px;border-radius:99px;font:inherit;font-size:13px;cursor:pointer}
+.back:hover{border-color:var(--accent)}
+
+/* cursor */
+.cur-dot{position:fixed;z-index:50;left:0;top:0;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--accent);pointer-events:none;mix-blend-mode:difference}
+.cur-ring{position:fixed;z-index:50;left:0;top:0;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;border:1px solid var(--accent);pointer-events:none;opacity:.5}
+@media (hover:none){.cur-dot,.cur-ring{display:none}}
+
+/* portal (the card you dive into) */
+.view{transform-origin:50% 50%}
+.portal{position:fixed;inset:0;z-index:30;pointer-events:none;will-change:clip-path;
+  background:radial-gradient(120% 90% at 50% 40%,color-mix(in srgb,var(--c) 22%,rgba(11,11,13,.55)),rgba(11,11,13,.78) 70%);
+  box-shadow:inset 0 0 0 1px var(--c)}
+.portal-t{position:fixed;z-index:31;pointer-events:none;font-family:var(--serif);font-weight:500;line-height:.95;letter-spacing:-.015em;
+  color:var(--paper);white-space:nowrap;transform-origin:0 0;will-change:transform}
+
+/* argument flow */
+.hint{color:var(--mute);margin:-4px 0 40px;font-size:14px}
+.flow{position:relative;padding:10px 0 20px;perspective:1200px}
+.spine{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--line);transform:translateX(-.5px)}
+.spine-fill{position:absolute;inset:0;background:linear-gradient(#b5523b,var(--accent));transform-origin:top;transform:scaleY(0)}
+.node{position:relative;display:flex;margin:0 0 26px}
+.node .dot{position:absolute;left:50%;top:26px;width:11px;height:11px;margin-left:-5.5px;border-radius:50%;background:var(--ink);border:2px solid var(--accent);z-index:1}
+.node.they .dot{border-color:#d97a62}
+.node.they{justify-content:flex-start}.node.we{justify-content:flex-end}
+.bub{width:calc(50% - 34px);text-align:left;border-radius:6px;padding:18px 20px;font:inherit;color:var(--paper);transform-style:preserve-3d}
+.they .bub{background:rgba(181,82,59,.08);border:1px solid rgba(217,122,98,.35)}
+.they .bub::after{content:"";position:absolute;right:-34px;top:31px;width:34px;height:1px;background:rgba(217,122,98,.45)}
+.we .bub::before{content:"";position:absolute;left:-34px;top:31px;width:34px;height:1px;background:var(--accent);opacity:.6}
+.bub{position:relative}
+.who{font-size:10px;letter-spacing:.24em;text-transform:uppercase;display:flex;justify-content:space-between;gap:10px}
+.they .who{color:#d97a62}.we .who{color:var(--accent)}
+.they q{display:block;font-family:var(--serif);font-size:clamp(20px,2.2vw,26px);line-height:1.25;margin-top:8px;quotes:"“" "”"}
+.we .bub{background:rgba(18,18,22,.88);border:1px solid var(--line);cursor:pointer;transition:border-color .3s,background .3s}
+.we .bub:hover,.we .bub:focus-visible{border-color:var(--accent);background:var(--accent-soft);outline:none}
+.we .bub p{font-size:16px;line-height:1.55;margin-top:8px}
+.step{font-family:var(--serif);font-size:14px;letter-spacing:0;color:var(--mute)}
+.open{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:12px;color:var(--accent)}
+.open i{font-style:normal;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1px solid var(--accent);transition:transform .5s var(--e-out)}
+.we .bub:hover .open i{transform:rotate(90deg)}
+.bub-src{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.bub-src span{font-size:10.5px;border:1px solid var(--line);background:rgba(255,255,255,.025);padding:3px 8px;border-radius:99px;color:var(--mute);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* inline proof dossier for single-answer argument maps */
+.dossier{margin:26px 0 34px;border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:6px;background:linear-gradient(180deg,rgba(20,20,24,.92),rgba(14,14,17,.88));padding:28px clamp(18px,3.2vw,34px)}
+.dossier .d-eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}
+.dossier h3{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3.6vw,42px);line-height:1.08;margin:8px 0 18px}
+.d-list{display:grid;gap:14px;margin:14px 0 6px}
+.d-item{display:grid;grid-template-columns:36px 1fr;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:4px;background:rgba(255,255,255,.02)}
+.d-item .dn{font-family:var(--serif);font-size:22px;line-height:1.1;color:var(--accent);opacity:.9}
+.d-item p{color:rgba(236,226,200,.86);font-size:15.5px;line-height:1.68;margin:0}
+.dossier .src{margin-top:18px}
+.dossier .credit{margin-top:18px}
+@media (max-width:760px){.d-item{grid-template-columns:28px 1fr;gap:10px;padding:14px}}
+
+/* forks: where the debate splits */
+.fork{position:relative;padding:70px 0 54px;margin:6px 0 10px}
+.fork-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.fork-lines path{fill:none;stroke:rgba(217,122,98,.45);stroke-width:1.2;stroke-dasharray:3 5}
+.fork-lines path.on{stroke:#d97a62;stroke-width:2;stroke-dasharray:none}
+.fork-lines path.down{stroke:var(--accent);stroke-width:2}
+.fork.picked .fork-lines path:not(.on):not(.down){opacity:.25}
+.fork-k{position:absolute;top:8px;left:50%;transform:translateX(-50%);text-align:center;background:var(--ink);padding:6px 14px;border:1px solid rgba(217,122,98,.35);border-radius:99px;
+  font-size:12px;color:var(--mute);white-space:nowrap;z-index:1}
+.fork-k span{color:#d97a62;font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-right:10px}
+.opts{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.opt{position:relative;text-align:left;font:inherit;color:var(--paper);cursor:pointer;padding:16px 18px;border-radius:6px;
+  background:rgba(24,16,15,.92);border:1px dashed rgba(217,122,98,.4);transition:border-color .3s,background .3s,opacity .4s,transform .4s var(--e-out)}
+.opt:hover,.opt:focus-visible{border-style:solid;border-color:#d97a62;outline:none;transform:translateY(-3px)}
+.opt .who{color:#d97a62}.opt .who b{font-family:var(--serif);font-size:15px;letter-spacing:0}
+.opt q{display:block;font-family:var(--serif);font-size:20px;line-height:1.25;margin:8px 0 10px;quotes:"“" "”"}
+.opt .sub{font-size:11px;color:var(--mute)}
+.opt.on{border-style:solid;border-color:#d97a62;background:rgba(181,82,59,.16);box-shadow:0 0 0 1px #d97a62,0 20px 50px -20px rgba(217,122,98,.5)}
+.fork.picked .opt:not(.on){opacity:.45}
+.fork.picked .opt:not(.on):hover{opacity:.85}
+.end{display:flex;justify-content:center;margin:4px 0 30px}
+.end span{background:var(--ink);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);position:relative}
+@media (max-width:760px){
+  .fork{padding:56px 0 20px 30px}
+  .fork-k{left:30px;transform:none;white-space:normal}
+  .opts{grid-template-columns:1fr}
+  .end{justify-content:flex-start;padding-left:30px}
+}
+
+/* real screenshots */
+.shot.real .shot-btn{display:block;width:100%;padding:0;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#fff;cursor:zoom-in}
+.shot.real img{display:block;width:100%;height:auto;max-height:260px;object-fit:cover;object-position:top;transition:max-height .5s var(--e-out)}
+.shot.real.big{grid-column:1/-1}.shot.real.big .shot-btn{cursor:zoom-out}.shot.real.big img{max-height:none;object-fit:contain}
+.credit{margin-top:18px;font-size:11px;letter-spacing:.06em;color:var(--mute);border-top:1px solid var(--line);padding-top:12px}
+
+/* explainer */
+.ex-intro{font-family:var(--serif);font-size:clamp(20px,2.2vw,26px);line-height:1.35;max-width:46ch;color:rgba(236,226,200,.85);margin:6px 0 40px}
+.ex-k{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin:48px 0 16px;font-family:var(--sans);font-weight:500}
+.temple{margin:20px auto 10px;max-width:880px}
+.pediment{position:relative;height:80px;display:grid;place-items:end center;padding-bottom:12px}
+.pediment::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 40%,#2a2418),#1a1712);clip-path:polygon(50% 0,100% 100%,0 100%);border-bottom:2px solid var(--accent)}
+.pediment span{position:relative;font-family:var(--serif);font-size:22px;letter-spacing:.3em;text-transform:uppercase;color:var(--paper)}
+.pillars{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:clamp(6px,2vw,22px);padding:0 4%}
+.pillar{display:flex;flex-direction:column;align-items:center;background:none;border:0;color:var(--paper);cursor:pointer;font:inherit;padding:0}
+.pillar .capital{width:100%;height:30px;display:grid;place-items:center;font-family:var(--serif);font-size:16px;color:var(--ink);background:linear-gradient(180deg,#efe3c4,#c9b78f);border-radius:3px 3px 0 0;box-shadow:0 4px 0 #8f7f5c}
+.pillar .shaft{width:72%;height:clamp(150px,22vw,240px);background:repeating-linear-gradient(90deg,#d9cba6 0 6px,#bfae86 6px 8px,#e6d9b6 8px 14px);box-shadow:inset -10px 0 18px rgba(0,0,0,.35),inset 8px 0 12px rgba(255,255,255,.15);transition:filter .3s,transform .4s var(--e-out)}
+.pillar .pbase{width:100%;height:16px;background:linear-gradient(180deg,#c9b78f,#9c8b66)}
+.pillar b{margin-top:14px;font-family:var(--serif);font-weight:500;font-size:clamp(15px,1.6vw,20px);line-height:1.15;text-align:center}
+.pillar i{font-style:normal;font-family:'Amiri',serif;color:var(--accent);font-size:18px;margin-top:2px}
+.pillar small{color:var(--mute);font-size:11px;text-align:center;margin-top:4px;line-height:1.35}
+.pillar:hover .shaft,.pillar:focus-visible .shaft{filter:brightness(1.15) drop-shadow(0 0 18px color-mix(in srgb,var(--accent) 60%,transparent));transform:translateY(-6px)}
+.pillar:focus-visible{outline:none}
+.stylobate{height:18px;margin:0 1%;background:linear-gradient(180deg,#b3a27c,#6d6048);border-radius:0 0 4px 4px}
+.vis-hint{text-align:center;color:var(--mute);font-size:12px;margin-top:14px}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;counter-reset:s;position:relative;margin:10px 0}
+.stp{width:100%;height:100%;text-align:left;background:rgba(18,18,22,.9);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:4px;padding:16px;color:var(--paper);font:inherit;cursor:pointer}
+.stp:hover{border-color:var(--accent)}
+.sn{display:block;font-family:var(--serif);font-size:34px;color:var(--accent);line-height:1}
+.stp b{display:block;font-family:var(--serif);font-weight:500;font-size:20px;margin:6px 0 4px}
+.stp small,.ci small{color:var(--mute);font-size:12px;line-height:1.4;display:block}
+.cmp{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:start}
+.cmp h4{font-family:var(--serif);font-weight:500;font-size:26px;margin-bottom:10px}
+.col.r h4{color:#d97a62}.col.l h4{color:var(--accent)}
+.vs{align-self:center;font-family:var(--serif);font-style:italic;color:var(--mute);font-size:22px}
+.ci{display:block;width:100%;text-align:left;margin-bottom:10px;background:rgba(18,18,22,.9);border:1px solid var(--line);border-radius:4px;padding:14px;color:var(--paper);font:inherit;cursor:pointer}
+.col.l .ci{border-left:3px solid var(--accent)}.col.r .ci{border-left:3px solid #d97a62}
+.ci b{display:block;font-family:var(--serif);font-weight:500;font-size:19px;margin-bottom:4px}
+.kcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.kc{position:relative;text-align:left;background:rgba(18,18,22,.9);border:1px solid var(--line);border-radius:6px;padding:18px;color:var(--paper);font:inherit;cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:border-color .3s,transform .4s var(--e-out)}
+.kc:hover,.kc:focus-visible{border-color:var(--accent);transform:translateY(-3px);outline:none}
+.kn{font-family:var(--serif);color:var(--accent);font-size:15px}
+.kc b{font-family:var(--serif);font-weight:500;font-size:22px;line-height:1.15}
+.kc span:not(.kn){color:rgba(236,226,200,.75);font-size:14px;line-height:1.5}
+.kc em{font-style:normal;color:var(--accent);font-size:12px;margin-top:auto}
+.qref{display:block;font-family:var(--sans);font-size:12px;color:var(--mute);margin-top:6px}
+.ex .quote{margin-bottom:12px}
+@media (max-width:760px){
+  .pillars{grid-template-columns:repeat(3,1fr);row-gap:24px}.pediment{height:56px}.pediment span{font-size:15px}
+  .cmp{grid-template-columns:1fr}.vs{justify-self:center}
+}
+
+/* drawer */
+#drawer{position:fixed;inset:0;z-index:40;visibility:hidden}
+#drawer.on{visibility:visible}
+.dr-scrim{position:absolute;inset:0;background:rgba(5,5,7,.82)}
+.dr-panel{position:absolute;inset:0;overflow-y:auto;background:linear-gradient(180deg,#121216,#0b0b0d);padding:80px clamp(16px,6vw,90px) 80px}
+.dr-body{max-width:760px;margin:0 auto}
+.dr-close{position:fixed;top:20px;right:clamp(16px,4vw,40px);width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(20,20,24,.8);color:var(--paper);font-size:16px;cursor:pointer;z-index:2}
+.dr-close:hover{border-color:var(--accent)}
+.dr-they{margin:16px 0 6px;font-family:var(--serif);font-size:20px;color:rgba(236,226,200,.7);font-style:italic}
+.dr-they span{display:block;font-family:var(--sans);font-style:normal;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#d97a62;margin-bottom:4px}
+.dr-body h3{font-family:var(--serif);font-weight:500;font-size:clamp(36px,5vw,60px);line-height:1;margin:14px 0 22px}
+.dr-body p{color:rgba(236,226,200,.84);line-height:1.7;font-size:16px;margin-bottom:12px}
+/* structured visual proof blocks inside drawers & dossiers (no walls of plain text) */
+.facts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:16px 0 22px}
+.fact{border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:4px;padding:12px 14px;background:rgba(255,255,255,.025)}
+.fact small{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.fact b{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.2;color:var(--paper)}
+.pcard-list{display:grid;gap:12px;margin:16px 0 20px}
+.pcard{display:grid;grid-template-columns:34px 1fr;gap:14px;padding:16px 18px;border:1px solid var(--line);border-left:2px solid var(--accent);border-radius:5px;background:rgba(255,255,255,.025)}
+.pcard.turn{border-left-color:#d97a62;background:rgba(181,82,59,.07)}
+.pcard .pn{font-family:var(--serif);font-size:21px;line-height:1.1;color:var(--accent)}
+.pcard.turn .pn{color:#d97a62}
+.pcard .ph{display:block;font-family:var(--serif);font-weight:600;font-size:20px;line-height:1.2;color:var(--paper);margin-bottom:6px}
+.pcard.turn .ph{color:#e69b86}
+.pcard p{margin:0!important;font-size:15.5px;line-height:1.66;color:rgba(236,226,200,.86)}
+.pcard a,.src a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 45%,transparent)}
+.pcard a:hover,.src a:hover{border-bottom-color:var(--accent)}
+.qcards{display:grid;gap:12px;margin:18px 0}
+.qcard{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:4px;padding:16px 20px;background:var(--accent-soft)}
+.qcard .qby{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.qcard .ar{font-family:'Amiri',serif;direction:rtl;display:block;font-size:23px;line-height:1.7;margin-bottom:6px}
+.qcard blockquote{font-family:var(--serif);font-size:19.5px;line-height:1.45;font-style:italic;color:var(--paper);margin:0}
+.qcard .qref{margin-top:8px}
+.dr-steps{list-style:none;display:grid;gap:10px;margin:18px 0}
+.dr-steps li{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:13px 16px;border:1px solid var(--line);border-radius:4px;background:rgba(255,255,255,.02)}
+.dr-steps .sn{font-size:22px;line-height:1.1}
+.dr-steps b{display:block;font-family:var(--serif);font-weight:600;font-size:19px;margin-bottom:3px}
+.dr-steps span{font-size:14.5px;line-height:1.55;color:rgba(236,226,200,.8)}
+.dr-cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.dr-cmp .cbox{border:1px solid var(--line);border-radius:5px;padding:16px;background:rgba(255,255,255,.02)}
+.dr-cmp .cbox.l{border-top:2px solid var(--accent)}.dr-cmp .cbox.r{border-top:2px solid #d97a62}
+.dr-cmp h4{font-family:var(--serif);font-size:21px;font-weight:600;margin-bottom:10px}
+.dr-cmp .l h4{color:var(--accent)}.dr-cmp .r h4{color:#d97a62}
+.dr-cmp ul{list-style:none;display:grid;gap:8px}
+.dr-cmp li{font-size:14.5px;line-height:1.55;color:rgba(236,226,200,.85);padding-left:12px;border-left:2px solid var(--line)}
+.src a{font-size:11px;border:1px solid var(--line);padding:4px 9px;border-radius:99px;display:inline-block}
+@media (max-width:760px){.dr-cmp{grid-template-columns:1fr}.pcard{grid-template-columns:26px 1fr;gap:10px;padding:14px}}
+.doc{margin:24px 0;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#ece2c8;color:#1a1712}
+.doc figcaption{font-size:10px;letter-spacing:.22em;text-transform:uppercase;padding:10px 16px;background:#1a1712;color:#ece2c8}
+.doc-ar{font-family:'Amiri',serif;direction:rtl;font-size:26px;line-height:1.8;padding:18px 20px 6px}
+.doc-en{font-family:var(--serif);font-size:19px;font-style:italic;padding:0 20px 18px;color:#4a4235}
+.thumbs{display:flex;gap:8px;margin:14px 0 2px;flex-wrap:wrap}
+.th{width:84px;height:64px;border-radius:4px;overflow:hidden;border:1px solid var(--line);background:#fff;cursor:zoom-in;display:grid;place-items:center;transition:transform .3s var(--e-out),border-color .3s}
+.th img{width:100%;height:100%;object-fit:cover;object-position:top}
+.th:hover{transform:translateY(-2px);border-color:var(--accent)}
+.thumbs.their .th{border-color:rgba(217,122,98,.45)}
+.th.more-n{background:transparent;color:var(--mute);font-size:13px;cursor:pointer}
+#light{position:fixed;inset:0;z-index:90;background:rgba(6,6,8,.93);display:none;place-items:center;padding:4vh 4vw}
+#light.on{display:grid}
+#light figure{margin:0;max-width:min(1100px,92vw);text-align:center}
+#light img{max-width:100%;max-height:80vh;border-radius:4px;background:#fff}
+#light figcaption{color:var(--paper);font-size:14px;margin-top:12px;line-height:1.5;max-width:70ch;margin-inline:auto}
+#light .lb-n{color:var(--mute);font-size:12px;letter-spacing:.2em;margin-top:6px}
+#light .lb-nav{position:fixed;top:50%;width:48px;height:48px;margin-top:-24px;border-radius:50%;border:1px solid var(--line);background:rgba(18,18,22,.8);color:var(--paper);font-size:22px;cursor:pointer}
+#light .lb-nav[data-d="-1"]{left:16px}#light .lb-nav[data-d="1"]{right:16px}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:24px 0}
+.shot{margin:0}
+.shot-img{aspect-ratio:4/3;border:1px dashed rgba(236,226,200,.25);border-radius:4px;display:grid;place-items:center;
+  background:repeating-linear-gradient(135deg,rgba(255,255,255,.025) 0 10px,transparent 10px 20px)}
+.shot-img span{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--mute)}
+.shot figcaption{font-size:12px;color:var(--mute);margin-top:8px;line-height:1.4}
+
+@media (max-width:760px){
+  .spine{left:12px}.node .dot{left:12px}
+  .node,.node.we{justify-content:flex-end}
+  .bub{width:calc(100% - 36px)}
+  .they .bub::after{display:none}.we .bub::before{left:-24px;width:24px}
+}
+
+@media (max-width:760px){
+  .doors{grid-template-columns:1fr}
+  .door{min-height:150px}
+  .pt{grid-template-columns:40px 1fr}
+  .pt .num{font-size:32px}
+  .demo{display:none}
+}
+@media (prefers-reduced-motion:reduce){.grain{animation:none}}
+</style>
+</head>
+<body>
+<!-- password gate (soft protection for a static site) -->
+<div id="gate" style="position:fixed;inset:0;z-index:9999;background:#0b0b0d;display:grid;place-items:center;font-family:system-ui,sans-serif">
+  <form id="gate-f" style="display:flex;flex-direction:column;gap:14px;align-items:center;color:#ece2c8;padding:16px">
+    <div style="font-family:Georgia,serif;font-size:30px;letter-spacing:.02em">Burhān</div>
+    <label for="gate-p" style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:rgba(236,226,200,.6)">Passwort</label>
+    <input id="gate-p" type="password" autocomplete="current-password" autofocus style="background:#141418;border:1px solid rgba(236,226,200,.25);color:#ece2c8;border-radius:6px;padding:10px 14px;font-size:16px;width:220px;text-align:center">
+    <button style="background:#d4a84b;color:#0b0b0d;border:0;border-radius:6px;padding:10px 22px;font-size:15px;cursor:pointer">Öffnen</button>
+    <div id="gate-e" style="min-height:18px;font-size:13px;color:#d97a62"></div>
+  </form>
+</div>
+<script>
+(()=>{const H='1744903d5062e0fe6b92a2df283495f99e16e9f42546c69be2be4349b658727b',g=document.getElementById('gate');
+ const ok=()=>{g.remove();};
+ try{ if(localStorage.getItem('burhan-gate')===H) return ok(); }catch(e){}
+ document.getElementById('gate-f').onsubmit=async e=>{e.preventDefault();
+  const v=document.getElementById('gate-p').value, b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));
+  const h=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+  if(h===H){ try{localStorage.setItem('burhan-gate',H)}catch(e){} ok(); } else document.getElementById('gate-e').textContent='Falsches Passwort';};
+})();
+</script>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="grain"></div><div class="vignette"></div>
+<div id="light" aria-hidden="true"><button class="lb-nav" data-d="-1" aria-label="Previous">‹</button><figure><img alt=""><figcaption></figcaption><div class="lb-n"></div></figure><button class="lb-nav" data-d="1" aria-label="Next">›</button></div>
+<aside id="drawer" aria-hidden="true" role="dialog" aria-label="Full proof">
+  <div class="dr-scrim"></div>
+  <div class="dr-panel"><button class="dr-close" aria-label="Close">✕</button><div class="dr-body"></div></div>
+</aside>
+<div class="cur-ring"></div><div class="cur-dot"></div>
+
+<header class="bar">
+  <button class="logo" id="logo" aria-label="Home"><b>برهان</b>Burhān</button>
+  <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+  <div class="search"><input id="q" type="search" placeholder="Search any objection…" autocomplete="off" aria-label="Search the library"><div id="results" role="listbox"></div></div>
+</header>
+
+<main>
+  <section class="view on" id="home">
+    <div class="eyebrow">Shubuhāt · answered</div>
+    <h1 class="h1"><span class="line"><span class="w">Every</span> <span class="w">doubt</span></span><span class="line"><span class="w">has</span> <span class="w">an</span> <span class="w"><i>answer.</i></span></span></h1>
+    <p class="lede">A layered library of objections and responses. Pick a door, drill into a topic, and read the claim next to its refutation, with sources.</p>
+    <div class="doors" id="doors"></div>
+  </section>
+  <section class="view" id="list"></section>
+  <section class="view" id="article"></section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>window.TOPICS=[];window.topic=(path,node)=>TOPICS.push({path,node});</script>
+<script>/* load topic files fresh every time */
+['sections','trinity-logic','christology-qua','received-authority','quran-preservation','bible-preservation','atheism','remaining','library','curated-lib','curated-creed','curated-quran','curated-hadith','curated-proofs','curated-law','curated-general','curated-christianity','curated-misc','curated-dr-hadith','curated-dr-quran','curated-dr-christianity','curated-av','curated-media','curated-dr-rest','curated-av1','curated-av2','curated-av3','curated-enrich','curated-remap','curated-organise','aisha','zaynab','safiyya','polygyny','forced-marriage','marriage-rest','war','qurayza','war-rest','slavery','women','apostasy','prophet','sects','proofs','creed-governance','creed-attributes','creed-rest','quran-block1','quran-block2','quran-block3','quran-block4','hadith-block1','hadith-block2','hadith-block3','hadith-block4','hadith-block5','hadith-block6','hadith-block7','hadith-block8','hadith-block9','quran-av1','quran-av2','quran-av3','quran-av4','quran-av5','quran-av6','quran-av7','quran-av8','quran-av9','christ-av1','islam-av1','islam-av2','islam-av3','enrich-islam1','enrich-other1','enrich-church1','enrich-christ-practice','enrich-christ-jesus-de','enrich-christ-jesus-dr','enrich-islam-proofs','enrich-christ-rest','islam-av4','islam-av5','christ-av2-child1','christ-av3-child2','christ-av5-contradictions','christ-av8-bible-science','christ-av4-prophet-bible','christ-av6-paul','christ-av7-corrects-slavery','christ-av10-endtimes-adulteress','christ-av11-misc','scans-batch1','pdf-enrichment1','scans-batch2','pdf-enrichment2'].forEach(f=>document.write('<script src="topics/'+f+'.js?v='+Date.now()+'"><\/script>'));</script>
+<script>
+/* ============ DATA (demo) ============ */
+const DATA = {
+  islam:{
+    title:"Defending Islam", n:"I", color:"#3fb58a", hue:0x3fb58a,
+    blurb:"Objections raised against Islam, its Prophet ﷺ and its scripture.",
+    children:{
+      morality:{title:"Morality",k:"Ethics",blurb:"Marriage, war, slavery and the law.",children:{
+        marriage:{title:"Marriage",k:"Seerah",blurb:"The Prophet's ﷺ marriages, case by case.",children:{
+          aisha:{title:"ʿĀʾisha's age",k:"Most asked",blurb:"Married at six, consummated at nine.",article:{
+            claim:"Muhammad married a child, so he cannot be a moral example.",
+            tree:
+              {they:"Muhammad married a six-year-old girl.",
+               we:"The nikāḥ was at six, married life began at nine. The report is authentic and we don't hide it.",
+               more:{h:"What the report actually says",
+                 p:["Ṣaḥīḥ al-Bukhārī and Ṣaḥīḥ Muslim record that the contract (nikāḥ) took place when ʿĀʾisha was six, and that she moved into the Prophet's ﷺ house when she was nine. These are two separate events, roughly three years apart.",
+                    "The mainstream Sunni position accepts the narration. The real question is not 'did it happen' but 'by which moral standard is it judged', and whether she was ready."],
+                 doc:{ref:"Ṣaḥīḥ al-Bukhārī 5133",ar:"أَنَّ النَّبِيَّ صلى الله عليه وسلم تَزَوَّجَهَا وَهْىَ بِنْتُ سِتِّ سِنِينَ، وَأُدْخِلَتْ عَلَيْهِ وَهْىَ بِنْتُ تِسْعٍ",en:"“The Prophet ﷺ married her when she was six years old, and she was taken to him when she was nine.”"},
+                 src:["Bukhārī 5133","Muslim 1422"]},
+               next:[
+                {they:"That's child abuse by any standard.",
+                 we:"'Any standard' means your 21st-century one. Even the neighbouring Persian empire held nine to be the ideal age for a girl to marry.",
+                 more:{h:"Nobody at the time objected",
+                   p:["The Quraysh called him a sorcerer, a poet and a madman. The hypocrites of Madinah slandered ʿĀʾisha herself in the incident of the ifk. None of them raised this marriage.",
+                      "It wasn't only Arabia. In Sasanian Persia, the superpower next door (3rd–7th century), once a girl reached nine she was considered ready for marriage and a boy at fifteen. This was seen as the ideal age for humans.",
+                      "As late as 1748 the French philosopher Montesquieu wrote that women in hot climates are marriageable at eight, nine or ten. The objection only becomes common in the modern era."],
+                   shots:[{src:"shots/sasanian-age-nine.png",cap:"Touraj Daryaee, Sasanian Persia, ch. “The Society of Iranshahr”: nine as the ideal marriage age for a girl."}],
+                   src:["Daryaee, Sasanian Persia","Montesquieu, Spirit of the Laws 16.2","Qurʾān 24:11–20"],
+                   credit:"Islamic Apologetics · #aishas-age · Deenresponds · #puberty-at-9-is-impossible"},
+                 next:[
+                  {they:"Everyone back then being wrong doesn't make it right.",
+                   we:"Then give the objective standard that makes it wrong. Islam ties marriage to maturity, not to a birthday.",
+                   more:{h:"Maturity, not a number",
+                     p:["Islamic law ties married life to physical and mental readiness (bulūgh and rushd). A guardian may not hand over someone who isn't ready, and harm is forbidden in all cases.",
+                        "ʿĀʾisha became one of the greatest scholars of the ummah. She narrated over two thousand ḥadīth and corrected senior Companions. She spoke of her marriage with love, never complaint.",
+                        "An atheist who says it is 'objectively wrong' first has to show where objective morality comes from without God."],
+                     quote:{ar:"وَابْتَلُوا الْيَتَامَىٰ حَتَّىٰ إِذَا بَلَغُوا النِّكَاحَ",en:"“Test the orphans until they reach the age of marriage…” — al-Nisāʾ 4:6"},
+                     src:["Qurʾān 4:6","Siyar Aʿlām al-Nubalāʾ"]},
+                   next:[
+                    {they:"A prophet of God should have been above his culture.",
+                     we:"Your own tradition did the same. Mary was around twelve, and Delaware's age of consent was seven in 1880.",
+                     more:{h:"The critic's own history",
+                       p:["The Protoevangelium of James, an early Christian text, has Mary given to the elderly Joseph at about twelve. Christians don't call Joseph immoral for it.",
+                          "In the United States of the 1880s the age of consent was ten or twelve in most states, and seven in Delaware. A standard that condemns every society before the 20th century cannot be applied selectively to the Prophet ﷺ alone."],
+                       shots:["Table: US age of consent by state, 1880s","Protoevangelium of James, ch. 8–9"],
+                       src:["Protoevangelium 8–9","US consent laws, 1880"]},
+                     next:[]}
+                   ]},
+                  {they:"So you admit it was only cultural, not divine?",
+                   we:"Islam didn't invent it or command it. It regulated an existing practice with maturity and a ban on harm.",
+                   more:{h:"Permitted is not commanded",
+                     p:["Nowhere does the Qurʾān or Sunnah command marrying young. It sits in the category of the permissible (mubāḥ), which Islam surrounds with conditions: readiness before married life, and a general ban on harm (lā ḍarar wa lā ḍirār).",
+                        "Permissible matters can be regulated by the state. That is why many Muslim-majority countries set minimum marriage ages today, and scholars accept that under siyāsa sharʿiyya."],
+                     src:["Ibn Mājah 2341","Siyāsa sharʿiyya"]},
+                   next:[]}
+                 ]},
+                {they:"A nine-year-old can't be mentally mature enough for marriage.",
+                 we:"ʿĀʾisha herself says she had reached mental maturity (ʿaqaltu) while still living with her parents, before the marriage began.",
+                 more:{h:"Her own words: “since I became mentally aware”",
+                   p:["In Bukhārī 476 ʿĀʾisha says: “I do not remember (lam aʿqil) my parents except that they followed the religion, and the Prophet ﷺ visited us every day.” She is describing the time before she moved into his house, since the Prophet ﷺ was still visiting her parents' home.",
+                      "The classical commentators explain lam aʿqil as “since I became mentally mature.” Al-Kirmānī and al-Damāmīnī both read it as: I have known them to be Muslims since I reached mental awareness. The lexicon Tāj al-ʿArūs defines ʿaql as the ability to tell good from bad.",
+                      "The narrator who heard this from her is ʿUrwah ibn al-Zubayr. ʿĀʾisha was around thirty when he was born, so she was an adult in her forties looking back. She judged her own younger self to have been mentally mature before the marriage began."],
+                   doc:{ref:"Ṣaḥīḥ al-Bukhārī 476",ar:"لَمْ أَعْقِلْ أَبَوَىَّ إِلاَّ وَهُمَا يَدِينَانِ الدِّينَ، وَلَمْ يَمُرَّ عَلَيْنَا يَوْمٌ إِلاَّ يَأْتِينَا فِيهِ رَسُولُ اللَّهِ صلى الله عليه وسلم",en:"“I do not remember my parents except that they followed the religion, and not a day passed without the Messenger of Allah ﷺ visiting us.”"},
+                   shots:[{src:"shots/bukhari-476-isnad.png",cap:"The chain of Bukhārī 476: ʿUrwah ibn al-Zubayr narrating directly from ʿĀʾisha."},
+                          {src:"shots/dimamini-masabih-5-183.png",cap:"al-Damāmīnī, Maṣābīḥ al-Jāmiʿ 5/183: “I have known them on Islam since I became mentally aware.”"}],
+                   src:["Bukhārī 476","al-Kirmānī, al-Kawākib al-Darārī 10/125","al-Damāmīnī, Maṣābīḥ al-Jāmiʿ 5/183","al-Zabīdī, Tāj al-ʿArūs 30/18, 21"],
+                   credit:"Islamic Apologetics · #aishas-age"},
+                 next:[
+                  {they:"She still played with dolls, so she was a child.",
+                   we:"She still had her dolls at Tabūk or Khaybar, years after the marriage, when she had certainly reached puberty. The dolls prove nothing about her age.",
+                   more:{h:"The dolls argument",
+                     p:["The objection relies on a note in Fatḥ al-Bārī (on Bukhārī 6130) that dolls were allowed for her because she had not yet reached puberty.",
+                        "But Abū Dāwūd 4932 reports her dolls being seen when the Prophet ﷺ returned from Tabūk or Khaybar, when she was around fourteen or fifteen. Al-Bayhaqī holds that images and dolls were only forbidden after Khaybar. So having dolls was not tied to being prepubescent, and the note does not hold."],
+                     src:["Bukhārī 6130","Abū Dāwūd 4932","al-Bayhaqī, al-Sunan al-Kubrā 10/371"],
+                     credit:"Deenresponds · #aisha-played-with-dolls"},
+                   next:[]},
+                  {they:"Puberty at nine is biologically impossible.",
+                   we:"Early menarche is well documented today, especially with weight gain and in hot climates. Her mother deliberately fed her up before the marriage.",
+                   more:{h:"Puberty at nine",
+                     p:["Studies link higher body weight and ethnicity to menarche before the age of eleven, and puberty starting at eight or nine is medically normal, not an anomaly.",
+                        "ʿĀʾisha narrates that her mother tried to fatten her up before she moved to the Prophet's ﷺ house, and that it worked once she ate cucumbers with fresh dates.",
+                        "Montesquieu wrote in 1748 that in hot climates women are marriageable at eight, nine or ten."],
+                     src:["Ibn Mājah 3324","Abū Dāwūd 3903","Montesquieu, Spirit of the Laws 16.2"],
+                     credit:"Deenresponds · #puberty-at-9-is-impossible"},
+                   next:[]}
+                 ]},
+                {they:"Islam still allows sex with children today.",
+                 we:"No. All four schools forbid consummation until she can bear it without harm. Age alone never permits it.",
+                 more:{h:"What the four schools actually say",
+                   p:["Ibn Baṭṭāl (Mālikī, d. 449 AH): the scholars agree that a husband may not take a young wife into his house or approach her “until she can safely handle a man”, and this varies by her body and capacity.",
+                      "Ibn Qudāma (Ḥanbalī), al-Mughnī 9/527–528: he has no right to her while she is not in a condition for it, because of the fear that he could harm her.",
+                      "al-Fatāwā al-Hindiyya (Ḥanafī) 1/316: age is not the deciding factor; her ability is. al-ʿImrānī (Shāfiʿī), al-Bayān 11/193–194: if intercourse would harm her, it is forbidden, based on “live with them in kindness” (4:19).",
+                      "On top of this, a Muslim state may fix a minimum marriage age, and most do."],
+                   quote:{ar:"وَعَاشِرُوهُنَّ بِالْمَعْرُوفِ",en:"“…and live with them in kindness.” — al-Nisāʾ 4:19"},
+                   src:["Ibn Baṭṭāl, Sharḥ al-Bukhārī 7/172–173","Ibn Qudāma, al-Mughnī 9/527–528","al-Fatāwā al-Hindiyya 1/316","al-ʿImrānī, al-Bayān 11/193–194"],
+                   credit:"Deenresponds · #consummation-with-prepubescents"},
+                 next:[]},
+                {they:"But some Muslims say she was really 18 or 19.",
+                 we:"That's a modern minority view. We don't need it; the case holds even at nine.",
+                 more:{h:"The 'older ʿĀʾisha' theory",
+                   p:["Some modern writers argue for an older age from the age gap with her sister Asmāʾ and from doubts about the narrator Hishām ibn ʿUrwa in Iraq.",
+                      "Classical ḥadīth scholars accepted the report through several chains, not only Hishām's. Reworking it under modern pressure is weaker than defending the text as it stands, and that defence is strong."],
+                   src:["Bukhārī 3894","Muslim 1422"]},
+                 next:[]}
+               ]},
+            sum:"The objection judges the past by a modern line it cannot ground. It ignores that her own era (Arabia and Persia alike) saw nothing wrong, that she herself described being mentally mature, and that Islamic law forbids any harm. ʿĀʾisha, honoured and learned, never complained."
+          }},
+          zaynab:{title:"Zaynab bint Jaḥsh",k:"Qurʾān 33:37",blurb:"The marriage to Zayd's former wife.",article:{
+            claim:"Muhammad saw his adopted son's wife, desired her, and invented a revelation to marry her.",
+            tree:
+              {they:"He saw Zayd's wife uncovered, fell in love, and then 'received' 33:37.",
+               we:"That story comes from one broken chain in al-Ṭabarī, through al-Wāqidī and a weak narrator. It is not authentic.",
+               more:{h:"The report and its chain",
+                 p:["The story (Zaynab dressing in haste, the Prophet ﷺ turning away saying “Glory be to Allah who turns hearts”) is in al-Ṭabarī's History, vol. 8 p. 2. The page before gives its chain: al-Wāqidī → ʿAbdallāh b. ʿĀmir al-Aslamī → Muḥammad b. Yaḥyā b. Ḥabbān.",
+                    "1) Muḥammad b. Yaḥyā b. Ḥabbān was a tābiʿī who never met the Prophet ﷺ, so the chain is broken. 2) ʿAbdallāh b. ʿĀmir al-Aslamī is graded weak (Ibn Ḥajar, Tahdhīb 5/275). 3) The ḥadīth critics abandoned al-Wāqidī; several accused him of fabrication.",
+                    "The same page's footnote also notes that the Prophet ﷺ himself had arranged Zaynab's marriage to Zayd. She was his cousin, whom he had known all his life."],
+                 shots:[{src:"shots/tabari-8-zaynab-isnad.png",cap:"al-Ṭabarī, History vol. 8 (SUNY trans.): the chain al-Wāqidī → al-Aslamī (“weak”) → Ibn Ḥabbān, with footnotes."}],
+                 src:["al-Ṭabarī, Tārīkh 8/1–2","Ibn Ḥajar, Tahdhīb 5/275–6, 9/507–8"],
+                 credit:"Deenresponds · #the-prophets-marriage-with-zaynab"},
+               next:[
+                {they:"But 33:37 says he hid something in his heart.",
+                 we:"He hid what Allah had told him would happen: that he would marry her to end adoption-as-lineage. Meanwhile he told Zayd to keep his wife.",
+                 more:{h:"What was hidden",
+                   p:["Zayd and Zaynab had problems in their marriage. The Prophet ﷺ kept telling Zayd: “Fear Allah and keep your wife” (Bukhārī 7420). A man scheming for the wife would not do that.",
+                      "What he concealed was the revelation that the marriage would take place, because he feared what people would say about marrying his adopted son's former wife. The verse blames him for that fear. ʿĀʾisha said that if he had hidden anything of the revelation, he would have hidden this verse."],
+                   quote:{ar:"وَتُخْفِي فِي نَفْسِكَ مَا اللَّهُ مُبْدِيهِ وَتَخْشَى النَّاسَ",en:"“…you hid within yourself what Allah was going to reveal, and you feared the people.” — al-Aḥzāb 33:37"},
+                   src:["Bukhārī 7420","Muslim 177","Tafsīr al-Qurṭubī 33:37"],
+                   credit:"Deenresponds · #the-prophets-marriage-with-zaynab"},
+                 next:[]},
+                {they:"Why go so far just to abolish adoption? Adoption is good.",
+                 we:"Caring for orphans stays good. What was abolished is erasing their real lineage, and only a major public event could end a custom that deep.",
+                 more:{h:"Protecting the orphan's lineage",
+                   p:["Al-Qurṭubī: adoption-as-blood-kinship was so widely practised that it could only be abolished through a major event, so Allah demonstrated the law through His Messenger ﷺ in word and deed.",
+                      "Al-Qurṭubī also says that anyone claiming he “fell in love” with Zaynab is either ignorant of the Prophet's ﷺ protection from such things or has no respect for him.",
+                      "Raising another's child is still praised. What changes is that the child keeps his own father's name (33:5), which protects his inheritance and identity."],
+                   quote:{ar:"ادْعُوهُمْ لِآبَائِهِمْ هُوَ أَقْسَطُ عِندَ اللَّهِ",en:"“Call them by their fathers' names; that is more just in the sight of Allah.” — al-Aḥzāb 33:5"},
+                   src:["Qurʾān 33:4–5, 33:40","Tafsīr al-Qurṭubī"],
+                   credit:"Deenresponds · #the-prophets-marriage-with-zaynab"},
+                 next:[]},
+                {they:"He married his own cousin. That's inbreeding.",
+                 we:"A single first-cousin marriage raises birth-defect risk from about 2–3% to 4–6%. The real danger is many generations of it, which Islam doesn't encourage.",
+                 more:{h:"What the genetics actually says",
+                   p:["Long-term data such as the Born in Bradford study put the baseline risk of a congenital anomaly at 2–3% for unrelated couples and 4–6% for first cousins. That means a 94–96% chance of a healthy child, a rise comparable to having a child over 35–40.",
+                      "The serious risk comes from multi-generational endogamy, marrying inside a closed gene pool for centuries, which can push risk above 10%.",
+                      "Islamic law treats cousin marriage as permissible, not recommended. The Bible has the same practice: Isaac married Rebekah, his father's brother's granddaughter, and Jacob married his cousins Leah and Rachel."],
+                   src:["Shaw (2008)","Chinthapalli, BMJ (2013)","Small et al., Wellcome Open Research 9:222 (2024)","Ibn Ḥajar, al-Talkhīṣ al-Ḥabīr 3/146","Genesis 24, 29"],
+                   credit:"Islamic Apologetics · #marriage-to-zaynab"},
+                 next:[]}
+               ]},
+            sum:"The 'love story' rests on a broken, weak chain. The verse itself criticises him, he urged Zayd to stay married, and the marriage ended a custom that erased orphans' lineage."
+          }},
+          safiyya:{title:"Ṣafiyya bint Ḥuyayy",k:"Khaybar",blurb:"Married after the battle of Khaybar.",article:{
+            claim:"Muhammad killed Safiyya's family and forced her to marry him the same day.",
+            points:[
+              {h:"She was freed and given a choice",p:"Her freedom was her dowry. Narrations report she was offered to return to her people as a free woman or to stay, and she chose Islam and the Prophet ﷺ.",src:["Bukhārī 371","Ibn Saʿd"]},
+              {h:"Her own dream before Khaybar",p:"Ṣafiyya reported seeing the moon fall into her lap before the battle; when she told her husband he struck her for 'wanting the king of the Ḥijāz'. The mark was still on her face.",src:["Ṭabarānī","Ibn Ḥibbān"]},
+              {h:"How he treated her",p:"When other wives mocked her Jewish lineage, he told her to answer: “My father is Hārūn, my uncle is Mūsā and my husband is Muḥammad.” She stayed loyal to him until his death.",src:["Tirmidhī 3892"]}
+            ],
+            sum:"The sources show a freed woman with a choice, honoured and defended by the Prophet ﷺ, not a captive taken by force."
+          }},
+          polygyny:{title:"Polygyny",k:"Soon",blurb:"Why more than four for the Prophet ﷺ?"}
+        }},
+        war:{title:"War",k:"Jihād",blurb:"Was Islam spread by the sword?"},
+        slavery:{title:"Slavery",k:"Fiqh",blurb:"Regulation, manumission and context."}
+      }},
+    }
+  },
+  christianity:{
+    title:"Examining Christianity", n:"II", color:"#c9583f", hue:0xc9583f,
+    blurb:"Testing the Bible, the Trinity and the crucifixion on their own sources.",
+    children:{
+      bible:{title:"Bible preservation",k:"Textual criticism",blurb:"Variants, late additions, lost originals.",children:{
+        additions:{title:"Later additions",k:"Manuscripts",blurb:"Passages missing from the earliest copies.",article:{
+          claim:"The Bible has been perfectly preserved word for word.",
+          points:[
+            {h:"The long ending of Mark",p:"Mark 16:9–20 is absent from the two oldest complete Greek manuscripts, Codex Sinaiticus and Codex Vaticanus. Most modern Bibles bracket it with a note.",src:["Mark 16:9–20","Sinaiticus","Vaticanus"]},
+            {h:"The woman caught in adultery",p:"John 7:53–8:11 does not appear in the earliest papyri (P66, P75) and floats to different places in later manuscripts.",src:["P66","P75"]},
+            {h:"The Comma Johanneum",p:"The clearest Trinitarian verse, 1 John 5:7 in the KJV, is missing from every Greek manuscript before the late medieval period. Modern translations remove it.",src:["1 John 5:7"]}
+          ],
+          sum:"Christian scholarship itself accepts these passages are later additions. A text that grew over time is not the preserved word Christians claim."
+        }}
+      }},
+      trinity:{title:"The Trinity",k:"Theology",blurb:"One God in Deuteronomy, three persons in Nicaea."},
+      cross:{title:"Crucifixion",k:"History",blurb:"Atonement, inherited sin and justice."}
+    }
+  },
+  atheism:{
+    title:"Answering Atheism", n:"III", color:"#7c86e0", hue:0x7c86e0,
+    blurb:"Why there is something rather than nothing, and why that matters.",
+    children:{
+      cause:{title:"First cause",k:"Contingency",blurb:"Why the universe needs a necessary being."},
+      morals:{title:"Objective morality",k:"Ethics",blurb:"Can 'ought' exist without God?"},
+      evil:{title:"Problem of evil",k:"Theodicy",blurb:"Suffering, test and wisdom."}
+    }
+  }
+};
+
+/* topics/*.js files add themselves here: topic(['christianity','trinity','logic'], {...}) */
+for(const {path:p,node} of (window.TOPICS||[])){
+  let n={children:DATA};
+  for(const k of p.slice(0,-1)){ n.children=n.children||{}; n=n.children[k]=n.children[k]||{title:k,k:'',blurb:''}; }
+  n.children=n.children||{};
+  const last=p.at(-1), old=n.children[last]||{};
+  n.children[last]=Object.assign({},old,node, node.children&&old.children?{children:Object.assign({},old.children,node.children)}:{});
+}
+/* a topic with both a debate map and sub-tiles becomes a folder; the map is its first tile */
+(function fold(n){ for(const [k,c] of Object.entries(n.children||{})){
+  if(c.article && c.children && Object.keys(c.children).length){
+    c.children=Object.assign({map:{title:'Debate map: '+c.title,k:'Map',blurb:c.blurb,article:c.article}},c.children); delete c.article; }
+  fold(c); } })({children:DATA});
+/* re-home tiles into the right topic, and merge duplicates into one card (queued by curated files via cur.move / cur.merge) */
+(function(){
+  const get=p=>{ let n={children:DATA}; for(const k of p){ if(!n.children||!n.children[k]) return null; n=n.children[k]; } return n; };
+  const parentOf=p=>get(p.slice(0,-1));
+  const lastOf=t=>{ let n=t; while(n.next&&n.next.length) n=n.next[0]; return n; };
+  for(const op of (window.MOVES||[])){
+    const from=op.from.split('/'), src=get(from), par=parentOf(from); if(!src||!par) continue;
+    if(op.type==='move'){ const dest=get(op.to.split('/')); if(!dest) continue; dest.children=dest.children||{}; dest.children[from.at(-1)]=src; delete par.children[from.at(-1)]; continue; }
+    const tgt=get(op.to.split('/')); if(!tgt) continue;
+    if(op.type==='merge'){
+      const a=src.article; if(!a) continue; const t=a.tree||{}; const m=t.more||{};
+      if(tgt.article&&tgt.article.type==='explainer'){ (tgt.article.cards=tgt.article.cards||[]).push({h:src.title,short:t.we||a.sum||'',p:[].concat(m.p||[]),more:{credit:m.credit,link:m.link,src:m.src}}); }
+      else if(tgt.article&&tgt.article.tree){ lastOf(tgt.article.tree).next=[{they:null,we:String(t.we||'').replace(/\s*See (also )?(the )?[^.]{0,80}?(tile|map)s?\.?\s*$/i,''),more:Object.assign({},m,{h:(m.h||src.title)+' · another source'}),next:[]}]; }
+      else if(tgt.children){ tgt.children[from.at(-1)]=src; }
+      delete par.children[from.at(-1)];
+    }
+  }
+})();
+/* tidy: hide folders with nothing visible inside; collapse folders that hold a single tile into that tile */
+(function tidy(){
+  const vis=n=>Object.entries(n.children||{}).filter(([k,c])=>!c.hidden&&k);
+  const hasContent=n=>!n.hidden&&(n.article||vis(n).some(([k,c])=>hasContent(c)));
+  (function w(n,depth){ for(const [k,c] of Object.entries(n.children||{})){ if(!k){ delete n.children[k]; continue; } if(c.hidden) continue;
+    w(c,depth+1);
+    if(!c.article&&depth>=1){
+      if(!hasContent(c)){ c.hidden=true; continue; }
+      const v=vis(c);
+      if(v.length===1&&depth>=2){ const only=v[0][1];
+        if(only.article&&!only.children){ n.children[k]=Object.assign({},only,{title:k==='map'||/^t-|^c-/.test(v[0][0])?String(only.title).replace(/^Debate map: /,''):(c.title||only.title).replace(/^Debate map: /,''),blurb:only.blurb||c.blurb}); }
+      }
+    } } })({children:DATA},0);
+  // a folder whose only visible child is its own debate map: show the map directly
+  (function w2(n){ for(const [k,c] of Object.entries(n.children||{})){ if(c.hidden) continue; if(c.children&&!c.article){ const v=vis(c); if(v.length===1&&v[0][0]==='map'){ const mp=v[0][1]; c.article=mp.article; delete c.children; } else w2(c); } } })({children:DATA});
+})();
+
+/* ============ STATE / ROUTING ============ */
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let path = [];
+const $ = s=>document.querySelector(s);
+const nodeAt = p => { let n={children:DATA}; for(const k of p) n=n.children[k]; return n; };
+const root = () => path.length ? DATA[path[0]] : null;
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function setAccent(){
+  const c = root() ? root().color : '#d4a84b';
+  document.documentElement.style.setProperty('--accent', c);
+  document.documentElement.style.setProperty('--accent-soft', c+'24');
+  if(window.GL) GL.tint(root() ? root().hue : 0xd4a84b, path.length);
+}
+function crumbs(){
+  const c = $('#crumbs'); let html='';
+  path.forEach((k,i)=>{
+    const n = nodeAt(path.slice(0,i+1));
+    html += `<span class="sep">/</span><button data-d="${i+1}" class="${i===path.length-1?'cur':''}">${esc(n.title)}</button>`;
+  });
+  c.innerHTML = html;
+  c.querySelectorAll('button').forEach(b=>b.onclick=()=>go(path.slice(0,+b.dataset.d)));
+}
+
+let busy=false;
+function go(next, from){
+  if(busy) return;
+  closeDrawer(true);
+  if(RM){ path=next; render(); return; }
+  busy=true; clearTimeout(go._t); go._t=setTimeout(()=>busy=false,1600);
+  const dir = next.length > path.length ? 1 : -1;
+  const cur = document.querySelector('.view.on');
+  const T=.75;
+  const tl = gsap.timeline({onComplete:()=>busy=false});
+  if(from && dir>0) return morphIn(next, from, cur);
+  if(window.GL) tl.add(GL.warpOut(dir,T),0);
+  tl.to(cur,{scale:dir>0?1.6:.6,opacity:0,filter:'blur(14px)',duration:T,ease:'power3.in'},0)
+    .add(()=>{ gsap.set(cur,{clearProps:'all'}); path=next; render(true);
+      const nv=document.querySelector('.view.on');
+      gsap.fromTo(nv,{scale:dir>0?.55:1.7,opacity:0,filter:'blur(14px)'},{scale:1,opacity:1,filter:'blur(0px)',duration:.9,ease:'expo.out',clearProps:'transform,filter'});
+      if(window.GL) GL.warpIn(dir,1.1);
+    });
+}
+
+/* zoom-in: the clicked card morphs into the next page.
+   Only transform / opacity / clip-path move, so it stays on the GPU. */
+function morphIn(next, from, cur){
+  const T=.9, r=from.getBoundingClientRect(), W=innerWidth, H=innerHeight;
+  const titleEl=from.querySelector('h3,h4'), tr=titleEl.getBoundingClientRect(), fs=parseFloat(getComputedStyle(titleEl).fontSize);
+  const color=getComputedStyle(from).getPropertyValue('--c').trim() || (next[0]?DATA[next[0]].color:'#d4a84b');
+
+  // portal: full-screen layer, clipped down to the card's rectangle
+  const p=document.createElement('div'); p.className='portal'; p.style.setProperty('--c',color);
+  p.style.clipPath=`inset(${r.top}px ${W-r.right}px ${H-r.bottom}px ${r.left}px round 4px)`;
+  // the title travels on its own, to where the next page's heading will sit
+  const t=document.createElement('div'); t.className='portal-t'; t.textContent=titleEl.textContent;
+  t.style.cssText=`left:${tr.left}px;top:${tr.top}px;font-size:${fs}px`;
+  document.body.append(p,t);
+
+  const isArticle=!!nodeAt(next).article;
+  const pad=Math.min(48,Math.max(16,W*.04));
+  const targetFs=isArticle?Math.min(110,Math.max(46,W*.08)):Math.min(100,Math.max(44,W*.07));
+  const sc=targetFs/fs, tx=pad-tr.left, ty=(isArticle?136:134)-tr.top;
+
+  gsap.set(from,{opacity:0});
+  // everything else scatters away from the clicked card
+  const cx=r.left+r.width/2, cy=r.top+r.height/2;
+  const others=[...cur.querySelectorAll('.card,.door,.head > *,.eyebrow,.h1,.lede')].filter(e=>e!==from&&!from.contains(e)&&!e.contains(from));
+  const tl=gsap.timeline({onComplete:()=>{busy=false;}});
+  if(window.GL) tl.add(GL.warpOut(1,T*.85),0);
+  others.forEach(e=>{const b=e.getBoundingClientRect(),dx=(b.left+b.width/2-cx),dy=(b.top+b.height/2-cy),m=Math.hypot(dx,dy)||1;
+    tl.to(e,{x:dx/m*140,y:dy/m*140,scale:.9,opacity:0,duration:T*.6,ease:'power2.in'},0);});
+  tl.to(p,{clipPath:`inset(0px 0px 0px 0px round 0px)`,duration:T,ease:'expo.inOut'},0)
+    .to(t,{x:tx,y:ty,scale:sc,duration:T,ease:'expo.inOut'},0)
+    .add(()=>{
+      path=next; render(true, true);
+      gsap.set(from,{clearProps:'opacity'});
+      const h=document.querySelector('.view.on .h2, .view.on .art .h1');
+      if(h){ gsap.killTweensOf(h); gsap.fromTo(h,{opacity:0,y:0},{opacity:1,duration:.35,delay:.05}); }
+      if(window.GL) GL.warpIn(1,1.1);
+    })
+    .to(t,{opacity:0,duration:.35},'+=.05')
+    .to(p,{opacity:0,duration:.6,ease:'power1.out'},'<')
+    .add(()=>{p.remove();t.remove();});
+}
+
+function render(){
+  document.querySelectorAll('.view').forEach(v=>{v.classList.remove('on'); v.onscroll=null; if(v.children.length) gsap.set([...v.children],{clearProps:'all'})});
+  gsap.set('.door',{clearProps:'transform,opacity'});
+  setAccent(); crumbs();
+  const n = path.length ? nodeAt(path) : null;
+  let v;
+  if(!n){ v=$('#home'); }
+  else if(n.article){ v=$('#article'); v.innerHTML = articleHTML(n); }
+  else { v=$('#list'); v.innerHTML = listHTML(n); }
+  v.classList.add('on'); v.scrollTop=0; document.body.classList.toggle('reading', v.id==='article');
+  bind(v); enter(v);
+}
+
+function listHTML(n){
+  const items = Object.entries(n.children||{}).filter(([k,c])=>!c.hidden);
+  return `<div class="head"><div class="eyebrow">${esc(root().n)} · ${esc(n.k||'Section')}</div>
+    <h2 class="h2">${esc(n.title)}</h2><p>${esc(n.blurb)}</p></div>
+    <div class="grid">${items.map(([k,c],i)=>{
+      const has = c.children||c.article;
+      const cnt = c.children ? Object.keys(c.children).length+' topics' : c.article ? (isEx(c.article) ? 'Explainer · '+((c.article.cards||[]).length+((c.article.visual&&c.article.visual.items)||[]).length)+' points' : (()=>{const nA=countAnswers(treeOf(c.article)); return nA+' answer'+(nA===1?'':'s')+(countForks(treeOf(c.article))?' · branching':'');})()) : 'In progress';
+      return `<button class="card ${has?'':'soon'}" data-k="${k}" ${has?'':'aria-disabled="true"'}>
+        <span class="k">${String(i+1).padStart(2,'0')} · ${esc(c.k||'')}</span><h4>${esc(c.title)}</h4><p>${esc(c.blurb||'')}</p>
+        <span class="cnt"><span>${cnt}</span><span>${has?'→':''}</span></span></button>`;}).join('')}</div>`;
+}
+/* an article is a debate tree: they say → we answer → (fork: they can reply several ways) → … */
+let NODES=[], flowIO=null;
+function flowOf(a){
+  if(a.flow) return a.flow;
+  return a.points.map((p,i)=>({they:i===0?a.claim:null, we:p.h, more:{h:p.h,p:[p.p],quote:p.quote,src:p.src}}));
+}
+function isEx(a){ return !!(a&&a.type==='explainer'); }
+function treeOf(a){
+  if(isEx(a)) return null;
+  if(a.tree) return a.tree;
+  const f=flowOf(a); let root=null,cur=null;
+  f.forEach(s=>{const n={...s,next:[]}; if(!root) root=n; else cur.next=[n]; cur=n;});
+  return root;
+}
+function countAnswers(n){ if(!n) return 0; return 1+(n.next||[]).reduce((t,c)=>t+countAnswers(c),0); }
+function countForks(n){ if(!n) return 0; return ((n.next||[]).length>1?1:0)+(n.next||[]).reduce((t,c)=>t+countForks(c),0); }
+function shotsOf(a){ return (a||[]).filter(c=>c&&typeof c!=='string'); }
+function thumbsHTML(list,cls){ const L=shotsOf(list); if(!L.length) return '';
+  return `<div class="thumbs ${cls||''}">${L.slice(0,4).map(c=>`<span class="th" data-src="${esc(c.src)}" data-cap="${esc(c.cap||'')}"><img src="${esc(c.src)}" alt="${esc(c.cap||'')}" loading="lazy"></span>`).join('')}${L.length>4?`<span class="th more-n">+${L.length-4}</span>`:''}</div>`; }
+function weHTML(s,step,inlineDossier){
+  const id=NODES.push(s)-1, m=s.more||{}, n=shotsOf(m.shots).length, ps=[].concat(m.p||[]).filter(Boolean), srcs=(m.src||[]).filter(Boolean);
+  const srcPreview = !inlineDossier && srcs.length ? `<div class="bub-src">${srcs.slice(0,3).map(x=>`<span>${esc(x)}</span>`).join('')}${srcs.length>3?`<span>+${srcs.length-3}</span>`:''}</div>` : '';
+  const meta=[]; if(ps.length) meta.push(ps.length+(ps.length===1?' point':' points')); if(srcs.length) meta.push(srcs.length+(srcs.length===1?' source':' sources')); if(n) meta.push(n+(n===1?' scan':' scans'));
+  const label = inlineDossier ? 'Reader view' : ('Full proof'+(meta.length?' · '+meta.join(' · '):''));
+  return `<div class="node we"><span class="dot"></span><button class="bub more" data-n="${id}" data-step="${step}">
+    <div class="who">We answer <span class="step">${String(step).padStart(2,'0')}</span></div>
+    <p>${esc(s.we)}</p>${!inlineDossier?thumbsHTML(m.shots):''}${srcPreview}
+    <span class="open">${label} <i>＋</i></span></button></div>`;
+}
+function theyHTML(t,ts){ return `<div class="node they"><span class="dot"></span><div class="bub"><div class="who">They say</div><q>${esc(t)}</q>${thumbsHTML(ts,'their')}</div></div>`; }
+function linkify(s){
+  return esc(s).replace(/https?:\/\/[^\s<)"']+/g, u=>`<a href="${u}" target="_blank" rel="noopener">${u.replace(/^https?:\/\/(www\.)?/,'').slice(0,52)}${u.length>60?'…':''} ↗</a>`);
+}
+function parseProofPoint(t){
+  const m=String(t).match(/^([^:]{2,72}):\s+([\s\S]+)$/);
+  if(m && !/^https?$/i.test(m[1]) && !m[1].includes('://')) return {h:m[1].trim(), body:m[2].trim()};
+  return {h:'', body:String(t)};
+}
+function proofBodyHTML(m){
+  if(!m) return '';
+  const ps=[].concat(m.p||[]).filter(Boolean), sh=m.shots||[], srcs=(m.src||[]).filter(Boolean), facts=m.facts||[], quotes=m.quotes||[];
+  const factsH = facts.length ? `<div class="facts-grid">${facts.map(f=>{const k=Array.isArray(f)?f[0]:f.k, v=Array.isArray(f)?f[1]:f.v; return `<div class="fact"><small>${esc(k)}</small><b>${esc(v)}</b></div>`;}).join('')}</div>` : '';
+  let visH='';
+  if(m.visual && m.visual.kind==='compare'){
+    const L=m.visual.left||{title:'',items:[]}, R=m.visual.right||{title:'',items:[]};
+    visH=`<div class="dr-cmp"><div class="cbox l"><h4>${esc(L.title)}</h4><ul>${(L.items||[]).map(x=>`<li>${linkify(typeof x==='string'?x:(x.h?x.h+': '+(x.sub||''):''))}</li>`).join('')}</ul></div><div class="cbox r"><h4>${esc(R.title)}</h4><ul>${(R.items||[]).map(x=>`<li>${linkify(typeof x==='string'?x:(x.h?x.h+': '+(x.sub||''):''))}</li>`).join('')}</ul></div></div>`;
+  } else if(m.visual && m.visual.kind==='steps'){
+    visH=`<ol class="dr-steps">${(m.visual.items||[]).map((it,i)=>{const h=Array.isArray(it)?it[0]:it.h, sub=Array.isArray(it)?it[1]:(it.sub||''); return `<li><span class="sn">${String(i+1).padStart(2,'0')}</span><div><b>${esc(h)}</b>${sub?`<span>${linkify(sub)}</span>`:''}</div></li>`;}).join('')}</ol>`;
+  }
+  const ptsH = ps.length ? `<div class="pcard-list">${ps.map((t,i)=>{
+    const {h,body}=parseProofPoint(t);
+    const isTurn=/turn the tables|bible|church father|counter|tu quoque/i.test(h);
+    return `<div class="pcard${isTurn?' turn':''}"><span class="pn">${String(i+1).padStart(2,'0')}</span><div>${h?`<span class="ph">${esc(h)}</span>`:''}<p>${linkify(body)}</p></div></div>`;
+  }).join('')}</div>` : '';
+  const qCardsH = quotes.length ? `<div class="qcards">${quotes.map(q=>`<div class="qcard">${q.by?`<div class="qby">${esc(q.by)}</div>`:''}${q.ar?`<span class="ar">${esc(q.ar)}</span>`:''}<blockquote>“${esc(q.en)}”</blockquote>${q.ref?`<small class="qref">— ${esc(q.ref)}</small>`:''}</div>`).join('')}</div>` : '';
+  const docH = m.doc ? `<figure class="doc"><figcaption>${esc(m.doc.ref)}</figcaption><div class="doc-ar">${esc(m.doc.ar)}</div><div class="doc-en">${esc(m.doc.en)}</div></figure>` : '';
+  const quoteH = m.quote ? `<div class="quote">${m.quote.ar?`<span class="ar">${esc(m.quote.ar)}</span>`:''}${esc(m.quote.en)}</div>` : '';
+  const shotsH = sh.length ? `<div class="shots">${sh.map(c=>typeof c==='string'
+    ?`<figure class="shot"><div class="shot-img"><span>Screenshot · coming</span></div><figcaption>${esc(c)}</figcaption></figure>`
+    :`<figure class="shot real"><button class="shot-btn" data-src="${esc(c.src)}" data-cap="${esc(c.cap||'')}" aria-label="Enlarge"><img src="${esc(c.src)}" alt="${esc(c.cap||'')}" loading="lazy"></button><figcaption>${esc(c.cap||'')}</figcaption></figure>`).join('')}</div>` : '';
+  const srcH = srcs.length ? `<div class="src">${srcs.map(x=>/^https?:\/\//.test(x)?`<a href="${esc(x)}" target="_blank" rel="noopener">${esc(x.replace(/^https?:\/\/(www\.)?/,'').slice(0,48))}${x.length>56?'…':''} ↗</a>`:`<span>${esc(x)}</span>`).join('')}</div>` : '';
+  const crH = m.credit ? `<div class="credit">From Discord: ${esc(m.credit)}${m.link?` · <a href="${esc(m.link)}" target="_blank" rel="noopener">Open in Discord ↗</a>`:''}</div>` : '';
+  return factsH+visH+ptsH+qCardsH+docH+quoteH+shotsH+srcH+crH;
+}
+function dossierHTML(s){
+  const m=s.more||{}, body=proofBodyHTML(m);
+  if(!body) return '';
+  return `<section class="dossier"><div class="d-eyebrow">Full proof &amp; sources</div>${m.h?`<h3>${esc(m.h)}</h3>`:''}${body}</section>`;
+}
+function chainHTML(node,step,skipThey,inlineSingle){
+  let h='', n=node, first=true;
+  while(n){
+    if(n.they && !(first&&skipThey)) h+=theyHTML(n.they,n.ts);
+    h+=weHTML(n,step,inlineSingle); first=false;
+    const nx=n.next||[];
+    if(nx.length===1){ n=nx[0]; step++; continue; }
+    if(nx.length>1){
+      const fid=NODES.push(n)-1;
+      h+=`<div class="fork" data-n="${fid}" data-step="${step+1}">
+        <svg class="fork-lines" aria-hidden="true"></svg>
+        <div class="fork-k"><span>${nx.length} ways they can reply</span>Pick one to follow that line</div>
+        <div class="opts" style="--n:${nx.length}">${nx.map((c,j)=>`<button class="opt" data-j="${j}">
+          <span class="who">If they say <b>${String.fromCharCode(65+j)}</b></span><q>${esc(c.they)}</q>
+          <span class="sub">${countAnswers(c)} answer${countAnswers(c)>1?'s':''}${countForks(c)?' · splits again':''}</span></button>`).join('')}</div>
+      </div><div class="branch"></div>`;
+    } else if(!inlineSingle) h+=`<div class="end"><span>End of this line</span></div>`;
+    break;
+  }
+  return h;
+}
+/* explainer pages: teaching topics with a visual that fits the subject */
+function explainerHTML(n){
+  const a=n.article; NODES=[];
+  const reg=it=>NODES.push({we:it.h,more:Object.assign({h:it.h,p:[].concat(it.p||[]),credit:a.credit,link:a.link},it.more||{})})-1;
+  const V=a.visual||{}; let vis='';
+  if(V.kind==='pillars') vis=`<div class="temple"><div class="pediment"><span>${esc(V.roof||n.title)}</span></div>
+    <div class="pillars" style="--n:${V.items.length}">${V.items.map((it,i)=>`<button class="pillar more" data-n="${reg(it)}">
+      <span class="capital">${i+1}</span><span class="shaft"></span><span class="pbase"></span>
+      <b>${esc(it.h)}</b>${it.ar?`<i>${esc(it.ar)}</i>`:''}${it.sub?`<small>${esc(it.sub)}</small>`:''}</button>`).join('')}</div>
+    <div class="stylobate"></div><p class="vis-hint">Tap a pillar for its evidence</p></div>`;
+  else if(V.kind==='steps') vis=`<ol class="steps">${V.items.map((it,i)=>`<li><button class="stp more" data-n="${reg(it)}"><span class="sn">${i+1}</span><b>${esc(it.h)}</b>${it.sub?`<small>${esc(it.sub)}</small>`:''}</button></li>`).join('')}</ol>`;
+  else if(V.kind==='compare') vis=`<div class="cmp">${[V.left,V.right].map((col,ci)=>`<div class="col ${ci?'r':'l'}"><h4>${esc(col.title)}</h4>${col.items.map(it=>`<button class="ci more" data-n="${reg(it)}"><b>${esc(it.h)}</b>${it.sub?`<small>${esc(it.sub)}</small>`:''}</button>`).join('')}</div>`).join('<div class="vs">vs</div>')}</div>`;
+  const cards=(a.cards||[]).length?`<h3 class="ex-k">Key points</h3><div class="kcards">${a.cards.map((c,i)=>`<button class="kc more" data-n="${reg(c)}"><span class="kn">${String(i+1).padStart(2,'0')}</span><b>${esc(c.h)}</b><span>${esc(c.short||[].concat(c.p||[])[0]||'')}</span><em>Details ＋</em></button>`).join('')}</div>`:'';
+  const ev=(a.evidence||[]).length?`<h3 class="ex-k">Evidence</h3>${a.evidence.map(q=>`<div class="quote">${q.ar?`<span class="ar">${esc(q.ar)}</span>`:''}${esc(q.en)}${q.ref?` <small class="qref">— ${esc(q.ref)}</small>`:''}</div>`).join('')}`:'';
+  return `<div class="art ex"><div class="eyebrow">${esc(n.k||'')} · Explainer</div><h2 class="h1" style="font-size:clamp(46px,8vw,110px)">${esc(n.title)}</h2>
+    ${a.intro?`<p class="ex-intro">${esc(a.intro)}</p>`:''}${vis}${cards}${ev}
+    ${a.sum?`<div class="sum"><small>In short</small>${esc(a.sum)}</div>`:''}
+    ${a.credit?`<div class="credit">Source: ${esc(a.credit)}${a.link?` · <a href="${esc(a.link)}" target="_blank" rel="noopener">Open in Discord ↗</a>`:''}</div>`:''}
+    <button class="back">← Back to ${esc(nodeAt(path.slice(0,-1)).title)}</button></div>`;
+}
+function enterExplainer(a){
+  // fromTo with explicit end states, so nothing can get stuck half-way
+  gsap.fromTo(a.querySelectorAll('.eyebrow,.h1,.ex-intro'),{y:40,opacity:0},{y:0,opacity:1,duration:.9,stagger:.08,ease:'expo.out'});
+  const tl=gsap.timeline({delay:.3});
+  if(a.querySelector('.temple')){
+    tl.fromTo(a.querySelectorAll('.shaft'),{scaleY:0,transformOrigin:'50% 100%'},{scaleY:1,duration:1,stagger:.08,ease:'expo.out'})
+      .fromTo(a.querySelectorAll('.capital,.pbase'),{scale:0,opacity:0},{scale:1,opacity:1,duration:.5,stagger:.04,ease:'back.out(2)'},'-=.7')
+      .fromTo(a.querySelector('.pediment'),{y:-60,opacity:0},{y:0,opacity:1,duration:.8,ease:'bounce.out'},'-=.3')
+      .fromTo(a.querySelectorAll('.pillar b,.pillar i,.pillar small,.vis-hint'),{y:12,opacity:0},{y:0,opacity:1,duration:.5,stagger:.03},'-=.4');
+  }
+  if(a.querySelector('.steps')) tl.fromTo(a.querySelectorAll('.stp'),{x:-40,opacity:0},{x:0,opacity:1,duration:.7,stagger:.1,ease:'expo.out'});
+  if(a.querySelector('.cmp')) tl.fromTo(a.querySelectorAll('.col.l .ci'),{x:-50,opacity:0},{x:0,opacity:1,stagger:.07,duration:.7,ease:'expo.out'}).fromTo(a.querySelectorAll('.col.r .ci'),{x:50,opacity:0},{x:0,opacity:1,stagger:.07,duration:.7,ease:'expo.out'},'<');
+  gsap.fromTo(a.querySelectorAll('.kc'),{y:40,opacity:0},{y:0,opacity:1,duration:.8,stagger:.06,delay:.6,ease:'expo.out'});
+}
+
+function articleHTML(n){
+  if(isEx(n.article)) return explainerHTML(n);
+  const a=n.article, t=treeOf(a); NODES=[];
+  const ans=countAnswers(t), forks=countForks(t), dossier=ans===1?dossierHTML(t):'';
+  const hint = dossier
+    ? 'Objection, answer, and full proof with sources below. Tap the answer for reader view.'
+    : `${ans} answer${ans===1?'':'s'}${forks?` · ${forks} fork${forks>1?'s':''} where the debate splits`:''}. Tap any answer for the full proof, sources and screenshots.`;
+  return `<div class="art"><div class="eyebrow">${esc(n.k||'')} · Argument map</div><h2 class="h1" style="font-size:clamp(46px,8vw,110px)">${esc(n.title)}</h2>
+    <p class="hint">${hint}</p>
+    <div class="flow"><div class="spine"><div class="spine-fill"></div></div>${chainHTML(t,1,false,!!dossier)}</div>
+    ${dossier}
+    ${a.sum?`<div class="sum"><small>The verdict</small>${esc(a.sum)}</div>`:''}
+    <button class="back">← Back to ${esc(nodeAt(path.slice(0,-1)).title)}</button></div>`;
+}
+
+/* draw the split: one curve from the spine down to each option */
+function drawFork(f){
+  const svg=f.querySelector('.fork-lines'), fr=f.getBoundingClientRect(), opts=[...f.querySelectorAll('.opt')];
+  if(innerWidth<760){ svg.innerHTML=''; return; }
+  svg.setAttribute('viewBox',`0 0 ${fr.width} ${fr.height}`);
+  const x0=fr.width/2, y0=0;
+  svg.innerHTML=opts.map((o,j)=>{const r=o.getBoundingClientRect(),x=r.left-fr.left+r.width/2,y=r.top-fr.top;
+    return `<path data-j="${j}" d="M${x0},${y0} C${x0},${y*.65} ${x},${y*.35} ${x},${y}"/>`;}).join('')
+    +(f.querySelector('.opt.on')?(()=>{const o=f.querySelector('.opt.on').getBoundingClientRect();const x=o.left-fr.left+o.width/2,y=o.bottom-fr.top;
+      return `<path class="down" d="M${x},${y} C${x},${fr.height-10} ${x0},${y+10} ${x0},${fr.height}"/>`;})():'');
+  f.querySelectorAll('.opt').forEach((o,j)=>svg.querySelector(`path[data-j="${j}"]`).classList.toggle('on',o.classList.contains('on')));
+  return svg;
+}
+function pickBranch(f,j){
+  const parent=NODES[+f.dataset.n], child=parent.next[j], br=f.nextElementSibling;
+  if(f.querySelector('.opt.on')===f.querySelectorAll('.opt')[j]) return;
+  f.querySelectorAll('.opt').forEach((o,k)=>o.classList.toggle('on',k===j));
+  f.classList.add('picked');
+  const fill=()=>{
+    br.innerHTML=chainHTML(child,+f.dataset.step,true);
+    bindFlow(br); reveal(br.querySelectorAll('.node,.fork,.end'));
+    br.querySelectorAll('.fork').forEach(drawFork);
+    const svg=drawFork(f);
+    if(svg&&!RM) svg.querySelectorAll('path.on,path.down').forEach(p=>{const L=p.getTotalLength();gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:.7,ease:'power2.inOut'});});
+    const v=$('#article'); if(!RM) gsap.to(v,{scrollTop:v.scrollTop+f.getBoundingClientRect().bottom-innerHeight*.45,duration:.9,ease:'power3.inOut'});
+    v.onscroll&&v.onscroll();
+  };
+  if(br.children.length && !RM) gsap.to(br.children,{opacity:0,y:-20,duration:.25,stagger:.02,onComplete:fill}); else fill();
+}
+function bindFlow(root){
+  root.querySelectorAll('.th[data-src]').forEach(t=>t.onclick=e=>{e.stopPropagation();openLight(t);});
+  root.querySelectorAll('.shot-btn[data-src]').forEach(b=>b.onclick=e=>{e.stopPropagation();openLight(b);});
+  root.querySelectorAll('.more').forEach(m=>m.onclick=()=>openDrawer(+m.dataset.n,m));
+  root.querySelectorAll('.fork').forEach(f=>f.querySelectorAll('.opt').forEach((o,j)=>o.onclick=()=>pickBranch(f,j)));
+}
+function reveal(els){
+  if(RM||!flowIO) return;
+  els.forEach(el=>{gsap.set(el.querySelector(':scope > .bub')||el,{opacity:0});flowIO.observe(el)});
+}
+
+/* lightbox for screenshots */
+function openLight(t){
+  const L=$('#light'), scope=t.closest('.shots,.thumbs')||t.parentNode;
+  const sib=[...scope.querySelectorAll('[data-src]')]; let i=Math.max(0,sib.indexOf(t));
+  const show=()=>{const x=sib[i];L.querySelector('img').src=x.dataset.src;L.querySelector('figcaption').textContent=x.dataset.cap||'';L.querySelector('.lb-n').textContent=sib.length>1?`${i+1} / ${sib.length}`:'';};
+  show(); L.classList.add('on'); L.setAttribute('aria-hidden','false');
+  if(!RM) gsap.fromTo(L.querySelector('figure'),{scale:.94,opacity:0},{scale:1,opacity:1,duration:.45,ease:'expo.out'});
+  L.onclick=e=>{ const nv=e.target.closest('.lb-nav'); if(nv){ i=(i+(+nv.dataset.d)+sib.length)%sib.length; show(); return; } L.classList.remove('on'); L.setAttribute('aria-hidden','true'); };
+}
+/* detail drawer */
+let drawerOpen=false;
+function openDrawer(i,btn){
+  const s=NODES[i], m=s.more||{}, step=+btn.dataset.step||i+1;
+  const d=$('#drawer');
+  d.querySelector('.dr-body').innerHTML=`
+    <div class="eyebrow">Answer ${String(step).padStart(2,'0')} · Full proof</div>
+    ${s.they?`<div class="dr-they"><span>They say</span>${esc(s.they)}${thumbsHTML(s.ts,'their')}</div>`:''}
+    <h3>${esc(m.h||s.we)}</h3>
+    ${proofBodyHTML(m)}`;
+  d.querySelectorAll('.shot-btn[data-src]').forEach(b=>b.onclick=()=>openLight(b));
+  d.querySelectorAll('.th[data-src]').forEach(t=>t.onclick=()=>openLight(t));
+  drawerOpen=true; d.classList.add('on'); d.setAttribute('aria-hidden','false');
+  d.querySelector('.dr-panel').scrollTop=0;
+  if(RM){ d.querySelector('.dr-close').focus(); return; }
+  const r=btn.getBoundingClientRect();
+  gsap.timeline()
+    .fromTo('.dr-scrim',{opacity:0},{opacity:1,duration:.4})
+    .fromTo('.dr-panel',{clipPath:`inset(${r.top}px ${innerWidth-r.right}px ${innerHeight-r.bottom}px ${r.left}px round 6px)`},
+      {clipPath:'inset(0px 0px 0px 0px round 0px)',duration:.75,ease:'expo.inOut'},0)
+    .from('.dr-body > *',{y:30,opacity:0,duration:.7,stagger:.06,ease:'expo.out'},.4)
+    .add(()=>d.querySelector('.dr-close').focus());
+}
+function closeDrawer(instant){
+  if(!drawerOpen) return; drawerOpen=false;
+  const d=$('#drawer'), done=()=>{d.classList.remove('on');d.setAttribute('aria-hidden','true');gsap.set(['.dr-panel','.dr-scrim'],{clearProps:'all'});};
+  if(instant||RM) return done();
+  gsap.timeline({onComplete:done}).to('.dr-panel',{xPercent:100,duration:.5,ease:'expo.in'}).to('.dr-scrim',{opacity:0,duration:.3},'-=.25');
+}
+
+/* search: every tile title/blurb and every "they say" line */
+const SEARCH=[];
+(function index(n,p){ for(const [k,c] of Object.entries(n.children||{})){ if(c.hidden) continue; const q=[...p,k];
+  const where=q.map((_,i)=>nodeAt(q.slice(0,i+1)).title).join(' › ');
+  SEARCH.push({path:q,title:c.title,sub:where,hay:(where+' '+(c.blurb||'')+' '+(c.k||'')).toLowerCase()});
+  if(isEx(c.article)) [...(c.article.cards||[]),...((c.article.visual&&c.article.visual.items)||[])].forEach(x=>SEARCH.push({path:q,title:x.h,sub:where,hay:(x.h+' '+[].concat(x.p||[]).join(' ').slice(0,300)+' '+where).toLowerCase()}));
+  if(c.article){ (function walk(t){ if(!t) return; if(t.they) SEARCH.push({path:q,title:'“'+t.they+'”',sub:where,hay:(t.they+' '+(t.we||'')+' '+where).toLowerCase()}); (t.next||[]).forEach(walk); })(treeOf(c.article)); }
+  index(c,q); } })({children:DATA},[]);
+const qEl=$('#q'), rEl=$('#results');
+qEl.addEventListener('input',()=>{ const s=qEl.value.trim().toLowerCase(); if(s.length<2){rEl.classList.remove('on');return;}
+  const words=s.split(/\s+/); const hits=SEARCH.filter(x=>words.every(w=>x.hay.includes(w))).slice(0,40);
+  rEl.innerHTML=hits.length?hits.map((h,i)=>`<button data-i="${SEARCH.indexOf(h)}"><b>${esc(h.title)}</b><small>${esc(h.sub)}</small></button>`).join(''):'<div class="none">Nothing found yet.</div>';
+  rEl.classList.add('on');
+  rEl.querySelectorAll('button').forEach(b=>b.onclick=()=>{ rEl.classList.remove('on'); qEl.value=''; qEl.blur(); go(SEARCH[+b.dataset.i].path); }); });
+qEl.addEventListener('keydown',e=>{ if(e.key==='Enter'){ const b=rEl.querySelector('button'); if(b) b.click(); } if(e.key==='Escape'){ rEl.classList.remove('on'); qEl.blur(); e.stopPropagation(); } });
+document.addEventListener('click',e=>{ if(!e.target.closest('.search')) rEl.classList.remove('on'); });
+
+function bind(v){
+  v.querySelectorAll('.card:not(.soon)').forEach(c=>c.onclick=()=>go([...path,c.dataset.k],c));
+  const b=v.querySelector('.back'); if(b) b.onclick=()=>go(path.slice(0,-1));
+  if(v.id==='article') bindFlow(v);
+  v.querySelectorAll('.card,.door').forEach(tilt);
+}
+
+function enter(v){
+  if(RM) return;
+  if(v.id==='home'){
+    gsap.from('#home .eyebrow',{y:20,opacity:0,duration:.8,ease:'expo.out'});
+    gsap.from('#home .h1 .w',{yPercent:110,duration:1.1,stagger:.07,ease:'expo.out'});
+    gsap.from('#home .lede',{y:20,opacity:0,duration:.9,delay:.4,ease:'expo.out'});
+    gsap.from('.door',{y:80,rotateX:-25,opacity:0,duration:1.1,stagger:.1,delay:.5,ease:'expo.out'});
+  } else if(v.id==='list'){
+    gsap.from(v.querySelectorAll('.head > *'),{y:30,opacity:0,duration:.8,stagger:.08,ease:'expo.out'});
+    gsap.from(v.querySelectorAll('.card'),{y:60,rotateX:-20,opacity:0,duration:.9,stagger:.07,delay:.15,ease:'expo.out'});
+  } else {
+    const a=v.querySelector('.art');
+    if(a.classList.contains('ex')){ enterExplainer(a); return; }
+    gsap.from(a.querySelectorAll('.eyebrow,.h1,.hint'),{y:40,opacity:0,duration:.9,stagger:.08,ease:'expo.out'});
+    // nodes swing in from their side; the dot pops on arrival
+    if(flowIO) flowIO.disconnect();
+    flowIO=new IntersectionObserver(es=>es.forEach(e=>{ if(!e.isIntersecting) return; flowIO.unobserve(e.target);
+      const el=e.target, mob=innerWidth<760;
+      if(el.classList.contains('fork')){
+        gsap.fromTo(el,{opacity:0},{opacity:1,duration:.3});
+        gsap.fromTo(el.querySelectorAll('.opt'),{y:40,opacity:0,scale:.92},{y:0,opacity:1,scale:1,duration:.8,stagger:.09,delay:.25,ease:'expo.out'});
+        const svg=drawFork(el); if(svg) svg.querySelectorAll('path').forEach(p=>{const L=p.getTotalLength();gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:.8,ease:'power2.inOut'});});
+        return;
+      }
+      if(el.classList.contains('dossier')||el.classList.contains('sum')||el.classList.contains('back')){
+        gsap.fromTo(el,{y:32,opacity:0},{y:0,opacity:1,duration:.85,ease:'expo.out'});
+        return;
+      }
+      const they=el.classList.contains('they');
+      gsap.fromTo(el.querySelector(':scope > .bub')||el,{x:mob?0:(they?-60:60),y:mob?40:0,opacity:0,rotateY:mob?0:(they?18:-18)},{x:0,y:0,opacity:1,rotateY:0,duration:1,ease:'expo.out'});
+      const dot=el.querySelector('.dot'); if(dot) gsap.fromTo(dot,{scale:0},{scale:1,duration:.6,ease:'back.out(3)',delay:.1});
+    }),{root:v,threshold:.15});
+    reveal(a.querySelectorAll('.node,.fork,.end,.dossier,.sum,.back'));
+    // the spine draws itself as you read
+    const fill=a.querySelector('.spine-fill'), flow=a.querySelector('.flow');
+    const upd=()=>{const r=flow.getBoundingClientRect(),p=Math.min(1,Math.max(0,(innerHeight*.6-r.top)/r.height));gsap.to(fill,{scaleY:p,duration:.4,ease:'power2.out',overwrite:true});};
+    v.onscroll=upd; upd();
+  }
+}
+
+function tilt(el){
+  if(RM || matchMedia('(hover:none)').matches) return;
+  const rx=gsap.quickTo(el,'rotationX',{duration:.6,ease:'power3'}), ry=gsap.quickTo(el,'rotationY',{duration:.6,ease:'power3'});
+  el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    rx((.5-y)*10); ry((x-.5)*12); el.style.setProperty('--mx',x*100+'%'); el.style.setProperty('--my',y*100+'%');});
+  el.addEventListener('pointerleave',()=>{rx(0);ry(0)});
+}
+
+/* doors */
+$('#doors').innerHTML = Object.entries(DATA).map(([k,d])=>`<button class="door" data-k="${k}" style="--c:${d.color}">
+  <span class="n">${d.n}</span><span class="ar">→</span><div><h3>${d.title}</h3><p>${d.blurb}</p></div></button>`).join('');
+document.querySelectorAll('.door').forEach(d=>{
+  d.onclick=()=>go([d.dataset.k],d);
+  d.addEventListener('pointerenter',()=>window.GL&&GL.hover(DATA[d.dataset.k].hue));
+  d.addEventListener('pointerleave',()=>window.GL&&GL.hover(null));
+});
+addEventListener('resize',()=>document.querySelectorAll('.view.on .fork').forEach(drawFork));
+$('#drawer .dr-close').onclick=()=>closeDrawer();
+$('#drawer .dr-scrim').onclick=()=>closeDrawer();
+$('#logo').onclick=()=>path.length&&go([]);
+addEventListener('keydown',e=>{ if(e.key!=='Escape') return; if(drawerOpen) closeDrawer(); else if(path.length) go(path.slice(0,-1)); });
+
+/* cursor */
+if(!RM){
+  const dx=gsap.quickTo('.cur-dot','x',{duration:.1}),dy=gsap.quickTo('.cur-dot','y',{duration:.1}),
+        rx=gsap.quickTo('.cur-ring','x',{duration:.45,ease:'power3'}),ry=gsap.quickTo('.cur-ring','y',{duration:.45,ease:'power3'});
+  addEventListener('pointermove',e=>{dx(e.clientX);dy(e.clientY);rx(e.clientX);ry(e.clientY);});
+  document.addEventListener('pointerover',e=>{const h=e.target.closest('button');gsap.to('.cur-ring',{scale:h?1.8:1,opacity:h?.9:.5,duration:.3})});
+}
+
+/* ============ THREE: the eight-pointed star ============ */
+(function(){
+  const canvas=$('#gl');
+  let renderer; try{ renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false}); }catch(e){ return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+  renderer.setClearColor(0x0b0b0d,1);
+  renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  const scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(0x0b0b0d,.055);
+  const cam=new THREE.PerspectiveCamera(40,1,.1,100); cam.position.set(0,0,9);
+
+  // 8-point star (Rub el Hizb) shape
+  function starShape(R,r){const s=new THREE.Shape();for(let i=0;i<16;i++){const a=i/16*Math.PI*2+Math.PI/16,rad=i%2?r:R;
+    const x=Math.cos(a)*rad,y=Math.sin(a)*rad;i?s.lineTo(x,y):s.moveTo(x,y);}s.closePath();return s;}
+  const outer=starShape(2.2,1.62); const hole=new THREE.Path(); for(let i=0;i<=64;i++){const a=i/64*Math.PI*2;i?hole.lineTo(Math.cos(a)*.95,Math.sin(a)*.95):hole.moveTo(.95,0);} outer.holes.push(hole);
+  const geo=new THREE.ExtrudeGeometry(outer,{depth:.32,bevelEnabled:true,bevelThickness:.08,bevelSize:.06,bevelSegments:4,curveSegments:24}); geo.center();
+  const mat=new THREE.MeshStandardMaterial({color:0xd4a84b,metalness:.95,roughness:.28,emissive:0x000000});
+  const star=new THREE.Mesh(geo,mat);
+  const group=new THREE.Group(); group.add(star);
+  // inner ring
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(.72,.035,16,120),new THREE.MeshStandardMaterial({color:0xd4a84b,metalness:1,roughness:.2,emissive:0x221500}));
+  group.add(ring);
+  // orbit lattice
+  const lat=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(3.4,1)),new THREE.LineBasicMaterial({color:0xd4a84b,transparent:true,opacity:.08}));
+  group.add(lat);
+  scene.add(group);
+
+  // particles
+  const N=1600,pos=new Float32Array(N*3); for(let i=0;i<N;i++){const r=4+Math.random()*16,t=Math.random()*Math.PI*2,p=Math.acos(2*Math.random()-1);
+    pos[i*3]=r*Math.sin(p)*Math.cos(t);pos[i*3+1]=r*Math.sin(p)*Math.sin(t);pos[i*3+2]=r*Math.cos(p)-4;}
+  const pg=new THREE.BufferGeometry(); pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const pm=new THREE.PointsMaterial({color:0xd4a84b,size:.035,transparent:true,opacity:.7,depthWrite:false});
+  const dust=new THREE.Points(pg,pm); scene.add(dust);
+
+  scene.add(new THREE.AmbientLight(0xffffff,.15));
+  const key=new THREE.DirectionalLight(0xfff1d6,2.2); key.position.set(4,5,6); scene.add(key);
+  const rim=new THREE.PointLight(0xd4a84b,6,20); rim.position.set(-4,-2,3); scene.add(rim);
+  const fill=new THREE.PointLight(0x6677ff,2,20); fill.position.set(3,-3,-2); scene.add(fill);
+
+  const state={depth:0,warp:0}, ptr={x:0,y:0};
+  addEventListener('pointermove',e=>{ptr.x=e.clientX/innerWidth-.5;ptr.y=e.clientY/innerHeight-.5;});
+  function size(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();
+    group.position.set(w<760?0:2.6, w<760?1.6:.9, 0);}
+  size(); addEventListener('resize',size);
+
+  const col=new THREE.Color(0xd4a84b), tmp=new THREE.Color();
+  function setCol(hex){tmp.set(hex);
+    [mat.color,ring.material.color,pm.color,rim.color,lat.material.color].forEach(c=>gsap.to(c,{r:tmp.r,g:tmp.g,b:tmp.b,duration:1.2,ease:'power2.out'}));}
+  let base=0xd4a84b;
+  window.GL={
+    tint(hex,depth){base=hex;setCol(hex);
+      gsap.to(state,{depth,duration:1.4,ease:'expo.inOut'});},
+    hover(hex){setCol(hex??base); gsap.to(star.rotation,{z:star.rotation.z+Math.PI/4,duration:1.2,ease:'expo.out'});},
+    // fly the camera through the star's hole (dir 1 = deeper, -1 = back out)
+    warpOut(dir,dur){ return gsap.to(state,{warp:dir,duration:dur,ease:'power3.in'}); },
+    warpIn(dir,dur){ state.warp=-dir; return gsap.to(state,{warp:0,duration:dur,ease:'power3.out'}); }
+  };
+
+  let t0=performance.now(), running=true;
+  document.addEventListener('visibilitychange',()=>{running=!document.hidden; if(running){t0=performance.now();loop();}});
+  function loop(){ if(!running) return;
+    const t=(performance.now()-t0)/1000, d=state.depth;
+    if(!RM){
+      group.rotation.y+=( ptr.x*.6 + Math.sin(t*.3)*.15 - group.rotation.y)*.04;
+      group.rotation.x+=( ptr.y*.4 - group.rotation.x)*.04;
+      ring.rotation.x=t*.6; ring.rotation.y=t*.4; lat.rotation.y=t*.05; lat.rotation.x=t*.03;
+      dust.rotation.y=t*.012; star.position.y=Math.sin(t*.8)*.06;
+    }
+    // deeper = camera pushes in and star recedes to the corner, dimmer
+    const fit=Math.min(1,Math.max(.55,innerWidth/1440)), w=state.warp, aw=Math.abs(w), c=1-Math.min(1,aw*2.2);
+    const homeX=(innerWidth<760?0:2.9*fit+.4)+d*.9, homeY=(innerWidth<760?2.2:1.1)+d*.2;
+    group.position.x=homeX*c; group.position.y=homeY*c;           // star slides to centre while diving
+    group.scale.setScalar(fit*(1-d*.12)*(1-aw*.15)+(1-c)*.25);
+    cam.position.z=(9-d*1.1)-w*11;                                // through the hole, or back out of it
+    cam.fov=40+aw*38; cam.updateProjectionMatrix();
+    star.rotation.z+=w*.06; pm.size=.035+aw*.09; pm.opacity=.7-d*.1+aw*.3;
+    renderer.render(scene,cam); requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+render();
+</script>
+</body>
+</html>

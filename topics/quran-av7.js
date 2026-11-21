@@ -1,0 +1,74 @@
+/* Qurʾān AV batch 7 — 2026-11-20. Christ-related channels from Averroes “Koran Scheinargumente 1” (not on the site before).
+   add(): 5:116 card ← #maria-gott (Collyridians, Mariamites); ʿUzayr 9:30 card ← #ezra-sohn-gottes; “Allah deceives” card ← #listenschmiedt (makr 3:54).
+   NEW Qurʾān › sūras: mutawaffīka 3:55 (#jesus-tot-islam), 9:31 & 4:171 (#allah-sagt-jesus-ist-gott), 43:61 “knowledge of the Hour” (#jesus-kennt-die-stunde).
+   NEW Preservation › Common claims: Ubayy's “and he is a father to them” (33:6) (#ubayy-kaab-moahmmed-vater).
+   Scans: #ezra (9 imgs incl. Darnell), #ubayy-vater (8 imgs). */
+(()=>{
+const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});
+const N=(cr,they,we,h,p,src,next)=>({they,we,more:Object.assign({h,p,src},cr),next:next||[]});
+const card=(path,o)=>topic(path.split('/'),{title:o.title,k:o.k,blurb:o.blurb,article:{claim:o.claim,tree:o.tree,sum:o.sum}});
+const add=(key,branch)=>{ for(let i=TOPICS.length-1;i>=0;i--){ const t=TOPICS[i], k=t.path.join('/'); let a=null; if(k===key) a=t.node.article; else if(key.startsWith(k+'/')&&t.node.children){ const c=t.node.children[key.slice(k.length+1)]; a=c&&c.article; } if(!a) continue;
+  if(a.type==='explainer'){ const m=branch.more||{}; (a.cards=a.cards||[]).push({h:m.h,short:branch.we,sub:branch.we,p:[(branch.they?'They say: '+branch.they+' — ':'')+branch.we,...(m.p||[])],more:{credit:m.credit,link:m.link,src:m.src}}); return; }
+  if(a.tree){ (a.tree.next=a.tree.next||[]).push(branch); return; } } console.warn('quran-av7: no card',key); };
+const QS='islam/quran/d-ia-quran-surahs/';
+
+/* 5:116 ← Mary as a goddess */
+add(QS+'t-surah-5116-refers-to-the-trinity',N(AV('maria-gott','1285277335372959786'),
+ "No Christian ever worshipped Mary as a god; 5:116 invents a belief.",
+ "Historians report exactly that around Arabia. Edward Gibbon: Christians of the seventh century had relapsed into a semblance of paganism; “the Collyridian heretics, who flourished in the fruitful soil of Arabia, invested the Virgin Mary with the name and honours of a goddess.” George Sale: the Collyridians offered her a cake (collyris); some at Nicaea held there were two gods besides the Father, Christ and the Virgin Mary, and were called Mariamites. 5:116 also says “besides Allah”, not “as part of the Trinity”.",
+ "Mariolatry the Qurʾān addresses",["Edward Gibbon, The History of the Decline and Fall of the Roman Empire, ch. 50.","George Sale, Preliminary Discourse to The Koran (1923 ed., p. 25): Arabia was famous for heresies (Ebionites, Beryllians, Nazarenes, Collyridians); others imagined her exempt from humanity and deified, “which goes but little beyond the Popish superstition in calling her the complement of the Trinity.”","Al-Tafsīr al-Wasīṭ on 5:116: veneration of Mary was known in the eastern and western churches; prayers of intercession and praise, the Virgin's fast, images and statues, belief in her hidden power to benefit or harm, calling her “Mother of God”: practices still found in various churches."],["Qurʾān 5:116","Gibbon, Decline and Fall ch. 50","Sale, Preliminary Discourse p. 25"]));
+
+/* ʿUzayr ← Ezra */
+add('islam/quran/d-dr-uzayr-being-the-son-of-allah',N(AV('ezra-sohn-gottes','1281939358458576938'),
+ "No Jew ever called Ezra a son of God.",
+ "Mainstream Judaism didn't, but fringe groups exalted Ezra. Gordon Darnell Newby: most oral traditions of the Ḥijāz Jews are lost, so we can't check; Ezra could have been counted among the bene elohim (“sons of God”) because of his role, his piety and especially his identification with Enoch as God's scribe. Two Jewish books give Ezra and Enoch a near-angelic status: 4 Ezra (2 Esdras) 14:9, 50 and 2 Enoch 22:11, rejected by Judaism but preserved by Christians.",
+ "Ezra in Jewish fringe tradition",["Newby, A History of the Jews of Arabia: Ezra fits the description of a religious leader (one of the aḥbār of 9:31) whom the Jews had exalted.","4 Ezra 14:9: “you shall be taken up from among men, and henceforth you shall live with my Son…”; 14:50 (Syriac): he was taken up and called the scribe of the knowledge of the Most High.","Augustine, City of God 18.35, citing Jerome: the Hebrews held that the prophet Malachi (“angel”/messenger) was Ezra the priest.","The ḥadīth of the Day of Resurrection (each nation follows what it worshipped, and some Jews say “we worshipped ʿUzayr”) speaks of nations, not of every Jew, just as not every idolater worshipped the Meccans' idols; and “deifying” needn't mean believing he's the Creator, as the Arabs exalted idols while believing in Allah as supreme."],["Qurʾān 9:30–31","4 Ezra 14:9, 50","2 Enoch 22:11","Augustine, City of God 18.35"]));
+
+/* makr 3:54 */
+add('islam/creed/d-dr-allah-deceives',N(AV('listenschmiedt','1283245683012403241'),
+ "3:54 calls Allah “the best of deceivers”.",
+ "Makr means a plan, a scheme, hidden or strategic action; it's good or bad depending on its target. 3:54 is about those who plotted to kill and crucify Jesus: their plot was evil, Allah's plan that saved him and foiled them was good. Ibn al-Qayyim distinguishes Allah's makr, always just, from human makr; Ibn ʿUthaymīn: it's only praiseworthy as a counter-plan against wrongdoers. Meanwhile the Bible has God actually deceiving (Jeremiah 4:10; 2 Thessalonians 2:11–12).",
+ "Praiseworthy and blameworthy makr",["Praiseworthy: planning against oppressors and aggressors to restore justice (3:54; 86:15–16 “they plan a plan and I plan a plan”). Blameworthy: treachery against the innocent (35:43 “the evil plot encompasses only its own people”).","Analogy: killers come for your daughter; you tell them she's in that room, where a police unit waits and arrests them. Did you act well or badly?","Jeremiah 4:10: “Ah, Lord GOD, surely you have utterly deceived this people.” 2 Thessalonians 2:11: “God sends them a strong delusion, so that they may believe what is false.” A translation “best of deceivers” is false for 3:54."],["Qurʾān 3:54; 86:15–16","Jeremiah 4:10","2 Thessalonians 2:11–12","Ibn al-Qayyim, Iʿlām al-Muwaqqiʿīn"]));
+
+/* mutawaffīka */
+const MT=AV('jesus-tot-islam','1289746399700979803');
+card(QS+'mutawaffika-3-55',{title:"Does 3:55 say Jesus died? (mutawaffīka)",k:"Tawaffā",blurb:"“I will take you in full”, as in sleep, not death.",
+ claim:"3:55: “O ʿĪsā, I will cause you to die (mutawaffīka) and raise you to Myself.” So the Qurʾān admits Jesus died.",
+ tree:N(MT,"Mutawaffīka means “I will cause you to die”.",
+  "Tawaffā comes from wafā, “to take in full”. The Qurʾān uses it for sleep: “It is He who takes you (yatawaffākum) by night” (6:60); “Allah takes the souls at death, and those that don't die in their sleep” (39:42). So it means: I will take you in full, body and soul, without your enemies harming you. Al-Rabīʿ ibn Anas: it means putting him to sleep. And 4:157–158: they didn't kill or crucify him, Allah raised him to Himself.",
+  "The word and the verses",["If tawaffā always meant “cause to die”, 4:15 would read “until death causes them to die”, which is nonsense.","The Permanent Committee: Jesus wasn't killed or crucified; Allah raised him body and soul (4:157–158)."],["Qurʾān 3:55; 4:157–158; 6:60; 39:42; 4:15"]),
+ sum:"Tawaffā means taking in full; the Qurʾān uses it for sleep (6:60; 39:42), and 4:157–158 says Jesus was raised, not killed."});
+
+/* 9:31 & 4:171 */
+const JG=AV('allah-sagt-jesus-ist-gott','1283382037260144690');
+card(QS+'jesus-9-31-4-171',{title:"Does the Qurʾān call Jesus God? (9:31, 4:171)",k:"Sam Shamoun's claims",blurb:"Grammar, “a spirit from Him”, and Jesus as judge.",
+ claim:"9:31 lists the Messiah separately from the rabbis and monks, and 4:171 calls him “a spirit from Allah”: the Qurʾān treats Jesus as divine.",
+ tree:N(JG,"In 9:31 the Messiah isn't grouped with the rabbis and monks, so Allah calls him Lord.",
+  "Arabic can add a noun later in a sentence without changing its category, like “ʿUmar and Aḥmad waited for me in the car, and also Muḥammad.” The case endings show the Messiah is one of those taken as lords besides Allah: the verse condemns it, “while they were commanded to worship only one God.” And the Prophet ﷺ explained what taking them as lords meant: obeying them when they made the forbidden lawful and the lawful forbidden (Tirmidhī 3095, to ʿAdī ibn Ḥātim wearing a gold cross).",
+  "9:31",["ʿAdī ibn Ḥātim: “O ʿAdī, remove this idol from you”; then he recited 9:31 and said it wasn't worship in the usual sense, but they accepted what they declared lawful or forbidden (Tirmidhī 3095)."],["Qurʾān 9:31","Tirmidhī 3095"],
+  [N(JG,"4:171 calls Jesus “His word” and “a spirit from Him”: divine.",
+     "The verse calls him only “a messenger of Allah, and His word which He conveyed to Maryam, and a spirit from Him”: he came into being through the word “Be” (3:59), and the spirit breathed into Maryam was created by Allah's command, like everything that is “from Him” (45:13). The same verse says: don't say “three”; Allah is one God.",
+     "Created by “Be”",[],["Qurʾān 4:171; 3:59; 45:13"]),
+   N(JG,"Jesus returns as judge (Muslim 155): that's divine authority.",
+     "Judging isn't divinity: Samuel judged Israel and wasn't God. Jesus will judge by Allah's law, not his own authority, and the Bible says the same: “the Son can do nothing of his own accord” (John 5:19).",
+     "A judge by God's law",[],["Muslim 155","1 Samuel 7:15","John 5:19"])]),
+ sum:"9:31 condemns taking the Messiah as a lord (Tirmidhī 3095 explains how); 4:171 calls him a messenger created by “Be”; judging by Allah's law isn't divinity."});
+
+/* 43:61 */
+const HR=AV('jesus-kennt-die-stunde','1285987292716073030');
+card(QS+'jesus-knowledge-of-the-hour-43-61',{title:"“He is knowledge of the Hour” (43:61): does Jesus know the Hour?",k:"A sign of the Hour",blurb:"His return is a sign that the Hour is near.",
+ claim:"43:61 says Jesus “is knowledge of the Hour”, so he shares the divine knowledge only Allah has (31:34).",
+ tree:N(HR,"“And indeed he is knowledge of the Hour” (43:61): Jesus knows when the Hour is, a divine attribute.",
+  "It means he's a sign of the Hour: when he descends in the end times, people know it is near. Al-Wasīṭ: “knowledge” here means a sign, and the lām means “for”. Al-Ālūsī and Ibn Kathīr: his descent is among the signs of the Hour, as the authentic ḥadīth say: “the son of Maryam will descend as a just judge, break the cross, kill the swine, abolish the jizya…” And two verses earlier (43:59) he is called a servant on whom Allah bestowed favour. Only Allah knows the Hour (31:34).",
+  "The tafsīr",["Ibn Kathīr: the pronoun refers to Jesus, as the context speaks of him, and to his return before the Day of Resurrection; cf. 4:159.","Ibn ʿĀshūr reports three readings: al-Ḥasan, Qatāda and Saʿīd ibn Jubayr took “it” as the Qurʾān (it informs about the Hour); Ibn ʿAbbās, Mujāhid and Qatāda took it as Jesus' return; or a general reference to the signs of the Hour.","See also the card on Mark 13:32: in the Bible, the Son doesn't know the hour."],["Qurʾān 43:59–61; 31:34; 4:159","Bukhārī 2222; Muslim 155"]),
+ sum:"Jesus' return is a sign that the Hour is near (Ibn Kathīr, al-Ālūsī); knowledge of the Hour belongs to Allah alone (31:34)."});
+
+/* Ubayy's 33:6 */
+const UF=AV('ubayy-kaab-moahmmed-vater','1286771444339966002');
+card('islam/quran/preservation/d-ia-common-claims/ubayy-33-6-father',{title:"Ubayy's 33:6: “and he is a father to them”",k:"Kanz al-ʿUmmāl 2/569",blurb:"An explanatory note, abrogated if anything, and metaphorical anyway.",
+ claim:"Ubayy's muṣḥaf read 33:6 “the Prophet is closer to the believers than themselves, and he is a father to them”; ʿUthmān's text dropped it.",
+ tree:N(UF,"ʿUmar found a boy's muṣḥaf with “…and he is a father to them”; the boy said it was in Ubayy's muṣḥaf (Kanz al-ʿUmmāl 2/569).",
+  "Ubayy himself admitted in that very report that being occupied with the Qurʾān made him less careful, and he didn't always drop what was abrogated. Even if it was once recited, it was abrogated; and “father” is metaphorical: the verse already calls his wives the believers' mothers.",
+  "The report",["Bajāla al-Tamīmī: ʿUmar told the boy to erase it; the boy refused, saying it was in Ubayy's muṣḥaf; ʿUmar went to Ubayy (raising his voice in one version); Ubayy replied that the Qurʾān occupied him as the noise of the markets occupied ʿUmar.","On Bajāla: al-Shāfiʿī's editor calls him unknown, but al-Jāḥiẓ lists him among Baṣra's ascetics, Mujāhid ibn Mūsā and Abū Zurʿa call him reliable, and al-Tirmidhī graded two of his ḥadīth ḥasan ṣaḥīḥ (1586–1587).","Eight scans in the channel (to capture)."],["Qurʾān 33:6","Kanz al-ʿUmmāl 2/569"]),
+ sum:"The note is an abrogated or explanatory reading Ubayy kept, and “father” is metaphorical, as his wives are “mothers”."});
+})();
