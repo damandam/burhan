@@ -1,10 +1,37 @@
 # Burhān — overnight fill log
 
+<<<<<<< Updated upstream
 ## 2026-11-22 — prophet-tribal-call.js (Avereos' own research, not Discord)
 - NEW `islam/prophet/bite-your-fathers-thing`: Ubayy ibn Kaʿb ḥadīth (“fa-aʿiḍḍūhu bi-hani abīhi wa-lā taknū”, Aḥmad 21233–21236).
   Main answer: chains compared (ʿAwf: no body part; Yūnus/al-Sarī: han = euphemism; explicit word only via Mubārak ibn Faḍāla = shādhdh).
   Forks: (1) chain is ṣaḥīḥ, instruction marfūʿ — don't call it weak; (2) target = tribal war cry / boasting about fathers (Bukhārī 4905, Abū Dāwūd 5116, Tirmidhī 3955, al-Ṭaḥāwī Mushkil 8/233–235, Ibn Taymiyya MF 15/380, Bukhārī 6824); (3) his general speech (Bukhārī 3559, 6031, 6032, Tirmidhī 1977, Muslim 2599).
 - Checks: node --check OK; node load test of all 98 loader files: 0 errors, card found, phrase “may his forehead be dusty” found.
+=======
+## ROUND 6 (2026-11-22) — Git Deploy Workflow, AV1 Media Block 1 & Tactical Playbook Engine
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 99 topic scripts):**
+- **531 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files**
+- **Visual proof richness:** `withFacts: 240`, `withQuotes: 229`, `withVisual: 153`, **`cardsWithShots: 62`**, **`totalShots: 313`**
+
+**Completed in Round 6 (Block 1 + Gospel Authorship Playbook):**
+1. **Tactical Playbook Labels (`index.html`):** Non-invasive optional label support (`who`, `theyWho`, `forkTitle`, `forkSub`, `optWho`, `optLabel`) + proactive step search indexing — enables proactive `Step 1 → Step 2 → Choose Angle A/B/C/D → Watch out · if they say X → Counter & push on` flows without changing visual design or animations.
+2. **Block 1 — AV1 Media-Only Islam/Qurʾān Channels (`topics/av1-media-islam.js`, 8 channels, 7 PDFs → 14 JPEGs + 14 WebP scans):**
+   - **2 new cards:** `islam/quran/preservation/d-ia-common-claims/ibn-masud-mushaf` (merges `#musnaf-masud-fehlt-2-suren` + `#ibn-masud-versteckt-mansukript`, 4 PDF pages) & `islam/quran/d-ia-alleged-contradictions/heaven-or-earth-created-first` (`#himmel-oder-erde-zuerst-erschaffen`, Q 2:29/41:9–12 vs. 79:27–33, 2 PDF pages).
+   - **3 PDF enrichments (`add()`):** `d-dr-defense-of-qiraat` (`ok_2.pdf` + Qirāʾāt dossier, 4 PDF pages), `d-dr-how-many-days-for-creation` (2 PDF pages), `d-dr-islamic-dilemma` (`#alles` 24k-char master dossier, 2 PDF pages).
+   - **2 WebP scan batches (`attachShots()`):** `c-allahs-thron-knirchen` (`thron-1..8.webp`) & `d-dr-bukhari-preservation-of-torah` (`bukh-torah-1..6.webp`).
+3. **Flagship Tactical Playbook — `Who wrote the Gospels?` (`topics/gospel-authorship-playbook.js`, 16 nodes, 12 Discord channels across IA + Deenresponds + Averroes, 37 verified WebP scans):**
+   - **Proactive Playbook flow:** `Opening move 01` → `Set the burden of proof 02` → **4 Tactical Lines of Attack**:
+     - **Angle A:** Anonymity & Gospel titles (`IA #authorship-of-the-new-testament › Gospel of Mark`, `#biblical-corruption › anonymity-of-the-gospels` & `Why Gospels are Anonymous?`, `gosp-mark-1..6`, `gosp-anon-1..4`, `gosp-why-1..2`) + Watch-out traps (Hengel/Pitre `kata` headings; Tacitus/Josephus vs. Luke 1:1–4 & John 21:24).
+     - **Angle B:** Synoptic copying & Q (`DR #synoptics-literary-dependency`, `#argument-1-chronology-copying`, `#why-does-luke-agree-with-matthean-edits`, `#notes-on-q`, `gosp-syn-1..5`) + Watch-out traps (Farrer scroll cross-referencing + minor agreements + Matthean priority).
+     - **Angle C:** Papias, Eusebius & historical reliability (`AV #papias-fragmente` Frags. 1–10, `IA NOT Eyewitnesses`, `IA #response-library › The gospels are not historically reliable`, `gosp-eyewit-1..5`, `gosp-rel-1..5`) + Watch-out traps (Criterion of Hostility; Papias's 3rd-hand chain).
+     - **Angle D:** Canonical forgeries & the Qurʾānic Injīl (`IA #authorship-of-the-new-testament › 1 and 2 Peter`, `IA Anonymous & Pseudonymous NT Books`, `gosp-peter-1..6`, `gosp-pseudo-1..4`, Q 5:46 / 2:79 / Bukhārī 4485).
+   - **Fixes:** Fixed empty broken child branch caused by `cur.merge('christianity/bible/d-ia-authorship-of-the-new-testament', 'christianity/bible/authorship')`; cross-attached `gosp-rel-1..5.webp` to `Are the Gospels historically reliable?`; fixed minor source typos (`Iranaeus`, `pseudpnymous`, `bruze metzger`, Papias century note).
+4. **Live Discovery (Open Queue):**
+   - **Block 2 (AV1 Media-Only Christianity/Bible — 11 channels):** `#hohes-lied-5-16`, `#hosea-9-6`, `#daniel-7`, `#menschen-sohn`, `#jesaja-42`, `#qumran-dtn-13`, `#jesus-sagt-er-hat-nie-im-geheimen-gesprochen`, `#himmel-widerspruch`, `#jhwe-name-nicht-offenbart`, `#jesus-sünde-taufen-jordan-markus`, `#andere-gesellschaften`, `#hölle-schicksal`.
+   - **Deenresponds Live Expansion:** Expanding collapsed categories uncovered **115 previously unexported DR channels** (229 live vs. 152 in old JSON) including 20+ Church Fathers/Ebionites, 12 OT Trinity/Messiah, `#the-coccyx-bone`, `#earth-first-or-heavens`, `#embryology-related-objections`, `#1-john-5-7`, `#the-real-ending-of-mark`, etc.
+   - **Averroes 2:** Still needs full export.
+
+---
+>>>>>>> Stashed changes
 
 ## ROUND 5 (2026-11-21) — `/goal` COMPLETE & VERIFIED
 **Final Verified Site State (`http://localhost:5179/`, 97 topic scripts):**

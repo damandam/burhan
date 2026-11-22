@@ -386,7 +386,11 @@ main{position:relative;z-index:2}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>window.TOPICS=[];window.topic=(path,node)=>TOPICS.push({path,node});</script>
 <script>/* load topic files fresh every time */
+<<<<<<< Updated upstream
 ['sections','trinity-logic','christology-qua','received-authority','quran-preservation','bible-preservation','atheism','remaining','library','curated-lib','curated-creed','curated-quran','curated-hadith','curated-proofs','curated-law','curated-general','curated-christianity','curated-misc','curated-dr-hadith','curated-dr-quran','curated-dr-christianity','curated-av','curated-media','curated-dr-rest','curated-av1','curated-av2','curated-av3','curated-enrich','curated-remap','curated-organise','aisha','zaynab','safiyya','polygyny','forced-marriage','marriage-rest','war','qurayza','war-rest','slavery','women','apostasy','prophet','sects','proofs','creed-governance','creed-attributes','creed-rest','quran-block1','quran-block2','quran-block3','quran-block4','hadith-block1','hadith-block2','hadith-block3','hadith-block4','hadith-block5','hadith-block6','hadith-block7','hadith-block8','hadith-block9','quran-av1','quran-av2','quran-av3','quran-av4','quran-av5','quran-av6','quran-av7','quran-av8','quran-av9','christ-av1','islam-av1','islam-av2','islam-av3','enrich-islam1','enrich-other1','enrich-church1','enrich-christ-practice','enrich-christ-jesus-de','enrich-christ-jesus-dr','enrich-islam-proofs','enrich-christ-rest','islam-av4','islam-av5','christ-av2-child1','christ-av3-child2','christ-av5-contradictions','christ-av8-bible-science','christ-av4-prophet-bible','christ-av6-paul','christ-av7-corrects-slavery','christ-av10-endtimes-adulteress','christ-av11-misc','scans-batch1','pdf-enrichment1','scans-batch2','pdf-enrichment2','prophet-tribal-call'].forEach(f=>document.write('<script src="topics/'+f+'.js?v='+Date.now()+'"><\/script>'));</script>
+=======
+['sections','trinity-logic','christology-qua','received-authority','quran-preservation','bible-preservation','atheism','remaining','library','curated-lib','curated-creed','curated-quran','curated-hadith','curated-proofs','curated-law','curated-general','curated-christianity','curated-misc','curated-dr-hadith','curated-dr-quran','curated-dr-christianity','curated-av','curated-media','curated-dr-rest','curated-av1','curated-av2','curated-av3','curated-enrich','curated-remap','curated-organise','aisha','zaynab','safiyya','polygyny','forced-marriage','marriage-rest','war','qurayza','war-rest','slavery','women','apostasy','prophet','sects','proofs','creed-governance','creed-attributes','creed-rest','quran-block1','quran-block2','quran-block3','quran-block4','hadith-block1','hadith-block2','hadith-block3','hadith-block4','hadith-block5','hadith-block6','hadith-block7','hadith-block8','hadith-block9','quran-av1','quran-av2','quran-av3','quran-av4','quran-av5','quran-av6','quran-av7','quran-av8','quran-av9','christ-av1','islam-av1','islam-av2','islam-av3','enrich-islam1','enrich-other1','enrich-church1','enrich-christ-practice','enrich-christ-jesus-de','enrich-christ-jesus-dr','enrich-islam-proofs','enrich-christ-rest','islam-av4','islam-av5','christ-av2-child1','christ-av3-child2','christ-av5-contradictions','christ-av8-bible-science','christ-av4-prophet-bible','christ-av6-paul','christ-av7-corrects-slavery','christ-av10-endtimes-adulteress','christ-av11-misc','scans-batch1','pdf-enrichment1','scans-batch2','pdf-enrichment2','av1-media-islam','gospel-authorship-playbook'].forEach(f=>document.write('<script src="topics/'+f+'.js?v='+Date.now()+'"><\/script>'));</script>
+>>>>>>> Stashed changes
 <script>
 /* ============ DATA (demo) ============ */
 const DATA = {
@@ -767,11 +771,11 @@ function weHTML(s,step,inlineDossier){
   const meta=[]; if(ps.length) meta.push(ps.length+(ps.length===1?' point':' points')); if(srcs.length) meta.push(srcs.length+(srcs.length===1?' source':' sources')); if(n) meta.push(n+(n===1?' scan':' scans'));
   const label = inlineDossier ? 'Reader view' : ('Full proof'+(meta.length?' · '+meta.join(' · '):''));
   return `<div class="node we"><span class="dot"></span><button class="bub more" data-n="${id}" data-step="${step}">
-    <div class="who">We answer <span class="step">${String(step).padStart(2,'0')}</span></div>
+    <div class="who">${esc(s.who||'We answer')} <span class="step">${String(step).padStart(2,'0')}</span></div>
     <p>${esc(s.we)}</p>${!inlineDossier?thumbsHTML(m.shots):''}${srcPreview}
     <span class="open">${label} <i>＋</i></span></button></div>`;
 }
-function theyHTML(t,ts){ return `<div class="node they"><span class="dot"></span><div class="bub"><div class="who">They say</div><q>${esc(t)}</q>${thumbsHTML(ts,'their')}</div></div>`; }
+function theyHTML(t,ts,who){ return `<div class="node they"><span class="dot"></span><div class="bub"><div class="who">${esc(who||'They say')}</div><q>${esc(t)}</q>${thumbsHTML(ts,'their')}</div></div>`; }
 function linkify(s){
   return esc(s).replace(/https?:\/\/[^\s<)"']+/g, u=>`<a href="${u}" target="_blank" rel="noopener">${u.replace(/^https?:\/\/(www\.)?/,'').slice(0,52)}${u.length>60?'…':''} ↗</a>`);
 }
@@ -814,7 +818,7 @@ function dossierHTML(s){
 function chainHTML(node,step,skipThey,inlineSingle){
   let h='', n=node, first=true;
   while(n){
-    if(n.they && !(first&&skipThey)) h+=theyHTML(n.they,n.ts);
+    if(n.they && !(first&&skipThey)) h+=theyHTML(n.they,n.ts,n.theyWho);
     h+=weHTML(n,step,inlineSingle); first=false;
     const nx=n.next||[];
     if(nx.length===1){ n=nx[0]; step++; continue; }
@@ -822,10 +826,10 @@ function chainHTML(node,step,skipThey,inlineSingle){
       const fid=NODES.push(n)-1;
       h+=`<div class="fork" data-n="${fid}" data-step="${step+1}">
         <svg class="fork-lines" aria-hidden="true"></svg>
-        <div class="fork-k"><span>${nx.length} ways they can reply</span>Pick one to follow that line</div>
+        <div class="fork-k"><span>${esc(n.forkTitle||(nx.length+' ways they can reply'))}</span>${esc(n.forkSub||'Pick one to follow that line')}</div>
         <div class="opts" style="--n:${nx.length}">${nx.map((c,j)=>`<button class="opt" data-j="${j}">
-          <span class="who">If they say <b>${String.fromCharCode(65+j)}</b></span><q>${esc(c.they)}</q>
-          <span class="sub">${countAnswers(c)} answer${countAnswers(c)>1?'s':''}${countForks(c)?' · splits again':''}</span></button>`).join('')}</div>
+          <span class="who">${esc(c.optWho||'If they say')} <b>${String.fromCharCode(65+j)}</b></span><q>${esc(c.optLabel||c.they||'')}</q>
+          <span class="sub">${countAnswers(c)} step${countAnswers(c)>1?'s':''}${countForks(c)?' · splits again':''}</span></button>`).join('')}</div>
       </div><div class="branch"></div>`;
     } else if(!inlineSingle) h+=`<div class="end"><span>End of this line</span></div>`;
     break;
@@ -937,8 +941,8 @@ function openDrawer(i,btn){
   const s=NODES[i], m=s.more||{}, step=+btn.dataset.step||i+1;
   const d=$('#drawer');
   d.querySelector('.dr-body').innerHTML=`
-    <div class="eyebrow">Answer ${String(step).padStart(2,'0')} · Full proof</div>
-    ${s.they?`<div class="dr-they"><span>They say</span>${esc(s.they)}${thumbsHTML(s.ts,'their')}</div>`:''}
+    <div class="eyebrow">${esc(s.who||'Answer')} ${String(step).padStart(2,'0')} · Full proof</div>
+    ${s.they?`<div class="dr-they"><span>${esc(s.theyWho||'They say')}</span>${esc(s.they)}${thumbsHTML(s.ts,'their')}</div>`:''}
     <h3>${esc(m.h||s.we)}</h3>
     ${proofBodyHTML(m)}`;
   d.querySelectorAll('.shot-btn[data-src]').forEach(b=>b.onclick=()=>openLight(b));
@@ -967,7 +971,7 @@ const SEARCH=[];
   const where=q.map((_,i)=>nodeAt(q.slice(0,i+1)).title).join(' › ');
   SEARCH.push({path:q,title:c.title,sub:where,hay:(where+' '+(c.blurb||'')+' '+(c.k||'')).toLowerCase()});
   if(isEx(c.article)) [...(c.article.cards||[]),...((c.article.visual&&c.article.visual.items)||[])].forEach(x=>SEARCH.push({path:q,title:x.h,sub:where,hay:(x.h+' '+[].concat(x.p||[]).join(' ').slice(0,300)+' '+where).toLowerCase()}));
-  if(c.article){ (function walk(t){ if(!t) return; if(t.they) SEARCH.push({path:q,title:'“'+t.they+'”',sub:where,hay:(t.they+' '+(t.we||'')+' '+where).toLowerCase()}); (t.next||[]).forEach(walk); })(treeOf(c.article)); }
+  if(c.article){ (function walk(t){ if(!t) return; const lbl=t.they||t.optLabel||(t.more&&t.more.h); if(lbl) SEARCH.push({path:q,title:t.they?'“'+t.they+'”':lbl,sub:where,hay:(lbl+' '+(t.we||'')+' '+where).toLowerCase()}); (t.next||[]).forEach(walk); })(treeOf(c.article)); }
   index(c,q); } })({children:DATA},[]);
 const qEl=$('#q'), rEl=$('#results');
 qEl.addEventListener('input',()=>{ const s=qEl.value.trim().toLowerCase(); if(s.length<2){rEl.classList.remove('on');return;}
