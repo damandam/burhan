@@ -355,3 +355,9 @@ Started 2026-11-18 evening. User is away; fill topics one by one, keep the site 
 - Dār al-Hudā shubuhāt need ticket access.
 - Sharper scans: download original Discord attachments (ask user first).
 - "Additions" (Bible) still uses the old linear format.
+
+## 2026-11-22 · Trinity: modal-logic + Ockham argument (Noel's own)
+- New card `christianity/trinity/modal-necessity` ("One person is enough: the modal argument"), file `topics/trinity-modal.js`, loaded last.
+- Main node: all 7 premises, 2 interim conclusions, main conclusion (translated from Noel's German text); steps visual (6 steps) + facts grid.
+- 4 replies: (1) "one-person God impossible" → burden of proof + Aquinas ST I q.32 a.1 (Trinity not knowable by reason) + Isa 45:5 / Deut 6:4; (2) Richard of St. Victor love argument → why stop at three, dependence; (3) "persons not separate" → real distinction vs modalism; (4) "Ockham is only epistemic" → two strands.
+- Verified: card loads, search finds it, drawer + steps visual render, 375 px no overflow, no console errors.
