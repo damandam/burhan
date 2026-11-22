@@ -1,15 +1,8 @@
 # Burhān — overnight fill log
 
-<<<<<<< Updated upstream
-## 2026-11-22 — prophet-tribal-call.js (Avereos' own research, not Discord)
-- NEW `islam/prophet/bite-your-fathers-thing`: Ubayy ibn Kaʿb ḥadīth (“fa-aʿiḍḍūhu bi-hani abīhi wa-lā taknū”, Aḥmad 21233–21236).
-  Main answer: chains compared (ʿAwf: no body part; Yūnus/al-Sarī: han = euphemism; explicit word only via Mubārak ibn Faḍāla = shādhdh).
-  Forks: (1) chain is ṣaḥīḥ, instruction marfūʿ — don't call it weak; (2) target = tribal war cry / boasting about fathers (Bukhārī 4905, Abū Dāwūd 5116, Tirmidhī 3955, al-Ṭaḥāwī Mushkil 8/233–235, Ibn Taymiyya MF 15/380, Bukhārī 6824); (3) his general speech (Bukhārī 3559, 6031, 6032, Tirmidhī 1977, Muslim 2599).
-- Checks: node --check OK; node load test of all 98 loader files: 0 errors, card found, phrase “may his forehead be dusty” found.
-=======
 ## ROUND 6 (2026-11-22) — Git Deploy Workflow, AV1 Media Block 1 & Tactical Playbook Engine
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 99 topic scripts):**
-- **531 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files**
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 100 topic scripts):**
+- **532 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files**
 - **Visual proof richness:** `withFacts: 240`, `withQuotes: 229`, `withVisual: 153`, **`cardsWithShots: 62`**, **`totalShots: 313`**
 
 **Completed in Round 6 (Block 1 + Gospel Authorship Playbook):**
@@ -31,7 +24,14 @@
    - **Averroes 2:** Still needs full export.
 
 ---
->>>>>>> Stashed changes
+
+## 2026-11-22 — prophet-tribal-call.js (Avereos' own research, not Discord)
+- NEW `islam/prophet/bite-your-fathers-thing`: Ubayy ibn Kaʿb ḥadīth (“fa-aʿiḍḍūhu bi-hani abīhi wa-lā taknū”, Aḥmad 21233–21236).
+  Main answer: chains compared (ʿAwf: no body part; Yūnus/al-Sarī: han = euphemism; explicit word only via Mubārak ibn Faḍāla = shādhdh).
+  Forks: (1) chain is ṣaḥīḥ, instruction marfūʿ — don't call it weak; (2) target = tribal war cry / boasting about fathers (Bukhārī 4905, Abū Dāwūd 5116, Tirmidhī 3955, al-Ṭaḥāwī Mushkil 8/233–235, Ibn Taymiyya MF 15/380, Bukhārī 6824); (3) his general speech (Bukhārī 3559, 6031, 6032, Tirmidhī 1977, Muslim 2599).
+- Checks: node --check OK; node load test of all 98 loader files: 0 errors, card found, phrase “may his forehead be dusty” found.
+
+---
 
 ## ROUND 5 (2026-11-21) — `/goal` COMPLETE & VERIFIED
 **Final Verified Site State (`http://localhost:5179/`, 97 topic scripts):**
