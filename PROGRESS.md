@@ -1,11 +1,14 @@
 # Burhān — overnight fill log
 
 ## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Blocks 4–8, AV2 Waves 1–3 & Playbook Depth Upgrades
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 124 topic scripts):**
-- **609 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
-- **Visual proof richness:** `withFacts: 545`, `withQuotes: 499`, `withVisual: 504`, **`cardsWithShots: 128`**, **`totalShots: 500`**
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 126 topic scripts):**
+- **620 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
+- **Visual proof richness:** `withFacts: 556`, `withQuotes: 509`, `withVisual: 515`, **`cardsWithShots: 128`**, **`totalShots: 500`**
 
 **Completed in Round 6:**
+0l. **Block 10A — Averroes 2 Wave 2 Flagship Islam, Qurʾān & Ḥadīth Playbooks (`topics/av2-wave2a-islam.js` + `topics/av2-wave2b-islam.js`, 14 German dossiers translated & synthesized into 11 Playbooks + 3 enrichments):**
+   - **11 NEW Tactical Debate Playbook cards:** `monkeys-stoning-bukhari` (Bukhārī 3849 *mawqūf* pre-Islamic narrator report by ʿAmr b. Maymūn + Augustine *City of God* 15.23), `killing-geckos-hadith` (11k-char *isnād* & *matn* dossier), `beardless-youth-hadith` (fabricated report condemned by Ibn al-Ṣalāḥ, Ibn al-Qaṭṭān & al-Albānī), `umar-library-of-alexandria-myth` (600-year source gap & consensus of Butler, Bernard Lewis, Hitti, Russell), `pure-milk-16-66`, `two-seas-barrier-55-19` (al-Ṭabarī 22/40 & Ibn Kathīr 7/470), `foreign-words-clear-arabic`, `sabbath-breakers-apes-2-65`, `four-year-pregnancy-fiqh`, `no-compulsion-in-religion-2-256`, `quran-9-29-jizyah-context`.
+   - **3 `add()` enrichments:** `christianity/cross` (answering "Did Allah deceive Christians at the crucifixion?" Q 4:157), `c-juden-am-ju-ngsten-tag-to-ten` (end-times Dajjāl battle context), `sword-verse-abrogation` (Q 9:1–6 treaty-violation context).
 0k. **Block 11B — Averroes 2 Wave 3 Patristic & Scholastic Admissions (`topics/av2-wave3-patristic.js`, 9 German dossiers translated & synthesized into 5 Playbooks + 2 enrichments):**
    - **5 NEW Tactical Debate Playbook cards:**
      - `christianity/church/augustine-church-authority-and-synoptics` (Augustine *Contra Epistulam Manichaei* 5.6 circular church authority & *De Consensu Evangelistarum* 4.10.11 admitting Matthew, Mark & Luke do not teach Christ's divine pre-existence)
