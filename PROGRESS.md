@@ -1,11 +1,17 @@
 # Burhān — overnight fill log
 
-## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Block 1 & Tactical Playbooks
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 109 topic scripts):**
-- **533 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
-- **Visual proof richness:** `withFacts: 461`, `withQuotes: 400+`, `withVisual: 420+`, **`cardsWithShots: 68`**, **`totalShots: 348`**
+## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads & Tactical Playbooks
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 111 topic scripts):**
+- **541 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
+- **Visual proof richness:** `withFacts: 472`, `withQuotes: 422`, `withVisual: 429`, **`cardsWithShots: 81`**, **`totalShots: 379`**
 
 **Completed in Round 6:**
+0a. **Block 3 — Overlooked IA Text-Channel Sub-Threads (`topics/ia-subthreads.js`, 8 sub-threads, 15 WebP scans `shots/ia-sub-*.webp`):**
+   - **2 NEW Tactical Playbook cards:** `christianity/jesus/proof-texts/john-8-58-before-abraham-i-am` (2 scans, LXX Exod 3:14 *ho ōn* vs. John 9:9 *egō eimi* & pre-existent Wisdom/Messiah traps) & `christianity/jesus/proof-texts/john-10-30-i-and-the-father-are-one` (2 scans, neuter *hen* vs. masculine *heis*, John 17:11/21–22 & 1 Cor 3:8).
+   - **6 enrichments (`add()`):** `christianity/cross` (crucifixion Gospel contradictions, 2 scans), `islam/quran/history/pharaoh-crucifixion` (crucifixion in Moses's era, 1 scan), `islam/proofs/d-ia-truthfulness-of-the-prophet` (Jan 27, 632 CE NASA-verified solar eclipse on Ibrāhīm's death), `islam/morality/war` (5 Judeo-Christian testimonies praising Muslim rule, 2 scans), `islam/morality/d-ia-apostasy-and-blasphemy-laws` (Church Fathers + Deuterocanon 1 Maccabees, 3 scans), `islam/morality/slavery` (humane treatment of war captives, 3 scans).
+0b. **Block 2 — AV1 Media-Only Christianity/Bible PDFs (`topics/av1-media-christ.js`, 10 channels, 16 German PDFs → 16 JPEGs `shots/pdf4-*.jpg`):**
+   - **6 NEW Tactical Playbook cards:** `christianity/islam-vs/prophecies/hosea-9-6-mahmad` (Jerome's pre-Islamic witness on *MḤMD*), `christianity/islam-vs/prophecies/son-of-man-daniel-7-gospels` (4-dossier Playbook), `christianity/islam-vs/prophecies/qumran-deut-13-faithful-prophet`, `christianity/bible/contradictions/heaven-ascension-contradiction`, `christianity/bible/contradictions/yhwh-name-exodus-6-3`, `christianity/jesus/jesus-baptism-sin-mark-1`.
+   - **4 enrichments (`add()`):** `christianity/islam-vs/d-dr-song-of-solomon` (+2 cards from 4 PDFs), `christianity/islam-vs/d-dr-daniel-2` (+1 card from Daniel 2 & 7 dossier), `christianity/islam-vs/d-dr-isaiah-42` (+1 card on Isaiah 42 in the Church Fathers), `christianity/jesus/d-av-jesus-gewalt-su-nde/c-niemals-im-geheimen-gesprochen` (+1 branch).
 0. **100% Site-Wide Visual & Playbook Audit (`topics/visual-audit-1-misc.js` through `visual-audit-6b-quran.js` — 8 batches, ALL 220 remaining cards upgraded!):**
    - Non-destructive `up(origKey, patch)` across every remaining card lacking `facts`/`visual`/`quotes` (`v1-misc` 21, `v2-morality` 33, `v3-creed` 23, `v4-prophet-sects` 17, `v5a-hadith` 29, `v5b-hadith` 29, `v6a-quran` 34, `v6b-quran` 34) — adding KPI `facts` strips, `compare`/`steps` visuals, verbatim `quotes`, structured `"Heading: body"` `.pcard` proof points, and tactical Playbook labels (`who`, `forkTitle`, `forkSub`, `optWho`) derived strictly from each card's existing verified content (0 warnings, 0 invented claims, 100% of existing branches/shots preserved).
 1. **Flagship Tactical Playbook — `No Trinity before Nicaea` (`topics/no-trinity-before-nicaea.js`, 14 nodes, 30 verified WebP scans & HD YouTube slides):**
