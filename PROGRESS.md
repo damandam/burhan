@@ -1,11 +1,16 @@
 # Burhān — overnight fill log
 
-## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Uncovered Blocks 4–5, IA Primary Scans & Playbook Depth Upgrades
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 117 topic scripts):**
-- **563 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
-- **Visual proof richness:** `withFacts: 498`, `withQuotes: 455`, `withVisual: 456`, **`cardsWithShots: 111`**, **`totalShots: 465`**
+## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Uncovered Blocks 4–8, IA Primary Scans & Playbook Depth Upgrades
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 119 topic scripts):**
+- **575 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
+- **Visual proof richness:** `withFacts: 511`, `withQuotes: 468`, `withVisual: 468`, **`cardsWithShots: 128`**, **`totalShots: 500`**
 
 **Completed in Round 6:**
+0g. **Block 8 — Final 21 Substantive Uncovered Deenresponds Channels (`topics/dr-batch8-quran.js` + `topics/dr-batch8-dilemma.js`, 35 WebP scans `shots/dr8-*.webp`):**
+   - **12 NEW Tactical Playbook cards:**
+     - Qurʾān/History/Creed (6): `ad-and-thamud-archaeology` (2 scans), `no-more-khosrau-prophecy` (1 scan), `talut-gideon-river-test` (2 scans), `joseph-and-knives-12-31` (2 scans), `ibn-taymiyyah-misquotations` (2 scans), `zakariya-muteness-sign`.
+     - Dilemma/NT/Prophecies (6): `quran-3-7-muhkam-mutashabih`, `quran-3-78-scripture-distortion` (2 scans), `prophet-lawgiving-authority` (2 scans), `wine-and-jesus-intoxicants` (2 scans), `david-and-goliath-who-killed-him` (2 scans), `prophecies-in-q-source` (2 scans).
+   - **9 `add()` enrichments:** `t-surah-5116-refers-to-the-trinity` (2 scans), `c-maria-schwester-harun-aaron-imran` (2 scans), `dhul-qarnayn-wall`, `d-dr-jesus-never-said-ahmed` (2 scans), `d-dr-islamic-dilemma` (2 scans), `c-paulus-islamischer-prophet` (2 scans), `pericope-adulterae` (2 scans), `t-isaiah-53-islamic-prophecy` (2 scans), `d-dr-deuteronomy-33-2` (2 scans, Rabbi Bachye & Saadiah Gaon on Paran).
 0f. **Block 7 — Thin-Card Tactical Playbook Depth Upgrade (`topics/playbook-depth-upgrade.js`, 20 thinnest single-node cards upgraded into multi-branch Tactical Playbooks):**
    - Upgraded the 20 thinnest 1-node cards (including `bathing-together` & `abu-bakr-pokes-aisha` which previously had `more.p: []`, plus `council-of-trent-marriage-age`, `umar-umm-kulthum`, `ahl-al-kitab-marriage-2-221-5-5`, `khalid-banu-jadhima`, `asma-bint-marwan`, `aisha-mushaf-first-rows`, `adam-names-2-31`, `asa-perhaps`, `or-37-147`, `water-stores-15-22`, `ladder-to-heaven-6-35`, `bees-eat-fruit-16-69`, `d-dr-adam-and-moses-predestination`, `d-dr-the-prophet-sitting-on-the-arsh`, `semen-and-the-throne-report`, `seeking-forgiveness-4-64`, `t-know`, `t-he`) with 3 numbered `"01 · / 02 · / 03 ·"` proof points and **40 new `Watch out · if they say` follow-up counter-trap branches** (2 per card), preserving 100% of existing credits/scans/facts.
 0e. **Block 6 — IA Primary Scans, Forum Threads & Final AV1 Media Channel (`topics/block6-ia-av-scans.js`, 30 WebP scans):**
