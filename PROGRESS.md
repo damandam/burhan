@@ -1,11 +1,21 @@
 # Burhān — overnight fill log
 
-## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads & Tactical Playbooks
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 111 topic scripts):**
-- **541 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
-- **Visual proof richness:** `withFacts: 472`, `withQuotes: 422`, `withVisual: 429`, **`cardsWithShots: 81`**, **`totalShots: 379`**
+## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Uncovered Block 4 & Tactical Playbooks
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 113 topic scripts):**
+- **548 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
+- **Visual proof richness:** `withFacts: 481`, `withQuotes: 432`, `withVisual: 437`, **`cardsWithShots: 90`**, **`totalShots: 405`**
 
 **Completed in Round 6:**
+0c. **Block 4 — 20 Uncovered Deenresponds Channels (`topics/dr-uncovered-islam.js` + `topics/dr-uncovered-christ.js`, 26 WebP scans `shots/dr-*.webp`):**
+   - **7 NEW Tactical Playbook cards:**
+     - `islam/hadith/law/fly-wing-hadith` (2 scans, *waḥy* vs. prophetic medicine *al-ṭibb* & palm-pollination *ḥadīth* chains)
+     - `islam/creed/attributes/allah-hands-limbs-parts` (4 scans, merges `#does-allah-have-parts`, `#does-allah-have-limbs`, `#does-allah-have-hands` — Atharī *bilā kayf* & Ibn Khuzaymah *Kitāb al-Tawḥīd*)
+     - `christianity/trinity/angel-of-the-lord` (*malʾakh* / *shaliaḥ* biblical agency Playbook)
+     - `christianity/trinity/genesis-1-26-let-us-make` (plural of majesty/deliberation & singular *wayyiḇrā*)
+     - `christianity/trinity/genesis-18-three-visitors` (2 scans, Exod 33:20 & Gen 18:22–23)
+     - `christianity/trinity/isaiah-48-16-trinity` (Hebrew syntax *šəlāḥanī wə-rūḥō* & speaker shift)
+     - `christianity/jesus/proof-texts/psalm-22-pierced-hands-and-feet` (2 scans, Masoretic *kaʾărī* vs. Nahal Hever & LXX)
+   - **11 `add()` enrichments:** `tailbone-coccyx-hadith` (2 scans), `heaven-or-earth-created-first`, `c-sonne-geht-im-quellen-meer-unter` (2 scans, 5-branch *isnād* split), `bones-then-flesh-23-14` (2 scans, StatPearls osteogenesis + Galenic/Judaic studies), `c-kamel-urin` (2 scans), `d-dr-matthew` (Isa 7:14 *ʿalmāh*), `d-dr-isaiah-9` (Hezekiah/theophoric names), `christianity/bible/additions` (Comma Johanneum 1 John 5:7 + Mark 16:9–20 longer ending, 4 scans), `t-jesus-does-not-know-the-hour` (Matt 24:36 omission, 2 scans), `d-dr-mark-10-18` (Matt 19:17 redaction, 2 scans).
 0a. **Block 3 — Overlooked IA Text-Channel Sub-Threads (`topics/ia-subthreads.js`, 8 sub-threads, 15 WebP scans `shots/ia-sub-*.webp`):**
    - **2 NEW Tactical Playbook cards:** `christianity/jesus/proof-texts/john-8-58-before-abraham-i-am` (2 scans, LXX Exod 3:14 *ho ōn* vs. John 9:9 *egō eimi* & pre-existent Wisdom/Messiah traps) & `christianity/jesus/proof-texts/john-10-30-i-and-the-father-are-one` (2 scans, neuter *hen* vs. masculine *heis*, John 17:11/21–22 & 1 Cor 3:8).
    - **6 enrichments (`add()`):** `christianity/cross` (crucifixion Gospel contradictions, 2 scans), `islam/quran/history/pharaoh-crucifixion` (crucifixion in Moses's era, 1 scan), `islam/proofs/d-ia-truthfulness-of-the-prophet` (Jan 27, 632 CE NASA-verified solar eclipse on Ibrāhīm's death), `islam/morality/war` (5 Judeo-Christian testimonies praising Muslim rule, 2 scans), `islam/morality/d-ia-apostasy-and-blasphemy-laws` (Church Fathers + Deuterocanon 1 Maccabees, 3 scans), `islam/morality/slavery` (humane treatment of war captives, 3 scans).
