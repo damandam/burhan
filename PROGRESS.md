@@ -1,11 +1,16 @@
 # Burhān — overnight fill log
 
-## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Uncovered Blocks 4–5 & Tactical Playbooks
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 115 topic scripts):**
-- **562 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
-- **Visual proof richness:** `withFacts: 495`, `withQuotes: 447`, `withVisual: 451`, **`cardsWithShots: 104`**, **`totalShots: 435`**
+## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Uncovered Blocks 4–5, IA Primary Scans & Playbook Depth Upgrades
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 117 topic scripts):**
+- **563 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
+- **Visual proof richness:** `withFacts: 498`, `withQuotes: 455`, `withVisual: 456`, **`cardsWithShots: 111`**, **`totalShots: 465`**
 
 **Completed in Round 6:**
+0f. **Block 7 — Thin-Card Tactical Playbook Depth Upgrade (`topics/playbook-depth-upgrade.js`, 20 thinnest single-node cards upgraded into multi-branch Tactical Playbooks):**
+   - Upgraded the 20 thinnest 1-node cards (including `bathing-together` & `abu-bakr-pokes-aisha` which previously had `more.p: []`, plus `council-of-trent-marriage-age`, `umar-umm-kulthum`, `ahl-al-kitab-marriage-2-221-5-5`, `khalid-banu-jadhima`, `asma-bint-marwan`, `aisha-mushaf-first-rows`, `adam-names-2-31`, `asa-perhaps`, `or-37-147`, `water-stores-15-22`, `ladder-to-heaven-6-35`, `bees-eat-fruit-16-69`, `d-dr-adam-and-moses-predestination`, `d-dr-the-prophet-sitting-on-the-arsh`, `semen-and-the-throne-report`, `seeking-forgiveness-4-64`, `t-know`, `t-he`) with 3 numbered `"01 · / 02 · / 03 ·"` proof points and **40 new `Watch out · if they say` follow-up counter-trap branches** (2 per card), preserving 100% of existing credits/scans/facts.
+0e. **Block 6 — IA Primary Scans, Forum Threads & Final AV1 Media Channel (`topics/block6-ia-av-scans.js`, 30 WebP scans):**
+   - **1 NEW Tactical Playbook card:** `christianity/bible/proverbs-16-4-created-for-evil` (AV1 `#hölle-schicksal` + `av-hoelle-1.webp`, completing **100% of all Averroes 1 channels**; `#andere-gesellschaften` verified already covered in `aisha` via `sasanian-age-nine.png`).
+   - **7 `add()` primary-scan enrichments:** `d-ia-satanic-verses` (6 scans `ia-satanic-1..6.webp`), `d-ia-flat-earth` (6 scans `ia-flatearth-1..6.webp` incl. Ibn ʿAbbās spindle whorl *falka*), `t-nasa-prove-the-reliability-of-the-hadith` (3 scans), `t-ah-a-di-th-came-200-years-after-the-prophet` (5 scans), `t-a-comprehensive-proving-hadith-are-reliable` (3 scans), `t-earliest-christians-believed-in-a-corrupted-torah` (2 scans), `islam/morality/war` (4 scans from `IA #response-library › Islam and jihad`).
 0d. **Block 5 — 20 More Uncovered Deenresponds Channels (`topics/dr-batch5-islam.js` + `topics/dr-batch5-christ.js`, 30 WebP scans `shots/dr5-*.webp`):**
    - **14 NEW Tactical Playbook cards:**
      - Islam/Science/Hadith (6): `dominant-liquid-resemblance`, `no-contagion-hadith` (2 scans), `seven-heavens-and-seven-earths` (3 scans visually extracted), `five-keys-of-the-unseen` (2 scans), `sun-orbit-and-destination` (2 scans), `david-and-chainmail` (2 scans; fixed `1 Sam 17:5` Goliath attribution & Galileo Saturn-rings note).
