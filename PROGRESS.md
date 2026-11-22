@@ -1,13 +1,17 @@
 # Burhān — overnight fill log
 
-## ROUND 6 (2026-11-22) — Git Deploy Workflow, AV1 Media Block 1 & Tactical Playbook Engine
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 100 topic scripts):**
-- **532 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files**
-- **Visual proof richness:** `withFacts: 240`, `withQuotes: 229`, `withVisual: 153`, **`cardsWithShots: 62`**, **`totalShots: 313`**
+## ROUND 6 (2026-11-22) — Git Deploy Workflow, AV1 Media Block 1 & Tactical Playbooks
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 101 topic scripts):**
+- **533 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files**
+- **Visual proof richness:** `withFacts: 241`, `withQuotes: 230`, `withVisual: 154`, **`cardsWithShots: 68`**, **`totalShots: 348`**
 
-**Completed in Round 6 (Block 1 + Gospel Authorship Playbook):**
-1. **Tactical Playbook Labels (`index.html`):** Non-invasive optional label support (`who`, `theyWho`, `forkTitle`, `forkSub`, `optWho`, `optLabel`) + proactive step search indexing — enables proactive `Step 1 → Step 2 → Choose Angle A/B/C/D → Watch out · if they say X → Counter & push on` flows without changing visual design or animations.
-2. **Block 1 — AV1 Media-Only Islam/Qurʾān Channels (`topics/av1-media-islam.js`, 8 channels, 7 PDFs → 14 JPEGs + 14 WebP scans):**
+**Completed in Round 6:**
+1. **Flagship Tactical Playbook — `No Trinity before Nicaea` (`topics/no-trinity-before-nicaea.js`, 14 nodes, 30 verified WebP scans & HD YouTube slides):**
+   - **Sources merged:** DawahWise 5h42m livestream (`youtube.com/watch?v=WJ_q8owKJKA` — Muslim Orthodox & Deen Responds, 20 chapters + Q&A + 7 cropped HD slides `yt-nicaea-*.webp`), IA `#🏛️・church-fathers` (incl. previously missing archived threads `Tertullian Of Carthage` & `Theophilus Of Antioch` + `Origen`, `Hippolytus`, `Lactantius`, 11 scans), and newly uncovered Deenresponds channels (`#what-is-the-trinity`, `#holy-spirit-is-a-power-of-god`, `#tatian`, `#athenagoras`, `#novation`, `#clement-of-alexandria`, `#dionysius-of-alexandria`, `#eusebius-of-caesaeria`, 12 scans).
+   - **Proactive Playbook flow:** `Opening move 01` (Nicene/Constantinopolitan criteria) → `Lock in the historical timeline 02` → **4 Tactical Lines of Attack**: **Angle A** (1st & early 2nd c.: Clement of Rome, Ebionites, Ignatius, Irenaeus, Joel Marcus on Mark 10:18), **Angle B** (2nd-c. Greek Apologists: Justin Martyr, Theophilus, Tatian, Athenagoras), **Angle C** (3rd-c. Giants: Tertullian, Hippolytus, Novatian, Clement of Alexandria, Origen, Dionysius, Lactantius, Eusebius), **Angle D** (Holy Spirit, Antioch 268 CE, Nicaea 325 vs. Constantinople 381 & Qurʾānic *tawḥīd*) — each with nested `Watch out · if they say…` counter-traps.
+   - **Cross-attachments & fixes:** Attached primary scans to 5 previously 0-shot cards (`t-clement-of-rome`, `t-origen-of-alexandria`, `t-hippolytus-of-rome`, `t-lucius-cæcilius-firmianus-lactantius`, `d-dr-mark-10-18`); corrected Clement of Alexandria scan citation (*Paedagogus* 1.8–9 vs. *Stromata* 4 & 6); fixed transcript/slide typos (`novation` → Novatian, `heteras theos` → *heteros theos*, `De Principis` → *De Principiis*, `Adnote` → Agnoetae, `Paul of Samasta` → Paul of Samosata, `yt-nicaea-justin2.webp` slide heading clarification).
+2. **Tactical Playbook Labels (`index.html`):** Non-invasive optional label support (`who`, `theyWho`, `forkTitle`, `forkSub`, `optWho`, `optLabel`) + proactive step search indexing — enables proactive `Step 1 → Step 2 → Choose Angle A/B/C/D → Watch out · if they say X → Counter & push on` flows without changing visual design or animations.
+3. **Block 1 — AV1 Media-Only Islam/Qurʾān Channels (`topics/av1-media-islam.js`, 8 channels, 7 PDFs → 14 JPEGs + 14 WebP scans):**
    - **2 new cards:** `islam/quran/preservation/d-ia-common-claims/ibn-masud-mushaf` (merges `#musnaf-masud-fehlt-2-suren` + `#ibn-masud-versteckt-mansukript`, 4 PDF pages) & `islam/quran/d-ia-alleged-contradictions/heaven-or-earth-created-first` (`#himmel-oder-erde-zuerst-erschaffen`, Q 2:29/41:9–12 vs. 79:27–33, 2 PDF pages).
    - **3 PDF enrichments (`add()`):** `d-dr-defense-of-qiraat` (`ok_2.pdf` + Qirāʾāt dossier, 4 PDF pages), `d-dr-how-many-days-for-creation` (2 PDF pages), `d-dr-islamic-dilemma` (`#alles` 24k-char master dossier, 2 PDF pages).
    - **2 WebP scan batches (`attachShots()`):** `c-allahs-thron-knirchen` (`thron-1..8.webp`) & `d-dr-bukhari-preservation-of-torah` (`bukh-torah-1..6.webp`).
