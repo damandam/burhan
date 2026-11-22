@@ -1,11 +1,19 @@
 # Burhān — overnight fill log
 
 ## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Blocks 4–8, AV2 Waves 1–3 & Playbook Depth Upgrades
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 123 topic scripts):**
-- **604 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
-- **Visual proof richness:** `withFacts: 540`, `withQuotes: 494`, `withVisual: 499`, **`cardsWithShots: 128`**, **`totalShots: 500`**
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 124 topic scripts):**
+- **609 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
+- **Visual proof richness:** `withFacts: 545`, `withQuotes: 499`, `withVisual: 504`, **`cardsWithShots: 128`**, **`totalShots: 500`**
 
 **Completed in Round 6:**
+0k. **Block 11B — Averroes 2 Wave 3 Patristic & Scholastic Admissions (`topics/av2-wave3-patristic.js`, 9 German dossiers translated & synthesized into 5 Playbooks + 2 enrichments):**
+   - **5 NEW Tactical Debate Playbook cards:**
+     - `christianity/church/augustine-church-authority-and-synoptics` (Augustine *Contra Epistulam Manichaei* 5.6 circular church authority & *De Consensu Evangelistarum* 4.10.11 admitting Matthew, Mark & Luke do not teach Christ's divine pre-existence)
+     - `christianity/church/justin-martyr-pagan-sons-of-jupiter` (Justin Martyr *1 Apology* 21–22 & 54 equating Jesus with Perseus, Hermes, Asclepius, Dionysus & Bellerophon)
+     - `christianity/trinity/aquinas-trinity-unprovable-by-reason` (Thomas Aquinas *Summa Theologiae* I q.32 a.1 — natural reason proves only One God/*Tawḥīd* and attempting to prove the Trinity by reason exposes Christianity to *derisus infidelium*)
+     - `christianity/cross/aquinas-incarnation-not-necessary-for-forgiveness` (Thomas Aquinas *Summa Theologiae* III q.1 a.2 & q.46 a.2–3 dismantling Anselm's strict necessity claim)
+     - `christianity/church/john-chrysostom-christology-subordination` (John Chrysostom *Homily 3 on Titus* & *Homily 26 on 1 Corinthians* 11:3)
+   - **2 `add()` enrichments:** `church-fathers-on-alteration` (Jerome *Commentary on Matthew* 13:35 on 3-stage deliberate scribal alteration from Asaph to Isaiah) & `aphrahat-persian-sage-christology` (Aphrahat *Demonstration* 17 §3–8 on *taʿẓīm* vs. *ʿibādah*).
 0j. **Block 11A — Averroes 2 Wave 3 Complete 1st- & 2nd-Century AH Qurʾānic Manuscript Catalog (`topics/av2-wave3-mss.js`, all 29 AV2 manuscript channels synthesized into 7 comprehensive Playbooks):**
    - **7 NEW Tactical Debate Playbook cards under `islam/quran/preservation/`:**
      - `hijazi-orthography-and-codex-parisino` (PERF 558 22 AH / 643 CE, Codex Parisino-Petropolitanus BnF Arabe 328ab, Arabe 328c + Birmingham Mingana 1572a C14 568–645 CE, Arabe 331, Arabe 330g, Arabe 6140a)
