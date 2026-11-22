@@ -1,11 +1,16 @@
 # Burhān — overnight fill log
 
-## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Uncovered Block 4 & Tactical Playbooks
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 113 topic scripts):**
-- **548 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
-- **Visual proof richness:** `withFacts: 481`, `withQuotes: 432`, `withVisual: 437`, **`cardsWithShots: 90`**, **`totalShots: 405`**
+## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Uncovered Blocks 4–5 & Tactical Playbooks
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 115 topic scripts):**
+- **562 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
+- **Visual proof richness:** `withFacts: 495`, `withQuotes: 447`, `withVisual: 451`, **`cardsWithShots: 104`**, **`totalShots: 435`**
 
 **Completed in Round 6:**
+0d. **Block 5 — 20 More Uncovered Deenresponds Channels (`topics/dr-batch5-islam.js` + `topics/dr-batch5-christ.js`, 30 WebP scans `shots/dr5-*.webp`):**
+   - **14 NEW Tactical Playbook cards:**
+     - Islam/Science/Hadith (6): `dominant-liquid-resemblance`, `no-contagion-hadith` (2 scans), `seven-heavens-and-seven-earths` (3 scans visually extracted), `five-keys-of-the-unseen` (2 scans), `sun-orbit-and-destination` (2 scans), `david-and-chainmail` (2 scans; fixed `1 Sam 17:5` Goliath attribution & Galileo Saturn-rings note).
+     - Christianity/OT/NT/Contradictions (8): `gospel-of-thomas-canon` (2 scans), `galatians-1-8-angel-from-heaven` (2 scans), `isaiah-63-holy-spirit` (fixed `Exod 33:14`), `zechariah-12-10-pierced` (2 scans), `genesis-3-15-protoevangelium`, `prophets-vs-pentateuch-sacrifices` (2 scans), `paul-vs-david-and-ezekiel-vs-samuel` (4 scans), `jesus-contradicts-deuteronomy` (2 scans).
+   - **5 `add()` enrichments:** `mountains-as-pegs`, `t-evolution` (1 scan), `ajwa-dates-black-seed` (2 scans), `angel-of-the-lord` (Exodus 23:20–21), `lost-books-of-the-bible` (2 scans, Chrysostom *Homily 9 on Matthew* §6).
 0c. **Block 4 — 20 Uncovered Deenresponds Channels (`topics/dr-uncovered-islam.js` + `topics/dr-uncovered-christ.js`, 26 WebP scans `shots/dr-*.webp`):**
    - **7 NEW Tactical Playbook cards:**
      - `islam/hadith/law/fly-wing-hadith` (2 scans, *waḥy* vs. prophetic medicine *al-ṭibb* & palm-pollination *ḥadīth* chains)
