@@ -1,11 +1,16 @@
 # Burhān — overnight fill log
 
-## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Uncovered Blocks 4–8, IA Primary Scans & Playbook Depth Upgrades
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 119 topic scripts):**
-- **575 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
-- **Visual proof richness:** `withFacts: 511`, `withQuotes: 468`, `withVisual: 468`, **`cardsWithShots: 128`**, **`totalShots: 500`**
+## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Blocks 4–8, AV2 Wave 1 & Playbook Depth Upgrades
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 121 topic scripts):**
+- **589 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
+- **Visual proof richness:** `withFacts: 525`, `withQuotes: 480`, `withVisual: 483`, **`cardsWithShots: 128`**, **`totalShots: 500`**
 
 **Completed in Round 6:**
+0h. **Block 9 — Averroes 2 Wave 1 Flagship Islam & Christianity Playbooks (`topics/av2-wave1-islam.js` + `topics/av2-wave1-christ.js`, 17 German dossiers translated & synthesized into English):**
+   - **14 NEW Tactical Debate Playbook cards:**
+     - Islam/Women/Hadith/Creed (10): `woman-created-from-rib`, `women-as-rulers-hadith`, `bad-omen-in-women-hadith`, `wifes-right-to-intimacy`, `immortal-youths-in-paradise` (*wildān mukhalladūn*), `satan-passes-wind-adhan`, `aisha-lord-hastens-desires`, `abrahams-three-lies-hadith`, `did-the-prophet-see-allah`, `calling-god-father-vs-yhwh`.
+     - Christianity/Canon/Gospels (4): `mark-6-5-jesus-could-not-do-miracles`, `gospel-of-peter-crucifixion`, `baptism-paradox-salvation`, `muratorian-canon-fragment`.
+   - **3 `add()` enrichments:** `d-dr-jesus-is-the-word-and-spirit-of-allah` (Q 4:171 & Q 45:13), `no-trinity-before-nicaea` (Tertullian *Against Praxeas* ch. 3 majority recoil), `t-ignatius-of-antioch` (Short/Middle/Long Ignatian recensions).
 0g. **Block 8 — Final 21 Substantive Uncovered Deenresponds Channels (`topics/dr-batch8-quran.js` + `topics/dr-batch8-dilemma.js`, 35 WebP scans `shots/dr8-*.webp`):**
    - **12 NEW Tactical Playbook cards:**
      - Qurʾān/History/Creed (6): `ad-and-thamud-archaeology` (2 scans), `no-more-khosrau-prophecy` (1 scan), `talut-gideon-river-test` (2 scans), `joseph-and-knives-12-31` (2 scans), `ibn-taymiyyah-misquotations` (2 scans), `zakariya-muteness-sign`.
