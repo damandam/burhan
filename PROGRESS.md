@@ -1,11 +1,23 @@
 # Burhān — overnight fill log
 
-## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Blocks 4–8, AV2 Wave 1 & Playbook Depth Upgrades
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 121 topic scripts):**
-- **589 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
-- **Visual proof richness:** `withFacts: 525`, `withQuotes: 480`, `withVisual: 483`, **`cardsWithShots: 128`**, **`totalShots: 500`**
+## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Blocks 1–2, IA Sub-Threads, DR Blocks 4–8, AV2 Waves 1–3 & Playbook Depth Upgrades
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 123 topic scripts):**
+- **604 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
+- **Visual proof richness:** `withFacts: 540`, `withQuotes: 494`, `withVisual: 499`, **`cardsWithShots: 128`**, **`totalShots: 500`**
 
 **Completed in Round 6:**
+0j. **Block 11A — Averroes 2 Wave 3 Complete 1st- & 2nd-Century AH Qurʾānic Manuscript Catalog (`topics/av2-wave3-mss.js`, all 29 AV2 manuscript channels synthesized into 7 comprehensive Playbooks):**
+   - **7 NEW Tactical Debate Playbook cards under `islam/quran/preservation/`:**
+     - `hijazi-orthography-and-codex-parisino` (PERF 558 22 AH / 643 CE, Codex Parisino-Petropolitanus BnF Arabe 328ab, Arabe 328c + Birmingham Mingana 1572a C14 568–645 CE, Arabe 331, Arabe 330g, Arabe 6140a)
+     - `sanaa-palimpsest-and-mingana-palimpsest` (DAM 01-27.1 C14 606–649 CE, DAM 01-29.1 C14 633–665 CE, Mingana-Lewis Palimpsest)
+     - `codex-tubingen-and-early-papyri` (Tübingen Ma VI 165 C14 649–675 CE, P. Michaélidès No. 32, Vienna A. Perg. 2, Codex Auctionalis)
+     - `umayyad-codices-damascus-fustat` (Codex Is 1615 I C14 591–643 CE, Codex MS Qāf 47 C14 606–652 CE, Great Umayyad Qurʾān DAM 20-33.1, TIEM ŞE 321 Damascus, Marcel 13 Fustat, Dutton Umayyad Fragment C14 644–675 CE)
+     - `st-petersburg-marcel-codices` (Marcel 5 C14 652–694 CE, Marcel 16/17, Marcel 18/2, Marcel 19, St. Petersburg E-20 / Katta-Langar)
+     - `codex-mashhad-and-ali-manuscripts` (Astan Quds Mashhad MSS 18 & 4116 covering >90% of the Qurʾān C14 660–772 CE, Ṣanʿāʾ ʿAlī b. Abī Ṭālib Muṣḥaf 275 fols.)
+     - `uthmanic-codices-istanbul-tashkent-cairo` (Topkapı Palace 408 fols., Cairo al-Ḥusayn 1,087 fols., Tashkent/Samarkand Muṣḥaf)
+0i. **Block 10B — Averroes 2 Wave 2 Flagship Christianity & Canon Playbooks (`topics/av2-wave2-christ.js`, 14 German dossiers translated & synthesized into English):**
+   - **8 NEW Tactical Debate Playbook cards:** `daniel-13-susanna-historical-errors` (Julius Africanus to Origen), `jesus-amazed-and-marveled` (*ethaumasen* in Matt 8:10 / Luke 7:9 / Mark 6:6), `cadaver-synod-papal-infallibility` (897 CE Pope Stephen VI vs. Formosus), `ahaziah-age-22-or-42` (2 Kgs 8:26 vs. 2 Chr 22:2), `nt-quotes-nonexistent-ot-verses` (Matt 2:23, John 7:38, Jas 4:5, Eph 5:14, Jude 14–15), `gospel-of-the-hebrews-patristic`, `epistle-to-the-hebrews-authorship`, `aphrahat-persian-sage-christology` (*Demonstration* 17).
+   - **4 `add()` enrichments:** `no-trinity-before-nicaea` (Ebionites), `christianity/bible/authorship` (patristic & internal proof Evangelists were not eyewitnesses), `gospel-of-peter-crucifixion`, `t-origen-of-alexandria` (Origen *De Oratione* 15.1–2 forbidding prayer *proseuchē* to Christ!).
 0h. **Block 9 — Averroes 2 Wave 1 Flagship Islam & Christianity Playbooks (`topics/av2-wave1-islam.js` + `topics/av2-wave1-christ.js`, 17 German dossiers translated & synthesized into English):**
    - **14 NEW Tactical Debate Playbook cards:**
      - Islam/Women/Hadith/Creed (10): `woman-created-from-rib`, `women-as-rulers-hadith`, `bad-omen-in-women-hadith`, `wifes-right-to-intimacy`, `immortal-youths-in-paradise` (*wildān mukhalladūn*), `satan-passes-wind-adhan`, `aisha-lord-hastens-desires`, `abrahams-three-lies-hadith`, `did-the-prophet-see-allah`, `calling-god-father-vs-yhwh`.
