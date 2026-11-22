@@ -1,11 +1,13 @@
 # Burhān — overnight fill log
 
-## ROUND 6 (2026-11-22) — Git Deploy Workflow, AV1 Media Block 1 & Tactical Playbooks
-**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 101 topic scripts):**
-- **533 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files**
-- **Visual proof richness:** `withFacts: 241`, `withQuotes: 230`, `withVisual: 154`, **`cardsWithShots: 68`**, **`totalShots: 348`**
+## ROUND 6 (2026-11-22) — Git Deploy Workflow, 100% Visual Audit, AV1 Block 1 & Tactical Playbooks
+**Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 109 topic scripts):**
+- **533 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**
+- **Visual proof richness:** `withFacts: 461`, `withQuotes: 400+`, `withVisual: 420+`, **`cardsWithShots: 68`**, **`totalShots: 348`**
 
 **Completed in Round 6:**
+0. **100% Site-Wide Visual & Playbook Audit (`topics/visual-audit-1-misc.js` through `visual-audit-6b-quran.js` — 8 batches, ALL 220 remaining cards upgraded!):**
+   - Non-destructive `up(origKey, patch)` across every remaining card lacking `facts`/`visual`/`quotes` (`v1-misc` 21, `v2-morality` 33, `v3-creed` 23, `v4-prophet-sects` 17, `v5a-hadith` 29, `v5b-hadith` 29, `v6a-quran` 34, `v6b-quran` 34) — adding KPI `facts` strips, `compare`/`steps` visuals, verbatim `quotes`, structured `"Heading: body"` `.pcard` proof points, and tactical Playbook labels (`who`, `forkTitle`, `forkSub`, `optWho`) derived strictly from each card's existing verified content (0 warnings, 0 invented claims, 100% of existing branches/shots preserved).
 1. **Flagship Tactical Playbook — `No Trinity before Nicaea` (`topics/no-trinity-before-nicaea.js`, 14 nodes, 30 verified WebP scans & HD YouTube slides):**
    - **Sources merged:** DawahWise 5h42m livestream (`youtube.com/watch?v=WJ_q8owKJKA` — Muslim Orthodox & Deen Responds, 20 chapters + Q&A + 7 cropped HD slides `yt-nicaea-*.webp`), IA `#🏛️・church-fathers` (incl. previously missing archived threads `Tertullian Of Carthage` & `Theophilus Of Antioch` + `Origen`, `Hippolytus`, `Lactantius`, 11 scans), and newly uncovered Deenresponds channels (`#what-is-the-trinity`, `#holy-spirit-is-a-power-of-god`, `#tatian`, `#athenagoras`, `#novation`, `#clement-of-alexandria`, `#dionysius-of-alexandria`, `#eusebius-of-caesaeria`, 12 scans).
    - **Proactive Playbook flow:** `Opening move 01` (Nicene/Constantinopolitan criteria) → `Lock in the historical timeline 02` → **4 Tactical Lines of Attack**: **Angle A** (1st & early 2nd c.: Clement of Rome, Ebionites, Ignatius, Irenaeus, Joel Marcus on Mark 10:18), **Angle B** (2nd-c. Greek Apologists: Justin Martyr, Theophilus, Tatian, Athenagoras), **Angle C** (3rd-c. Giants: Tertullian, Hippolytus, Novatian, Clement of Alexandria, Origen, Dionysius, Lactantius, Eusebius), **Angle D** (Holy Spirit, Antioch 268 CE, Nicaea 325 vs. Constantinople 381 & Qurʾānic *tawḥīd*) — each with nested `Watch out · if they say…` counter-traps.
