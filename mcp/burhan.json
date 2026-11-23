@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "burhan": {
+      "command": "/opt/homebrew/bin/python3",
+      "args": ["-I", "/Users/noelabedin/Documents/burhan/mcp/burhan_server.py"],
+      "env": {"BURHAN_URL": "http://127.0.0.1:5179"}
+    }
+  }
+}
