@@ -774,12 +774,30 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--port', type=int, default=5179)
     ap.add_argument('--host', type=str, default='127.0.0.1')
+    ap.add_argument('--restart', action='store_true', help='Stop any existing server on the port and start a fresh one')
     args = ap.parse_args()
     PORT['n'] = args.port
     # Warm up the Burhān card index on startup
     db = mcp_srv.load_db()
+    if args.restart:
+        try:
+            pids = subprocess.run(['lsof', '-ti', f':{args.port}'], capture_output=True, text=True).stdout.split()
+            me = str(os.getpid())
+            for pid in pids:
+                if pid != me:
+                    subprocess.run(['kill', '-9', pid], stderr=subprocess.DEVNULL)
+            time.sleep(0.4)
+        except Exception:
+            pass
+    try:
+        srv = http.server.ThreadingHTTPServer((args.host, args.port), functools.partial(Handler, directory=ROOT))
+    except OSError as e:
+        if getattr(e, 'errno', None) in (48, 98):  # Address already in use
+            print(f"✓ Burhān Helper Server läuft bereits im Hintergrund auf http://{args.host}:{args.port} ({len(db['cards'])} Karten aktiv)!", flush=True)
+            print("  (Tipp: Nutze 'python3 server.py --restart', falls du ihn neu starten willst.)", flush=True)
+            return
+        raise
     print(f"Burhān Helper Server ready ({len(db['cards'])} cards indexed): http://{args.host}:{args.port}", flush=True)
-    srv = http.server.ThreadingHTTPServer((args.host, args.port), functools.partial(Handler, directory=ROOT))
     srv.serve_forever()
 
 
