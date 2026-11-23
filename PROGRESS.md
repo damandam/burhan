@@ -361,3 +361,11 @@ Started 2026-11-18 evening. User is away; fill topics one by one, keep the site 
 - Main node: all 7 premises, 2 interim conclusions, main conclusion (translated from Noel's German text); steps visual (6 steps) + facts grid.
 - 4 replies: (1) "one-person God impossible" → burden of proof + Aquinas ST I q.32 a.1 (Trinity not knowable by reason) + Isa 45:5 / Deut 6:4; (2) Richard of St. Victor love argument → why stop at three, dependence; (3) "persons not separate" → real distinction vs modalism; (4) "Ockham is only epistemic" → two strands.
 - Verified: card loads, search finds it, drawer + steps visual render, 375 px no overflow, no console errors.
+
+## 2026-11-23 · Trinity modal argument v2 (hardened, Noel's own)
+- `topics/trinity-modal.js` rebuilt. Card now has 7 replies, 13 answers, 2 forks.
+- Part I (main node): hardened P1–P7 (P3 full attribute list, P4 asymmetry of subtraction A vs A+X, P7 transparent perfections vs Kripke natural kinds), IC1, IC2, main conclusion with epistemic closure; 7-step visual.
+- Part II (fork "Our model avoids your argument"): Ibn Taymiyya nominalism (fī al-adhhān / fī al-khārij, alfāẓ mujmala, tu-quoque immunity) + case split with 5 sub-branches: A Thomism, B1 social Trinity (+ tamānuʿ 21:22), B2 Brower–Rea, B3 relative identity, C one subject = modalism. Steps visual of the classes + Part IV debate matrix as facts grid (7 moves → knockouts).
+- Part III replies: P7/modal scepticism + triangle + quaternity reductio; love argument (Hippolytus Ref. VI.29 vs X.32, Aquinas ST I q.32 a.1 ad 2, q.20 a.1, q.37 a.1, regress, aṣ-Ṣamad); self-knowledge (De Anima III.4, Maimonides Guide I.68, Augustine DT XV.22–23); aseity a se / ab alio; revelation (Vatican I Dei Filius, John 17:3); Ockham two strands.
+- Fixes vs Noel's text: "Plantinga" → Cornelius Plantinga Jr. (not Alvin); Hippolytus "S. 165" → Refutatio VI.29; dropped "Mawson 2025" (unverified) and the private Gemini notebook links; dropped the "stress test opponent conceded" line (not a source).
+- Verified: all nodes in DATA, drawers + matrix render, 375 px no overflow, no console errors.
