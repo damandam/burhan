@@ -68,23 +68,42 @@ TOOL_LABEL = {
 
 
 def env_with_paths():
-    return dict(
-        os.environ,
-        PATH=os.environ.get('PATH', '') + f":{os.path.expanduser('~/.local/bin')}:{os.path.expanduser('~/.npm-global/bin')}:/opt/homebrew/bin:/usr/local/bin",
-    )
+    sep = os.pathsep
+    extra = [os.path.expanduser('~/.local/bin'), os.path.expanduser('~/.npm-global/bin')]
+    if os.name == 'nt':
+        appdata = os.environ.get('APPDATA', '')
+        localapp = os.environ.get('LOCALAPPDATA', '')
+        if appdata:
+            extra.append(os.path.join(appdata, 'npm'))
+        if localapp:
+            extra.append(os.path.join(localapp, 'Programs', 'claude'))
+    else:
+        extra += ['/opt/homebrew/bin', '/usr/local/bin']
+    return dict(os.environ, PATH=os.environ.get('PATH', '') + sep + sep.join(extra))
 
 
 def find_bin(name, env_var=None):
+    path_str = env_with_paths()['PATH']
     candidates = [
         os.environ.get(env_var) if env_var else None,
-        os.path.expanduser(f'~/.local/bin/{name}'),
-        os.path.expanduser(f'~/.npm-global/bin/{name}'),
-        shutil.which(name, path=env_with_paths()['PATH']),
-        f'/opt/homebrew/bin/{name}',
-        f'/usr/local/bin/{name}',
+        shutil.which(name, path=path_str),
     ]
+    if os.name == 'nt':
+        for ext in ('.exe', '.cmd', '.bat'):
+            candidates.append(shutil.which(name + ext, path=path_str))
+            candidates.append(os.path.expanduser(f'~/.local/bin/{name}{ext}'))
+            appdata = os.environ.get('APPDATA', '')
+            if appdata:
+                candidates.append(os.path.join(appdata, 'npm', name + ext))
+    else:
+        candidates += [
+            os.path.expanduser(f'~/.local/bin/{name}'),
+            os.path.expanduser(f'~/.npm-global/bin/{name}'),
+            f'/opt/homebrew/bin/{name}',
+            f'/usr/local/bin/{name}',
+        ]
     for p in candidates:
-        if p and os.path.isfile(p) and os.access(p, os.X_OK):
+        if p and os.path.isfile(p) and (os.name == 'nt' or os.access(p, os.X_OK)):
             return p
     return None
 
@@ -302,7 +321,7 @@ GUIDE_MODEL = os.environ.get('BURHAN_CLAUDE_MODEL') or 'claude-sonnet-4-5'
 def mcp_config(client):
     cfg = json.load(open(MCP_JSON, encoding='utf-8'))
     srv = cfg['mcpServers']['burhan']
-    srv['command'] = shutil.which('python3') or '/opt/homebrew/bin/python3'
+    srv['command'] = sys.executable or shutil.which('python3') or shutil.which('python') or '/opt/homebrew/bin/python3'
     srv['args'] = ['-I', os.path.join(ROOT, 'mcp', 'burhan_server.py')]
     srv['env'] = dict(srv.get('env') or {}, BURHAN_URL=f"http://127.0.0.1:{PORT['n']}", BURHAN_CLIENT=client or '')
     return json.dumps(cfg)
@@ -592,6 +611,48 @@ def openai_run(prompt, system, client, emit, session='', api_key=None):
         return ev
 
 
+def gemini_cli_run(prompt, system, emit):
+    t0 = time.time()
+    gb = find_bin('gemini', 'BURHAN_GEMINI')
+    if not gb:
+        emit({'type': 'error', 'kind': 'missing', 'message': 'Gemini CLI not found. Install via `npm install -g @google/gemini-cli` and run `gemini` once to sign in with Google.'})
+        return
+    emit({'type': 'session', 'id': uuid.uuid4().hex, 'provider': 'gemini'})
+    emit({'type': 'tool', 'name': 'provider', 'label': 'Asking Gemini CLI (Google subscription login)…'})
+    full_prompt = f"{system}\n\n{prompt}"
+    try:
+        proc = subprocess.Popen([gb, '-p', full_prompt], env=env_with_paths(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8', errors='replace')
+        out, err = proc.communicate(timeout=120)
+        if proc.returncode != 0 and not out.strip():
+            emit({'type': 'error', 'kind': 'gemini', 'message': (err or 'Gemini CLI error')[-300:]})
+            return
+        emit({'type': 'text', 'text': out.strip()})
+        emit({'type': 'done', 'text': out.strip(), 'ms': round((time.time() - t0) * 1000), 'provider': 'gemini'})
+    except Exception as ex:
+        emit({'type': 'error', 'kind': 'gemini', 'message': f'Gemini CLI error: {str(ex)[:220]}'})
+
+
+def codex_cli_run(prompt, system, emit):
+    t0 = time.time()
+    xb = find_bin('codex', 'BURHAN_CODEX')
+    if not xb:
+        emit({'type': 'error', 'kind': 'missing', 'message': 'Codex CLI not found. Install via `npm install -g @openai/codex` and run `codex login`.'})
+        return
+    emit({'type': 'session', 'id': uuid.uuid4().hex, 'provider': 'chatgpt'})
+    emit({'type': 'tool', 'name': 'provider', 'label': 'Asking ChatGPT via Codex CLI (subscription login)…'})
+    full_prompt = f"{system}\n\n{prompt}"
+    try:
+        proc = subprocess.Popen([xb, 'exec', full_prompt], env=env_with_paths(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8', errors='replace')
+        out, err = proc.communicate(timeout=120)
+        if proc.returncode != 0 and not out.strip():
+            emit({'type': 'error', 'kind': 'chatgpt', 'message': (err or 'Codex CLI error')[-300:]})
+            return
+        emit({'type': 'text', 'text': out.strip()})
+        emit({'type': 'done', 'text': out.strip(), 'ms': round((time.time() - t0) * 1000), 'provider': 'chatgpt'})
+    except Exception as ex:
+        emit({'type': 'error', 'kind': 'chatgpt', 'message': f'Codex CLI error: {str(ex)[:220]}'})
+
+
 def prompt_file(name):
     return open(os.path.join(ROOT, 'mcp', name), encoding='utf-8').read()
 
@@ -653,10 +714,18 @@ def handle_ask(handler, req):
             return
 
         if provider == 'chatgpt':
+            xb = find_bin('codex', 'BURHAN_CODEX')
+            if xb and not api_key and not openai_keys():
+                codex_cli_run(prompt, system, emit)
+                return
             openai_run(prompt, system, client, emit, session, api_key=api_key)
             return
 
-        # Default / Gemini
+        # Default / Gemini: prefer gemini CLI OAuth subscription if installed & no explicit custom key forced
+        gb = find_bin('gemini', 'BURHAN_GEMINI')
+        if gb and not api_key and not gemini_keys():
+            gemini_cli_run(prompt, system, emit)
+            return
         gemini_run(prompt, system, client, emit, session, api_key=api_key)
     finally:
         run_slots.release()
