@@ -326,8 +326,12 @@ def mcp_config(client):
     srv = cfg['mcpServers']['burhan']
     srv['command'] = sys.executable or shutil.which('python3') or shutil.which('python') or '/opt/homebrew/bin/python3'
     srv['args'] = ['-I', os.path.join(ROOT, 'mcp', 'burhan_server.py')]
-    srv['env'] = dict(srv.get('env') or {}, BURHAN_URL=f"http://127.0.0.1:{PORT['n']}", BURHAN_CLIENT=client or '')
-    return json.dumps(cfg)
+    srv['env'] = dict(srv.get('env') or {}, BURHAN_URL=f"http://127.0.0.1:{PORT['n']}", BURHAN_CLIENT=client or '', PYTHONUTF8='1', PYTHONIOENCODING='utf-8')
+    os.makedirs(CLAUDE_CWD, exist_ok=True)
+    cfg_path = os.path.join(CLAUDE_CWD, f"mcp-{re.sub(r'[^A-Za-z0-9_-]', '', client or 'default')}.json")
+    with open(cfg_path, 'w', encoding='utf-8') as f:
+        json.dump(cfg, f, ensure_ascii=False)
+    return cfg_path
 
 
 def claude_trouble(text):
@@ -346,20 +350,32 @@ def claude_trouble(text):
 def claude_cli_run(prompt, system, client, emit, session='', account='default'):
     b = find_bin('claude', 'BURHAN_CLAUDE')
     if not b:
-        return {'type': 'error', 'kind': 'missing', 'message': 'Claude CLI is not installed on this Mac.'}
+        ev = {'type': 'error', 'kind': 'missing', 'message': 'Claude CLI is not installed on this computer.'}
+        emit(ev)
+        return ev
     os.makedirs(CLAUDE_CWD, exist_ok=True)
+    # Write system prompt & MCP config as UTF-8 files (avoids Windows cp1252 / CreateProcess quoting bugs!)
+    sys_path = os.path.join(CLAUDE_CWD, 'guide_prompt.md')
+    with open(sys_path, 'w', encoding='utf-8') as f:
+        f.write(system)
     cmd = [
         b, '-p', '--output-format', 'stream-json', '--verbose', '--include-partial-messages',
         '--model', os.environ.get('BURHAN_CLAUDE_MODEL', 'sonnet'),
         '--mcp-config', mcp_config(client), '--strict-mcp-config', '--allowedTools', 'mcp__burhan', '--tools', '',
-        '--disable-slash-commands', '--system-prompt', system,
+        '--disable-slash-commands', '--system-prompt-file', sys_path,
     ]
     if session and re.fullmatch(r'[0-9a-fA-F-]{36}', session):
         cmd += ['--resume', session]
     env = claude_env(account)
+    env['PYTHONUTF8'] = '1'
+    env['PYTHONIOENCODING'] = 'utf-8'
     proc, last, err = None, None, []
     try:
-        proc = subprocess.Popen(cmd, cwd=CLAUDE_CWD, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+        proc = subprocess.Popen(
+            cmd, cwd=CLAUDE_CWD, env=env,
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            text=True, encoding='utf-8', errors='replace', bufsize=1,
+        )
         threading.Thread(target=lambda: err.extend(proc.stderr.read().splitlines()[-20:]), daemon=True).start()
         proc.stdin.write(prompt)
         proc.stdin.close()
@@ -416,7 +432,12 @@ def claude_cli_run(prompt, system, client, emit, session='', account='default'):
     except Exception as ex:
         if proc and proc.poll() is None:
             proc.kill()
-        return {'type': 'error', 'kind': 'stopped', 'message': f'{type(ex).__name__}: {str(ex)[:200]}'}
+        ev = {'type': 'error', 'kind': 'stopped', 'message': f'{type(ex).__name__}: {str(ex)[:200]}'}
+        try:
+            emit(ev)
+        except Exception:
+            pass
+        return ev
 
 
 # ---------- Provider 2: Gemini (Multi-Key Pool + Full MCP Tool-Calling Loop) ----------

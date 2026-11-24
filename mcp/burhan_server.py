@@ -154,7 +154,8 @@ function scan(node, p, crumbs) {
 scan({children: sandbox.DATA}, [], []);
 console.log(JSON.stringify({cards, sections}));
 """
-        r = subprocess.run([node, '-e', js, ROOT], capture_output=True, text=True, timeout=30)
+        node = shutil.which('node') or ('node.exe' if os.name == 'nt' else '/opt/homebrew/bin/node')
+        r = subprocess.run([node, '-e', js, ROOT], capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=30)
         data = json.loads(r.stdout or '{"cards":{},"sections":{}}')
         # Precompute search text for fast BM25-style ranking
         for path, c in data['cards'].items():
