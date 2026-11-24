@@ -1,5 +1,15 @@
 # Burhān — overnight fill log
 
+## ROUND 6c (2026-11-24) — two natures, gospel-by-gospel, Sam Shamoun OT series
+- `christianity/trinity/two-natures` (topics/two-natures-playbook.js) — steelman from “Bible EXPLICITLY Teaches Two Natures”.
+- `christianity/jesus/by-gospel` (topics/gospel-divinity.js) — Mark/Matthew/Luke/John folders, 18 new claim cards + mounts.
+  New mechanism: `window.MOUNTS.push({from,to,key})` in index.html shows one card in several folders (same node).
+- `christianity/trinity/ot-trinity/shamoun-series` (topics/shamoun-ot-trinity.js) — Sam Shamoun “Trinity in the OT” (10 parts,
+  transcripts in /private/tmp/claude-501/shamoun): chain explainer + 10 link cards (Ex 23, Ex 33, “no one has seen the Father”,
+  Jude 5/1 Cor 10, Dan 3, Josh 5, Jacob, Zech 2–3, Isaac, Fathers & Ehrman) + 7 mounted OT cards.
+- Discord bot exporter: tools/discord-bot-export.py (token in ~/.config/burhan/discord.env). Bot “Burhan Export” is only in
+  noel's server so far; IA/DR/Averroes admins must use the invite link (client_id 1574744978368893022, permissions 66560).
+
 ## ROUND 6b (2026-11-24) — “God never sleeps, but Jesus slept” Playbook
 - NEW `christianity/trinity/jesus-slept` (`topics/jesus-slept-playbook.js`, 16 nodes) from Noel's debate notes: sleep syllogism
   (Ps 121:3–4, Isa 40:28, John 4:6, Mark 4:38 + Q 2:255, 5:75, 50:38, 25:58, Muslim 179) → Opening 01 “natures don't sleep, persons do”
