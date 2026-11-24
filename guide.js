@@ -716,11 +716,17 @@
       const k = Math.max(1, Math.min(15, parseInt(a && a.k, 10) || 8));
       const door = String(a && a.door || '').toLowerCase();
       const words = q.split(/\s+/).filter(w => w.length >= 2);
-      const hits = [];
+      const hits = [], secHits = [];
       (function scan(node, p, crumbs) {
         for (const [key, c] of Object.entries(node.children || {})) {
           if (c.hidden) continue;
           const np = [...p, key], nc = [...crumbs, c.title || key], pathStr = np.join('/');
+          if (!c.article && c.children && (!door || pathStr.startsWith(door + '/'))) {
+            const shay = fold([c.title, c.k, c.blurb, nc.join(' '), key].join(' '));
+            let sc = 0, m = 0;
+            for (const w of words) if (shay.includes(w)) { sc += 7; m++; }
+            if (m > 0) secHits.push({ kind: 'section', path: pathStr, title: c.title, breadcrumbs: nc.join(' › '), blurb: (c.blurb || '').slice(0, 180), cards_inside: Object.keys(c.children).length, score: +(sc * (m / (words.length || 1))).toFixed(2) });
+          }
           if (c.article && (!door || pathStr.startsWith(door + '/'))) {
             const art = c.article;
             const hay = fold([c.title, c.k, c.blurb, art.claim, art.sum, JSON.stringify(art.tree || art.flow || art.cards || '')].join(' '));
@@ -731,13 +737,14 @@
               else if (hay.includes(w)) { sc += 2; m++; }
             }
             if (thay.includes(q)) sc += 10;
-            if (m > 0) hits.push({ path: pathStr, title: c.title, k: c.k || '', breadcrumbs: nc.join(' › '), claim: (art.claim || c.blurb || '').slice(0, 240), sum: (art.sum || '').slice(0, 240), score: +(sc * (m / (words.length || 1))).toFixed(2) });
+            if (m > 0) hits.push({ kind: 'card', path: pathStr, title: c.title, k: c.k || '', breadcrumbs: nc.join(' › '), claim: (art.claim || c.blurb || '').slice(0, 240), sum: (art.sum || '').slice(0, 240), score: +(sc * (m / (words.length || 1))).toFixed(2) });
           }
           if (c.children) scan(c, np, nc);
         }
       })({ children: typeof DATA !== 'undefined' ? DATA : {} }, [], []);
+      secHits.sort((x, y) => y.score - x.score);
       hits.sort((x, y) => y.score - x.score);
-      return { query: a.query, total_matches: hits.length, hits: hits.slice(0, k) };
+      return { query: a.query, sections: secHits.slice(0, 4), total_matches: hits.length, hits: hits.slice(0, k) };
     },
     async card(a) {
       const parts = resolveBurhanPath(a && a.path);
@@ -847,16 +854,12 @@
     $g('gauthKey').value = ls.get('bh-key-' + G.provider) || '';
     const ob = $g('gauthOAuth');
     if (ob) {
-      if (G.serverBase !== null && G.provider === 'claude') {
-        ob.textContent = 'Login with Claude Pro (OAuth)';
-      } else if (G.serverBase !== null && G.provider === 'chatgpt') {
-        ob.textContent = 'Login with ChatGPT / Codex (OAuth)';
-      } else if (G.provider === 'gemini') {
-        ob.textContent = 'Sign in with Google → Get Free Gemini Key ↗';
+      if (G.provider === 'claude') {
+        ob.textContent = G.serverBase !== null ? 'Login with Claude Pro (OAuth)' : 'Login with Claude Pro (OAuth) / Localhost ↗';
       } else if (G.provider === 'chatgpt') {
-        ob.textContent = 'Sign in to OpenAI → Get API Key ↗';
+        ob.textContent = G.serverBase !== null ? 'Login with ChatGPT / Codex (OAuth)' : 'Sign in to OpenAI → Get API Key ↗';
       } else {
-        ob.textContent = 'Get Free Gemini Key (works without server.py) ↗';
+        ob.textContent = 'Sign in with Google → Get Free Gemini Key ↗';
       }
     }
   }
@@ -989,15 +992,13 @@
 
 
   // ---------- Serverless / Mobile In-Browser Cloud Tool-Calling Engine ----------
-  const CLOUD_SYSTEM = `You are the Burhān Guide — the scholar-scribe inside Burhān (766 Tactical Debate Playbooks & Explainers).
+  const CLOUD_SYSTEM = `You are the Burhān Guide — fast, sharp scholar-scribe inside Burhān (766 Tactical Debate Playbooks & Explainers).
 Answer in the user's language (German if asked in German, English if asked in English).
-Always cite verbatim primary quotes (Arabic/Greek/Hebrew + English) and exact citations from the cards.
-Use your tools to show the user on the page:
-1. Call search(query) to find the card path, then card(path) to read its full data, and goto(path, open_proof:true) to open it on screen.
-2. Call open_proof(step) before pointing at or circling a quote inside the Full proof drawer.
-3. Call open_shot(index or words) to zoom in on a primary manuscript photo or book scan in the lightbox!
-4. Call point(target, label) or circle(target, label) (e.g. target:"quote:1" or target:"text:<exact words>") and only say you marked it if visible is true.
-5. Call canvas_show(title, steps) with 4–7 rich steps (title, points, quote, compare, verdicts) whenever the user asks for a step-by-step walkthrough or Canvas.`;
+BE FAST AND MINIMAL WITH TOOL CALLS (aim for 1–2 tool turns total!):
+- If the user asks about a broad topic/gospel/category (e.g. "Jesus god in Mark", "Trinity in OT", "Aisha"), call search(query) ONCE — it returns BOTH matching \`sections\` (folders) and \`hits\` (cards). If a matching section/folder exists, call \`goto(path)\` directly to that section and give a crisp overview! Do NOT waste turns opening random sub-cards or calling \`open_proof\` twice.
+- If the user asks about one specific card/verse, call \`search\`, then in ONE turn call \`card(path)\` + \`goto(path, open_proof:true)\` together (remember \`goto\` with \`open_proof:true\` already opens the drawer — never call \`open_proof\` again after!).
+- Cite exact verbatim primary quotes and verse references from the cards.
+- Only call \`canvas_show\` when the user asks for a step-by-step walkthrough or Canvas.`;
 
   const CLOUD_TOOLS_GEMINI = [{
     functionDeclarations: [
@@ -1082,31 +1083,42 @@ Use your tools to show the user on the page:
     const t0 = performance.now();
     const prompt = `Current Burhān page (JSON): ${JSON.stringify(ctx)}\n\nUser asks: ${q}`;
     G.cloudHist.push({ role: 'user', parts: [{ text: prompt }] });
-    const models = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];
+    if (!G.badMods) G.badMods = {};
+    const allModels = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-2.5-flash', 'gemini-3.8-flash'];
     let turns = 0;
-    for (let turn = 0; turn < 8; turn++) {
+    for (let turn = 0; turn < 5; turn++) {
       turns++;
       let cand = null, lastErr = '';
-      for (const mod of models) {
+      const now = Date.now();
+      const ordered = allModels.filter(x => !(G.badMods[x] > now)).concat(allModels.filter(x => G.badMods[x] > now));
+      for (const mod of ordered) {
         try {
           const ctl = new AbortController();
-          const t = setTimeout(() => ctl.abort(), 16000);
+          const t = setTimeout(() => ctl.abort(), 9000);
           const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mod}:generateContent?key=${encodeURIComponent(key)}`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             signal: ctl.signal,
             body: JSON.stringify({
               systemInstruction: { parts: [{ text: CLOUD_SYSTEM }] },
-              contents: G.cloudHist.slice(-16),
+              contents: G.cloudHist.slice(-14),
               tools: CLOUD_TOOLS_GEMINI,
-              generationConfig: { temperature: 0.2 }
+              generationConfig: { temperature: 0.2, thinkingConfig: { thinkingBudget: 0 } }
             })
           });
           clearTimeout(t);
-          if (!r.ok) { lastErr = `${mod} HTTP ${r.status}`; continue; }
+          if (!r.ok) {
+            lastErr = `${mod} HTTP ${r.status}`;
+            if (r.status === 404 || r.status === 400) G.badMods[mod] = now + 300000;
+            else if (r.status === 503 || r.status === 429) G.badMods[mod] = now + 60000;
+            continue;
+          }
           const j = await r.json();
           cand = (j.candidates || [])[0];
           if (cand && cand.content) break;
-        } catch (e) { lastErr = String(e.message || e); }
+        } catch (e) {
+          lastErr = String(e.message || e);
+          G.badMods[mod] = now + 45000;
+        }
       }
       if (!cand || !cand.content) {
         m.err = true; m.text += (m.text ? '\n\n' : '') + `Cloud API error: ${lastErr || 'No model responded'}`;
@@ -1323,13 +1335,13 @@ Use your tools to show the user on the page:
     const note = $g('gauthNote');
     if (G.serverBase === null) await health(true);
     if (G.serverBase === null) {
-      if (G.provider === 'chatgpt') {
+      if (G.provider === 'claude') {
+        window.open('http://localhost:5179/' + (location.hash || ''), '_blank');
+        note.innerHTML = 'Opened <b>localhost:5179</b> where your local <code>server.py</code> runs Claude Pro OAuth! (Or allow <i>Local Network Access</i> in Chrome site settings for damandam.github.io and click Check Status.)';
+      } else if (G.provider === 'chatgpt') {
         window.open('https://platform.openai.com/api-keys', '_blank', 'noopener');
         note.textContent = 'Opened OpenAI API Keys in a new tab. Sign in with your OpenAI account, copy a key (sk-...), paste it below, and click Save Key.';
       } else {
-        G.provider = 'gemini';
-        ls.set('bh-guide-provider', 'gemini');
-        updateProviderPills();
         window.open('https://aistudio.google.com/apikey', '_blank', 'noopener');
         note.textContent = 'Opened Google AI Studio in a new tab! Sign in with Google, click “Create API key” (free), paste it in the box below, and click Save Key.';
       }

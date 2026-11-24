@@ -350,6 +350,7 @@ def claude_cli_run(prompt, system, client, emit, session='', account='default'):
     os.makedirs(CLAUDE_CWD, exist_ok=True)
     cmd = [
         b, '-p', '--output-format', 'stream-json', '--verbose', '--include-partial-messages',
+        '--model', os.environ.get('BURHAN_CLAUDE_MODEL', 'sonnet'),
         '--mcp-config', mcp_config(client), '--strict-mcp-config', '--allowedTools', 'mcp__burhan', '--tools', '',
         '--disable-slash-commands', '--system-prompt', system,
     ]
@@ -451,16 +452,16 @@ def gemini_call_once(contents, system, custom_key=None):
         'systemInstruction': {'parts': [{'text': system}]},
         'contents': contents,
         'tools': gemini_tool_declarations(),
-        'generationConfig': {'temperature': 0.2},
+        'generationConfig': {'temperature': 0.2, 'thinkingConfig': {'thinkingBudget': 0}},
     }
     data = json.dumps(body, ensure_ascii=False).encode('utf-8')
     last_err = 'No Gemini model responded'
     for model in GEMINI_MODELS:
-        for key in keys[:4]:
+        for key in keys[:3]:
             url = f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={urllib.parse.quote(key)}'
             try:
                 req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
-                with urllib.request.urlopen(req, timeout=14) as r:
+                with urllib.request.urlopen(req, timeout=9) as r:
                     res = json.loads(r.read().decode('utf-8'))
                 cand = (res.get('candidates') or [None])[0]
                 if cand and cand.get('content'):

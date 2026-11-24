@@ -246,7 +246,29 @@ def t_search(a):
             'shots_count': shots_n,
             'score': round(sc, 2),
         })
-    return {'query': q, 'total_matches': len(scored), 'hits': hits}
+    sec_scored = []
+    for spath, s in db['sections'].items():
+        if door and not spath.startswith(door + '/'):
+            continue
+        shay = _fold(' '.join([s.get('title', ''), s.get('k', ''), s.get('blurb', ''), s.get('breadcrumbs', ''), spath]))
+        sc, matched = 0.0, 0
+        for w in words:
+            if w in shay:
+                sc += 7.0
+                matched += 1
+        if matched > 0:
+            sec_scored.append((sc * (matched / len(words)), spath, s))
+    sec_scored.sort(key=lambda x: -x[0])
+    sec_hits = [{
+        'kind': 'section',
+        'path': spath,
+        'title': s['title'],
+        'breadcrumbs': s['breadcrumbs'],
+        'blurb': s['blurb'][:180],
+        'children_count': len(s.get('children', [])),
+        'score': round(sc, 2),
+    } for sc, spath, s in sec_scored[:4]]
+    return {'query': q, 'sections': sec_hits, 'total_matches': len(scored), 'hits': hits}
 
 
 def t_card(a):
