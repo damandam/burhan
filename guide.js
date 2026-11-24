@@ -757,13 +757,21 @@
     for (const base of candidateBases()) {
       try {
         const ctl = new AbortController();
-        // Give user 5 seconds in case Chrome shows the "Allow Local Network Access" prompt on damandam.github.io
         const t = setTimeout(() => ctl.abort(), 4500);
-        const r = await fetch(base + '/ask/health' + (force ? '?force=1' : ''), {
-          cache: 'no-store',
-          signal: ctl.signal,
-          targetAddressSpace: 'loopback'
-        });
+        const opts = { cache: 'no-store', signal: ctl.signal };
+        // Only pass targetAddressSpace for cross-origin HTTPS -> localhost requests (Chrome Local Network Access)
+        if (base && location.protocol === 'https:') opts.targetAddressSpace = 'loopback';
+        let r;
+        try {
+          r = await fetch(base + '/ask/health' + (force ? '?force=1' : ''), opts);
+        } catch (e1) {
+          if (opts.targetAddressSpace) {
+            delete opts.targetAddressSpace;
+            r = await fetch(base + '/ask/health' + (force ? '?force=1' : ''), opts);
+          } else {
+            throw e1;
+          }
+        }
         clearTimeout(t);
         if (r.ok) {
           hData = await r.json();
