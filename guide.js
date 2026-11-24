@@ -55,38 +55,24 @@
     <div id="guideVeil" hidden aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <canvas id="guide" width="56" height="62" aria-hidden="true"></canvas>
     <div id="guideSay" hidden role="status" aria-live="polite"></div>
-    <button type="button" id="guideAsk" class="guide-ask" title="Ask the Burhān Guide (Claude · Gemini · ChatGPT)"><span class="guide-dot"></span><span>Ask the Guide</span></button>
+    <button type="button" id="guideAsk" class="guide-ask" title="Ask the Burhān Guide (Claude)"><span class="guide-dot"></span><span>Ask the Guide</span></button>
     <aside id="guidePanel" class="guide-panel" hidden aria-label="Ask the Burhān Guide">
       <div class="guide-top" id="guideDragBar" title="Drag to move window (double-click to reset position)">
-        <div class="guide-title"><span class="guide-grip" aria-hidden="true">⋮⋮</span><span class="guide-dot"></span><span>The Burhān Guide</span><span class="guide-sub">766 Playbooks · Scribe</span></div>
+        <div class="guide-title"><span class="guide-grip" aria-hidden="true">⋮⋮</span><span class="guide-dot"></span><span>The Burhān Guide</span><span class="guide-sub">766 Playbooks · Claude</span></div>
         <div class="guide-acts">
-          <button type="button" id="guideAuthBtn" title="Connect / Switch AI Login">Login ▾</button>
+          <button type="button" id="guideAuthBtn" title="Login with Claude">Claude Login</button>
           <button type="button" id="guideHide" title="Hide or show the pixel scribe">${G.hidden ? 'Show scribe' : 'Hide scribe'}</button>
           <button type="button" id="guideNew" title="Start a fresh conversation">New</button>
           <button type="button" id="guideClose" aria-label="Close">×</button>
         </div>
       </div>
-      <div class="guide-prov">
-        <div class="gprov-row">
-          <div class="gprov-tabs" role="tablist" aria-label="AI Provider">
-            <button type="button" class="gprov-btn${G.provider === 'claude' ? ' on' : ''}" data-prov="claude"><span class="gprov-dot" id="gdot-claude"></span>Claude</button>
-            <button type="button" class="gprov-btn${G.provider === 'gemini' ? ' on' : ''}" data-prov="gemini"><span class="gprov-dot" id="gdot-gemini"></span>Gemini</button>
-            <button type="button" class="gprov-btn${G.provider === 'chatgpt' ? ' on' : ''}" data-prov="chatgpt"><span class="gprov-dot" id="gdot-chatgpt"></span>ChatGPT</button>
-          </div>
-          <button type="button" class="gprov-login-btn" id="guideQuickLogin">Connect / Key</button>
+      <div id="guideAuthBox" class="gauth-box" style="margin:8px 14px 0" hidden>
+        <div class="gauth-head"><span id="gauthTitle">Claude Pro Login</span><button type="button" id="gauthClose" style="border:0;background:none;color:#f3efe6;cursor:pointer">×</button></div>
+        <div class="gauth-actions">
+          <button type="button" id="gauthOAuth">Login with Claude (OAuth)</button>
+          <button type="button" id="gauthCheck">Check Status</button>
         </div>
-        <div id="guideAuthBox" class="gauth-box" hidden>
-          <div class="gauth-head"><span id="gauthTitle">AI Provider &amp; Login</span><button type="button" id="gauthClose" style="border:0;background:none;color:#f3efe6;cursor:pointer">×</button></div>
-          <div class="gauth-actions">
-            <button type="button" id="gauthOAuth">Open Browser Login (OAuth)</button>
-            <button type="button" id="gauthCheck">Check Status</button>
-          </div>
-          <div class="gauth-keyrow">
-            <input id="gauthKey" type="password" placeholder="Or paste Gemini / OpenAI / Claude API key…" autocomplete="off">
-            <button type="button" id="gauthSaveKey">Save Key</button>
-          </div>
-          <p class="gauth-note" id="gauthNote">When <code>python3 server.py</code> runs on your Mac, Claude / Gemini / ChatGPT connect directly via localhost:5179. On mobile or without server.py, your saved API key runs directly in the browser.</p>
-        </div>
+        <p class="gauth-note" id="gauthNote">Uses your Claude Pro subscription via <code>python3 server.py</code> (or <code>start-burhan-windows.bat</code> on Windows).</p>
       </div>
       <div id="guideCtx" class="guide-ctx"></div>
       <div id="guideLog" class="guide-log"></div>
@@ -832,47 +818,22 @@
     ls.set('bh-key-' + prov, k ? k.trim() : null);
   }
   function updateProviderPills() {
-    document.querySelectorAll('.gprov-btn').forEach(b => {
-      b.classList.toggle('on', b.dataset.prov === G.provider);
-    });
-    const h = G.healthData && G.healthData.providers;
-    const clOk = (h && h.claude && (h.claude.loggedIn || h.claude.apiKey)) || !!ls.get('bh-key-claude');
-    const gmOk = (h && h.gemini && h.gemini.ready) || !!storedKey('gemini');
-    const cgOk = (h && h.chatgpt && h.chatgpt.ready) || !!ls.get('bh-key-chatgpt');
-    $g('gdot-claude').className = 'gprov-dot ' + (clOk ? 'ok' : 'warn');
-    $g('gdot-gemini').className = 'gprov-dot ' + (gmOk ? 'ok' : 'warn');
-    $g('gdot-chatgpt').className = 'gprov-dot ' + (cgOk ? 'ok' : 'warn');
-
-    const names = { claude: 'Claude (Pro CLI / API)', gemini: 'Google Gemini (Free Key / Cloud)', chatgpt: 'ChatGPT (Codex CLI / OpenAI)' };
-    $g('gauthTitle').textContent = names[G.provider] || 'AI Login';
-    const ph = {
-      claude: 'Paste Anthropic API key (sk-ant-...)…',
-      gemini: 'Paste Google Gemini API key (AIza... / AQ....)…',
-      chatgpt: 'Paste OpenAI API key (sk-...)…'
-    };
-    $g('gauthKey').placeholder = ph[G.provider] || 'Paste API key…';
-    $g('gauthKey').value = ls.get('bh-key-' + G.provider) || '';
+    G.provider = 'claude';
     const ob = $g('gauthOAuth');
     if (ob) {
-      if (G.provider === 'claude') {
-        ob.textContent = G.serverBase !== null ? 'Login with Claude Pro (OAuth)' : 'Login with Claude Pro (OAuth) / Localhost ↗';
-      } else if (G.provider === 'chatgpt') {
-        ob.textContent = G.serverBase !== null ? 'Login with ChatGPT / Codex (OAuth)' : 'Sign in to OpenAI → Get API Key ↗';
-      } else {
-        ob.textContent = 'Sign in with Google → Get Free Gemini Key ↗';
-      }
+      ob.textContent = G.serverBase !== null ? 'Login with Claude (OAuth)' : 'Open Claude on localhost:5179 ↗';
     }
   }
 
   async function health(force) {
     const st = $g('guideSt');
+    G.provider = 'claude';
     let foundBase = null, hData = null;
     for (const base of candidateBases()) {
       try {
         const ctl = new AbortController();
-        const t = setTimeout(() => ctl.abort(), 4500);
+        const t = setTimeout(() => ctl.abort(), 3500);
         const opts = { cache: 'no-store', signal: ctl.signal };
-        // Only pass targetAddressSpace for cross-origin HTTPS -> localhost requests (Chrome Local Network Access)
         if (base && location.protocol === 'https:') opts.targetAddressSpace = 'loopback';
         let r;
         try {
@@ -895,41 +856,19 @@
     }
     G.serverBase = foundBase;
     G.healthData = hData;
+    updateProviderPills();
     if (foundBase !== null && hData) {
-      updateProviderPills();
       listen();
-      const p = hData.providers || {};
-      if (G.provider === 'claude') {
-        const c = p.claude || {};
-        st.textContent = c.loggedIn
-          ? `Claude connected (${c.email || c.plan || 'Pro'}) · Local server.py ✓`
-          : 'Claude CLI not logged in — click Login ▾ or switch to Gemini ✓';
-        st.classList.toggle('bad', !c.loggedIn);
-      } else if (G.provider === 'gemini') {
-        const g = p.gemini || {};
-        st.textContent = g.ready
-          ? `Gemini connected (${g.keys} key${g.keys === 1 ? '' : 's'} active) · Local server.py ✓`
-          : 'Gemini Cloud Mode active ✓';
-        st.classList.remove('bad');
-      } else {
-        const x = p.chatgpt || {};
-        st.textContent = x.ready
-          ? `ChatGPT connected · Local server.py ✓`
-          : 'Click Connect / Key ▾ to sign in or paste an OpenAI key';
-        st.classList.toggle('bad', !x.ready);
-      }
+      const c = (hData.providers && hData.providers.claude) || {};
+      st.textContent = c.loggedIn
+        ? `Claude connected (${c.email || c.plan || 'Pro'}) · Local server.py ✓`
+        : 'Claude not logged in — click “Claude Login” above';
+      st.classList.toggle('bad', !c.loggedIn);
     } else {
-      // Serverless / GitHub Pages Cloud Mode (only auto-switch on initial boot, never override a manual tab click!)
-      if (!force && !G.manualProv && G.provider === 'claude' && !ls.get('bh-key-claude') && storedKey('gemini')) {
-        G.provider = 'gemini';
-        ls.set('bh-guide-provider', 'gemini');
-      }
-      updateProviderPills();
-      const hasK = !!storedKey(G.provider) || !!storedKey('gemini');
-      st.innerHTML = hasK
-        ? `<span>Cloud Mode (<b>${esc(G.provider.toUpperCase())}</b>) Ready ✓</span>${location.hostname.includes('github.io') ? ` <a href="http://localhost:5179/${location.hash || ''}" style="color:#e5bd62;text-decoration:underline" title="Open on localhost:5179 to use your local Claude Pro CLI login">Switch to localhost:5179 for Claude CLI ↗</a>` : ''}`
-        : `Offline from server.py · Click “Connect / Key” above to sign in or paste a key`;
-      st.classList.toggle('bad', !hasK);
+      st.innerHTML = location.hostname.includes('github.io')
+        ? `<span>Local server.py not connected.</span> <a href="http://localhost:5179/${location.hash || ''}" style="color:#e5bd62;text-decoration:underline">Open localhost:5179 for Claude ↗</a>`
+        : `Start <code>python3 server.py</code> (or <code>start-burhan-windows.bat</code>) for Claude Login.`;
+      st.classList.add('bad');
     }
   }
 
@@ -1206,17 +1145,12 @@ BE FAST AND MINIMAL WITH TOOL CALLS (aim for 1–2 tool turns total!):
           if (performance.now() - painted > 80) { painted = performance.now(); renderLog(); }
         }
       } catch (e) {
-        // Seamless fallback to Browser Cloud Mode if local server dropped!
-        if (storedKey('gemini') || storedKey(G.provider)) {
-          m.steps.push('Local server unreachable — running in Browser Cloud Mode…');
-          await askCloudBrowser(q, ctx, m);
-        } else {
-          m.err = true;
-          m.text += (m.text ? '\n\n' : '') + `Could not reach local server.py (${e.message || e}). Start \`python3 server.py\` or paste an API key under Connect / Key.`;
-        }
+        m.err = true;
+        m.text += (m.text ? '\n\n' : '') + `Could not reach local Claude server (${e.message || e}). Make sure \`python3 server.py\` (or \`start-burhan-windows.bat\`) is running and open **http://localhost:5179/**.`;
       }
     } else {
-      await askCloudBrowser(q, ctx, m);
+      m.err = true;
+      m.text = 'Claude requires your local helper server (`python3 server.py` on Mac or `start-burhan-windows.bat` on Windows). Open **http://localhost:5179/** (or allow Local Network Access for this site in Chrome) and click **Claude Login**.';
     }
 
     m.live = false; G.busy = Math.max(0, G.busy - 1); unlisten(); G.asking = false; $g('guideSend').disabled = false;
@@ -1317,77 +1251,29 @@ BE FAST AND MINIMAL WITH TOOL CALLS (aim for 1–2 tool turns total!):
     if (on) updateProviderPills();
   };
   $g('guideAuthBtn').onclick = () => toggleAuthBox();
-  $g('guideQuickLogin').onclick = () => toggleAuthBox();
   $g('gauthClose').onclick = () => toggleAuthBox(false);
-
-  document.querySelectorAll('.gprov-btn').forEach(btn => {
-    btn.onclick = () => {
-      G.manualProv = true;
-      G.provider = btn.dataset.prov;
-      ls.set('bh-guide-provider', G.provider);
-      G.session = ''; ss.set('bh-guide-session', null);
-      updateProviderPills();
-      health();
-    };
-  });
 
   $g('gauthOAuth').onclick = async () => {
     const note = $g('gauthNote');
     if (G.serverBase === null) await health(true);
     if (G.serverBase === null) {
-      if (G.provider === 'claude') {
-        window.open('http://localhost:5179/' + (location.hash || ''), '_blank');
-        note.innerHTML = 'Opened <b>localhost:5179</b> where your local <code>server.py</code> runs Claude Pro OAuth! (Or allow <i>Local Network Access</i> in Chrome site settings for damandam.github.io and click Check Status.)';
-      } else if (G.provider === 'chatgpt') {
-        window.open('https://platform.openai.com/api-keys', '_blank', 'noopener');
-        note.textContent = 'Opened OpenAI API Keys in a new tab. Sign in with your OpenAI account, copy a key (sk-...), paste it below, and click Save Key.';
-      } else {
-        window.open('https://aistudio.google.com/apikey', '_blank', 'noopener');
-        note.textContent = 'Opened Google AI Studio in a new tab! Sign in with Google, click “Create API key” (free), paste it in the box below, and click Save Key.';
-      }
+      window.open('http://localhost:5179/' + (location.hash || ''), '_blank');
+      note.innerHTML = 'Opened <b>http://localhost:5179/</b> where your local <code>server.py</code> runs Claude Pro Login! (Or allow <i>Local Network Access</i> in Chrome site settings for damandam.github.io and click Check Status.)';
       return;
     }
-    if (G.provider === 'gemini') {
-      window.open('https://aistudio.google.com/apikey', '_blank', 'noopener');
-      note.textContent = 'Opened Google AI Studio in a new tab! Sign in with Google, create a free Gemini API key, paste it below, and click Save Key.';
-      return;
-    }
-    note.textContent = `Opening ${G.provider.toUpperCase()} login in your browser…`;
+    note.textContent = 'Opening Claude login in your browser…';
     try {
       const r = await fetch((G.serverBase || '') + '/ask/login', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ provider: G.provider })
+        body: JSON.stringify({ provider: 'claude' })
       }).then(x => x.json());
-      note.textContent = r.message || 'Check your browser tab to finish login.';
+      note.textContent = r.message || 'Check your browser tab to finish signing in to Claude.';
       setTimeout(() => health(true), 3000);
     } catch (e) {
       note.textContent = 'Could not reach local server.py: ' + (e.message || e);
     }
   };
   $g('gauthCheck').onclick = () => health(true);
-  $g('gauthSaveKey').onclick = async () => {
-    const k = $g('gauthKey').value.trim();
-    const note = $g('gauthNote');
-    if (!k) { setStoredKey(G.provider, null); note.textContent = `Cleared browser key for ${G.provider}.`; health(true); return; }
-    // Auto-detect key provider from prefix
-    let targetProv = G.provider;
-    if (k.startsWith('AIza') || k.startsWith('AQ.')) targetProv = 'gemini';
-    else if (k.startsWith('sk-ant-')) targetProv = 'claude';
-    else if (k.startsWith('sk-')) targetProv = 'chatgpt';
-    G.provider = targetProv;
-    ls.set('bh-guide-provider', targetProv);
-    setStoredKey(targetProv, k);
-    if (G.serverBase !== null) {
-      try {
-        await fetch((G.serverBase || '') + '/ask/key', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ provider: targetProv, key: k })
-        });
-      } catch (e) {}
-    }
-    note.textContent = `Saved ${targetProv.toUpperCase()} key! Works both locally and in Browser Cloud Mode ✓`;
-    await health(true);
-  };
 
   logEl.addEventListener('click', e => {
     const b = e.target.closest('[data-gq]');
