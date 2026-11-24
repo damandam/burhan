@@ -916,8 +916,8 @@
         st.classList.toggle('bad', !x.ready);
       }
     } else {
-      // Serverless / GitHub Pages Cloud Mode (or Chrome blocked loopback on https://damandam.github.io)
-      if (G.provider === 'claude' && !ls.get('bh-key-claude')) {
+      // Serverless / GitHub Pages Cloud Mode (only auto-switch on initial boot, never override a manual tab click!)
+      if (!force && !G.manualProv && G.provider === 'claude' && !ls.get('bh-key-claude') && storedKey('gemini')) {
         G.provider = 'gemini';
         ls.set('bh-guide-provider', 'gemini');
       }
@@ -925,7 +925,7 @@
       const hasK = !!storedKey(G.provider) || !!storedKey('gemini');
       st.innerHTML = hasK
         ? `<span>Cloud Mode (<b>${esc(G.provider.toUpperCase())}</b>) Ready ✓</span>${location.hostname.includes('github.io') ? ` <a href="http://localhost:5179/${location.hash || ''}" style="color:#e5bd62;text-decoration:underline" title="Open on localhost:5179 to use your local Claude Pro CLI login">Switch to localhost:5179 for Claude CLI ↗</a>` : ''}`
-        : `Offline from server.py · Click “Connect / Key” above to paste a Gemini/OpenAI key`;
+        : `Offline from server.py · Click “Connect / Key” above to sign in or paste a key`;
       st.classList.toggle('bad', !hasK);
     }
   }
@@ -1310,6 +1310,7 @@ Use your tools to show the user on the page:
 
   document.querySelectorAll('.gprov-btn').forEach(btn => {
     btn.onclick = () => {
+      G.manualProv = true;
       G.provider = btn.dataset.prov;
       ls.set('bh-guide-provider', G.provider);
       G.session = ''; ss.set('bh-guide-session', null);
