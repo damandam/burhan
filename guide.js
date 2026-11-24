@@ -740,15 +740,29 @@
     $g('gdot-gemini').className = 'gprov-dot ' + (gmOk ? 'ok' : 'warn');
     $g('gdot-chatgpt').className = 'gprov-dot ' + (cgOk ? 'ok' : 'warn');
 
-    const names = { claude: 'Claude (Pro CLI / API)', gemini: 'Google Gemini (Pool / Cloud)', chatgpt: 'ChatGPT (Codex CLI / OpenAI)' };
+    const names = { claude: 'Claude (Pro CLI / API)', gemini: 'Google Gemini (Free Key / Cloud)', chatgpt: 'ChatGPT (Codex CLI / OpenAI)' };
     $g('gauthTitle').textContent = names[G.provider] || 'AI Login';
     const ph = {
-      claude: 'Or paste Anthropic API key (sk-ant-...)…',
-      gemini: 'Or paste Google Gemini API key (AIza... / AQ....)…',
-      chatgpt: 'Or paste OpenAI API key (sk-...)…'
+      claude: 'Paste Anthropic API key (sk-ant-...)…',
+      gemini: 'Paste Google Gemini API key (AIza... / AQ....)…',
+      chatgpt: 'Paste OpenAI API key (sk-...)…'
     };
     $g('gauthKey').placeholder = ph[G.provider] || 'Paste API key…';
     $g('gauthKey').value = ls.get('bh-key-' + G.provider) || '';
+    const ob = $g('gauthOAuth');
+    if (ob) {
+      if (G.serverBase !== null && G.provider === 'claude') {
+        ob.textContent = 'Login with Claude Pro (OAuth)';
+      } else if (G.serverBase !== null && G.provider === 'chatgpt') {
+        ob.textContent = 'Login with ChatGPT / Codex (OAuth)';
+      } else if (G.provider === 'gemini') {
+        ob.textContent = 'Sign in with Google → Get Free Gemini Key ↗';
+      } else if (G.provider === 'chatgpt') {
+        ob.textContent = 'Sign in to OpenAI → Get API Key ↗';
+      } else {
+        ob.textContent = 'Get Free Gemini Key (works without server.py) ↗';
+      }
+    }
   }
 
   async function health(force) {
@@ -903,17 +917,71 @@ Use your tools to show the user on the page:
     ]
   }];
 
+  async function askCloudOpenAI(q, ctx, m, key) {
+    const t0 = performance.now();
+    const prompt = `Current Burhān page (JSON): ${JSON.stringify(ctx)}\n\nUser asks: ${q}`;
+    if (!G.cloudOpenAIHist) G.cloudOpenAIHist = [{ role: 'system', content: CLOUD_SYSTEM }];
+    G.cloudOpenAIHist.push({ role: 'user', content: prompt });
+    const tools = CLOUD_TOOLS_GEMINI[0].functionDeclarations.map(d => ({
+      type: 'function',
+      function: { name: d.name, description: d.description, parameters: d.parameters }
+    }));
+    let turns = 0;
+    for (let turn = 0; turn < 8; turn++) {
+      turns++;
+      const r = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + key },
+        body: JSON.stringify({ model: 'gpt-4o-mini', messages: G.cloudOpenAIHist.slice(-18), tools, temperature: 0.2 })
+      });
+      if (!r.ok) {
+        const errTxt = await r.text().catch(() => '');
+        m.err = true; m.text += (m.text ? '\n\n' : '') + `OpenAI Cloud error (${r.status}): ${errTxt.slice(0, 220)}`;
+        break;
+      }
+      const j = await r.json();
+      const msg = j.choices && j.choices[0] && j.choices[0].message;
+      if (!msg) break;
+      G.cloudOpenAIHist.push(msg);
+      if (msg.content) {
+        m.text += msg.content;
+        if (AV.state === 'think' && !AV.anchor) AV.state = 'talk';
+        renderLog();
+      }
+      const tcalls = msg.tool_calls || [];
+      if (!tcalls.length) break;
+      for (const tc of tcalls) {
+        const name = tc.function && tc.function.name;
+        let args = {};
+        try { args = JSON.parse((tc.function && tc.function.arguments) || '{}'); } catch (e) {}
+        m.steps.push(`${name}: ${JSON.stringify(args).slice(0, 90)}`);
+        renderLog();
+        let res;
+        try { res = ACT[name] ? await ACT[name](args) : { ok: false, note: 'unknown tool ' + name }; }
+        catch (e) { res = { ok: false, note: String(e.message || e) }; }
+        G.cloudOpenAIHist.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify(res) });
+      }
+    }
+    m.meta = `${Math.round((performance.now() - t0) / 1000)} s · ${turns} turns · ChatGPT Cloud Mode`;
+  }
+
   async function askCloudBrowser(q, ctx, m) {
-    const key = storedKey(G.provider) || storedKey('gemini');
+    const provKey = storedKey(G.provider);
+    const geminiKey = storedKey('gemini');
+    const openaiKey = storedKey('chatgpt');
+    const key = provKey || geminiKey || openaiKey;
     if (!key) {
       m.err = true;
-      m.text = 'No local `server.py` detected and no Cloud API key saved yet. Click **Connect / Key** at the top of this panel and paste your Gemini or OpenAI API key (or start `python3 server.py` on your Mac).';
+      m.text = 'Click **Connect / Key** above → click **Sign in with Google → Get Free Gemini Key ↗**, paste your free key once, and click **Save Key** (takes 10 seconds and works on every PC & phone without `server.py`!).';
       return;
+    }
+    if ((G.provider === 'chatgpt' && provKey) || (!geminiKey && openaiKey)) {
+      return askCloudOpenAI(q, ctx, m, provKey || openaiKey);
     }
     const t0 = performance.now();
     const prompt = `Current Burhān page (JSON): ${JSON.stringify(ctx)}\n\nUser asks: ${q}`;
     G.cloudHist.push({ role: 'user', parts: [{ text: prompt }] });
-    const models = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];
+    const models = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];
     let turns = 0;
     for (let turn = 0; turn < 8; turn++) {
       turns++;
@@ -1082,7 +1150,21 @@ Use your tools to show the user on the page:
     const note = $g('gauthNote');
     if (G.serverBase === null) await health(true);
     if (G.serverBase === null) {
-      note.textContent = 'Browser OAuth login requires `python3 server.py` running on your Mac (localhost:5179). On mobile/cloud, paste an API key below.';
+      if (G.provider === 'chatgpt') {
+        window.open('https://platform.openai.com/api-keys', '_blank', 'noopener');
+        note.textContent = 'Opened OpenAI API Keys in a new tab. Sign in with your OpenAI account, copy a key (sk-...), paste it below, and click Save Key.';
+      } else {
+        G.provider = 'gemini';
+        ls.set('bh-guide-provider', 'gemini');
+        updateProviderPills();
+        window.open('https://aistudio.google.com/apikey', '_blank', 'noopener');
+        note.textContent = 'Opened Google AI Studio in a new tab! Sign in with Google, click “Create API key” (free), paste it in the box below, and click Save Key.';
+      }
+      return;
+    }
+    if (G.provider === 'gemini') {
+      window.open('https://aistudio.google.com/apikey', '_blank', 'noopener');
+      note.textContent = 'Opened Google AI Studio in a new tab! Sign in with Google, create a free Gemini API key, paste it below, and click Save Key.';
       return;
     }
     note.textContent = `Opening ${G.provider.toUpperCase()} login in your browser…`;
