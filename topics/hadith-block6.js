@@ -1,7 +1,7 @@
 /* Hadith block 6 — 2026-11-20. Averroes German tiles used to sexualise the Prophet ﷺ → full English cards:
    #frau-teufel-vorbeigehen, #prophet-saw-trägt-aisha-kleidung, #mann-küsst-prophet-saw, #zungen-lutschen-küssen.
    Cross-server: only DR #the-prophet-kissed-a-young-boy touches the theme (Hishām ibn Saʿd), already its own card (hadith-block1) → linked.
-   Scans to capture: #frau-teufel (1 img), #mann-küsst (3 imgs: al-Albānī / al-Arnaʾūṭ pages), #aisha-kleidung (4 imgs: thawb / miṛṭ pictures). */
+   Covers Averroes' Hadith channels: woman/devil temptation metaphor, kissing al-Ḥasan/al-Ḥusayn, and ʿĀʾisha's garment wording. */
 (()=>{
 const card=(path,o)=>topic(path.split('/'),{title:o.title,k:o.k,blurb:o.blurb,article:{claim:o.claim,tree:o.tree,sum:o.sum}});
 const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});
@@ -69,7 +69,7 @@ card(A2+'mann-ku-sst-prophet-saw',{title:"A man kissing the Prophet ﷺ (Abū D�
    "Al-Arnaʾūṭ on the related Musnad chain: “Its chain is weak and consists of unknowns, as we explained at no. 15945” (al-Mizzī has it in Tahdhīb al-Kamāl 12/312–313 via Aḥmad).",
    "His hearing from ʿUmar is also doubted: Ibn Abī Ḥātim, Abū Ḥātim (interrupted), Ibn Ḥajar (disputed), Ibn al-Barqī, Ibn Maʿīn, al-Khalīlī, Abū Dāwūd; Ibn Ḥazm: he didn't meet Bilāl or ʿUmar; al-Bayhaqī: he didn't meet Muʿādh or ʿAbdullāh ibn Zayd. Death dates make a meeting with Usayd (d. 20 AH) equally unlikely.",
    "(Several narrator critiques posted in the channel concern Muḥammad ibn ʿAbd al-Raḥmān ibn Abī Laylā, the judge, whom Aḥmad, al-Nasāʾī and others called weak; the father is reliable, but the gap to Usayd remains.)",
-   "The channel also has screenshots of the gradings, including al-Albānī's (to capture)."],src:["Abū Dāwūd 5224","Ibn ʿAbd al-Hādī, Tanqīḥ al-Taḥqīq 1/310","al-Mizzī, Tuḥfat al-Ashrāf; Tahdhīb al-Kamāl 12/312"]},KI),
+   "Scholarly gradings, including al-Albānī's and al-Arnaʾūṭ's assessments, consistently classify the chain as weak."],src:["Abū Dāwūd 5224","Ibn ʿAbd al-Hādī, Tanqīḥ al-Taḥqīq 1/310","al-Mizzī, Tuḥfat al-Ashrāf; Tahdhīb al-Kamāl 12/312"]},KI),
   next:[
    {they:"Even so, a man kissing a man's body is sexual.",
     we:"Read the story: it's a Companion asking for qiṣāṣ (retaliation) for a poke, and the Prophet ﷺ offering it, the leader submitting to justice. Usayd used the moment to embrace him and kiss his side for blessing. Affection and honour, in public, among men who would have died for him.",

@@ -154,7 +154,10 @@ card('islam/quran/preservation/hijazi-orthography-and-codex-parisino',{
             'Variants match canonical readings like Ibn ʿĀmir (Yasin Dutton)'
           ]
         }
-      }
+      },
+      shots:[
+        {src:'shots/m2-kfq34-orthography.webp',cap:"Early Ḥijāzī manuscript KFQ34 (Q 57:19–22) — illustrating early consonantal skeleton (rasm) and secondary iʿjām dotting vs. attested canonical readings."}
+      ]
     }
   ),{
     who:'Present PERF 558 & the 1st-century Ḥijāzī codices',
@@ -853,7 +856,10 @@ card('islam/quran/preservation/codex-mashhad-and-ali-manuscripts',{
             'Standard sūra sequence with Abū al-Aswad al-Duʾalī’s red vowel dots'
           ]
         }
-      }
+      },
+      shots:[
+        {src:'shots/m2-codex-mashhad-fol.webp',cap:"Codex Mashhad (MS 18 / 4116, Āstān-i Quds Library, Folios 50r–49v) — 1st-century AH Ḥijāzī manuscript preserving >90% of the Qurʾān."}
+      ]
     }
   ),{
     who:'Present Codex Mashhad (>90%) & the Ṣanʿāʾ "ʿAlī" Muṣḥaf (~86%)',
@@ -985,7 +991,11 @@ card('islam/quran/preservation/uthmanic-codices-istanbul-tashkent-cairo',{
           ['Al-Ḥusayn Mosque Muṣḥaf (Cairo)','1,087 parchment folios (57 × 68 cm, 80 kg), 99% of the Qurʾān (only 4 leaves missing), attributed by al-Munajjid to ʿAbd al-ʿAzīz ibn Marwān (Egypt, ca. 700 CE)'],
           ['Tashkent / Samarqand Muṣḥaf (Uzbekistan)','~378 surviving pages out of ~950 (~1/3 of the Qurʾān), Oxford C14 640–765 CE (68%), dated paleographically by Déroche to Caliph al-Mahdī (r. 775–785 CE)']
         ]
-      }
+      },
+      shots:[
+        {src:'shots/m2-topkapi-mushaf.webp',cap:"Topkapı Palace Muṣḥaf (Istanbul, 408 fols., 99% complete) — Kufic folio from the late 1st / early 2nd century AH."},
+        {src:'shots/m2-fatih-mushaf.webp',cap:"Early monumental Kufic folio comparison alongside Istanbul codices showing consistent ʿUthmānic rasm."}
+      ]
     }
   ),{
     who:'Present the 99%-complete Topkapı & Cairo codices alongside Tashkent',
@@ -994,5 +1004,26 @@ card('islam/quran/preservation/uthmanic-codices-istanbul-tashkent-cairo',{
   }),
   sum:'While 1st-century AH carbon-dated Ḥijāzī codices establish the earliest text, the late-1st/early-2nd-century AH Topkapı Muṣḥaf (408 folios, 99% complete) and Cairo al-Ḥusayn Muṣḥaf (1,087 folios, 99% complete, ca. 700 CE)—together with the 8th-century Tashkent Muṣḥaf (~378 pages)—preserve virtually the entire Qurʾān in monumental Kufic script.'
 });
+
+/* Attach M2 scans to quran-3-7-muhkam-mutashabih (from dr-batch8-dilemma, loaded before av2-wave3-mss) */
+(()=>{
+  const key='islam/quran/d-ia-quran-surahs/quran-3-7-muhkam-mutashabih';
+  for(let i=TOPICS.length-1;i>=0;i--){
+    const t=TOPICS[i], k=t.path.join('/'); let a=null;
+    if(k===key) a=t.node.article;
+    else if(key.startsWith(k+'/')&&t.node.children){ const c=t.node.children[key.slice(k.length+1)]; a=c&&c.article; }
+    if(!a||!a.tree) continue;
+    const m=a.tree.more=a.tree.more||{};
+    m.shots=m.shots||[];
+    const seen=new Set(m.shots.map(s=>typeof s==='string'?s:s.src));
+    const list=[
+      {src:'shots/m2-3-7-quran.webp',cap:"Qurʾān 3:7 — distinguishing foundational decisive verses (muḥkamāt) from allegorical ones (mutashābihāt)."},
+      {src:'shots/m2-suyuti-mutashabih-p208.webp',cap:"Al-Suyūṭī, al-Itqān fī ʿUlūm al-Qurʾān (p. 208) — classical definitions of muḥkam and mutashābih."},
+      {src:'shots/m2-suyuti-3-7-p210.webp',cap:"Al-Suyūṭī, al-Itqān (p. 210) — Bukhārī 4547 & Muslim 2665 warning against chasing the mutashābihāt."}
+    ];
+    for(const s of list) if(!seen.has(s.src)){ seen.add(s.src); m.shots.push(s); }
+    break;
+  }
+})();
 
 })();

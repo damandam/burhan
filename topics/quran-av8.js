@@ -13,17 +13,17 @@ const add=(key,branch)=>{ for(let i=TOPICS.length-1;i>=0;i--){ const t=TOPICS[i]
   if(a.tree){ (a.tree.next=a.tree.next||[]).push(branch); return; } } console.warn('quran-av8: no card',key); };
 const HI='islam/quran/history/';
 
-/* Roman prophecy */
+ /* Roman prophecy */
 add('islam/proofs/d-ia-prophecies-1/t-roman-prophecy',N(AV('römer-falsche-prophezeiung','1288849583828500594'),
  "Tirmidhī has a report that 30:2–4 was revealed after the Roman victory, so it isn't a prophecy.",
  "That report rests on ʿAṭiyya al-ʿAwfī, and al-Mubārakfūrī names three problems: he was a mudallis, most scholars consider him weak, and he took tafsīr from al-Kalbī while calling him “Abū Saʿīd”, so that people thought he meant Abū Saʿīd al-Khudrī. Al-Tirmidhī's “ḥasan gharīb” is therefore questionable.",
- "ʿAṭiyya al-ʿAwfī",["Al-Bayhaqī, al-Sunan al-Kubrā: not used as proof (2/126), not relied on (7/66), weak (7/369), not argued with (8/126).","Ibn Ḥibbān: when asked who told him, he said “Abū Saʿīd”; people assumed al-Khudrī, but he meant al-Kalbī, so he may not be used as proof. Al-Nasāʾī: weak. Ibn Ḥajar: weak memory, notorious for tadlīs.","Scans of the gradings in the channel (to capture)."],["Tirmidhī 3192","al-Mubārakfūrī, Tuḥfat al-Aḥwadhī"]));
+ "ʿAṭiyya al-ʿAwfī",["Al-Bayhaqī, al-Sunan al-Kubrā: not used as proof (2/126), not relied on (7/66), weak (7/369), not argued with (8/126).","Ibn Ḥibbān: when asked who told him, he said “Abū Saʿīd”; people assumed al-Khudrī, but he meant al-Kalbī, so he may not be used as proof. Al-Nasāʾī: weak. Ibn Ḥajar: weak memory, notorious for tadlīs."],["Tirmidhī 3192","al-Mubārakfūrī, Tuḥfat al-Aḥwadhī"]));
 
 /* Khiḍr */
 add('islam/hadith/d-ia-hadith-refutations/t-khidr-killed-the-boy',N(AV('al-khidir-und-der-junge','1286266393624580157'),
  "“We feared he would overburden them” (18:80): so a child was killed on a guess, and the boy went to Hell.",
  "Most mufassirūn (e.g. al-Qurṭubī) take “we feared” as al-Khiḍr's words, acting on a judgement Allah permitted him; al-Ṭabarī and Ibn ʿAbbās take it as Allah's, with khashiya meaning “we knew”: Allah's foreknowledge of what the boy would become. And a child who dies before the age of accountability is in Paradise: al-Nawawī reports the great consensus, and the Prophet ﷺ saw the children of people, including the children of disbelievers, around Ibrāhīm in Paradise (Bukhārī 7047).",
- "18:80 and children in Paradise",["Bukhārī 7047 (the long dream): “the children around him are the children of people.” Asked about the children of the polytheists: “and the children of the polytheists.”","When the Prophet ﷺ said one shouldn't declare it with certainty, it's out of respect for Allah's judgement, as the ten promised Paradise never said so of themselves.","A PDF on al-Khiḍr is in the channel (to capture)."],["Qurʾān 18:80","Bukhārī 7047"]));
+ "18:80 and children in Paradise",["Bukhārī 7047 (the long dream): “the children around him are the children of people.” Asked about the children of the polytheists: “and the children of the polytheists.”","When the Prophet ﷺ said one shouldn't declare it with certainty, it's out of respect for Allah's judgement, as the ten promised Paradise never said so of themselves."],["Qurʾān 18:80","Bukhārī 7047"]));
 
 /* moon splitting */
 add('islam/prophet/d-ia-moon-splitting',N(AV('mond-spaltung','1365416588643139695'),

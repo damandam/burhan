@@ -1,7 +1,7 @@
 /* Hadith block 5 — 2026-11-20. Averroes German tiles on Jews & Christians → full English cards:
    #keine-juden-christen-grüßen, #juden-am-jüngsten-tag-töten, #prophet-saw-verflucht-juden-und-christen, #jude-schwören-kaaba.
    Cross-server: IA / Deenresponds have no channel or post on these four (searched greeting, gharqad, graves as mosques, Kaʿba oath).
-   Scans to capture: #keine-juden-christen-grüßen (1 + 3 images). */
+   Covers Averroes' Hadith channels on greeting non-Muslims and related narrations. */
 (()=>{
 const card=(path,o)=>topic(path.split('/'),{title:o.title,k:o.k,blurb:o.blurb,article:{claim:o.claim,tree:o.tree,sum:o.sum}});
 const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});

@@ -721,14 +721,9 @@
   document.addEventListener('visibilitychange', () => document.hidden ? unlisten() : listen());
 
   // ---------- Health, Provider Selection & Login UI ----------
-  // Obfuscated built-in Cloud fallback key (XOR-encoded so git secret scanners do not revoke it)
-  function builtinCloudKey() {
-    const b = [19,2,124,19,48,106,0,28,100,27,31,51,97,20,96,127,22,99,1,23,25,54,39,48,19,100,4,62,23,34,98,6,27,20,3,23,58,32,38,25,33,6,22,42,60,39,57,39,2,51,26];
-    return b.map(c => String.fromCharCode(c ^ 0x52)).join('');
-  }
   function storedKey(prov) {
     const p = prov || G.provider;
-    return ls.get('bh-key-' + p) || (p === 'gemini' ? builtinCloudKey() : '');
+    return ls.get('bh-key-' + p) || '';
   }
   function setStoredKey(prov, k) {
     ls.set('bh-key-' + prov, k ? k.trim() : null);
@@ -779,9 +774,6 @@
     }
     G.serverBase = foundBase;
     G.healthData = hData;
-    if (hData && hData.providers && hData.providers.gemini && hData.providers.gemini.browserKey && !ls.get('bh-key-gemini')) {
-      setStoredKey('gemini', hData.providers.gemini.browserKey);
-    }
     if (foundBase !== null && hData) {
       updateProviderPills();
       listen();

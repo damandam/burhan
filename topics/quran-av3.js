@@ -8,7 +8,7 @@
    #sperma-in-rippen (Q86 dossier + “two solutions” PDFs), #sternschnuppen (Feuerstrahlen PDF), #knochen-fleisch (PDF). */
 (()=>{
 const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});
-const N=(cr,they,we,h,p,src,next)=>({they,we,more:Object.assign({h,p,src},cr),next:next||[]});
+const N=(cr,they,we,h,p,src,next,extra)=>({they,we,more:Object.assign({h,p,src},cr,extra||{}),next:next||[]});
 const card=(path,o)=>topic(path.split('/'),{title:o.title,k:o.k,blurb:o.blurb,article:{claim:o.claim,tree:o.tree,sum:o.sum}});
 const add=(key,branch)=>{ for(let i=TOPICS.length-1;i>=0;i--){ const t=TOPICS[i], k=t.path.join('/'); let a=null; if(k===key) a=t.node.article; else if(key.startsWith(k+'/')&&t.node.children){ const c=t.node.children[key.slice(k.length+1)]; a=c&&c.article; } if(!a) continue;
   if(a.type==='explainer'){ const m=branch.more||{}; (a.cards=a.cards||[]).push({h:m.h,short:branch.we,sub:branch.we,p:[(branch.they?'They say: '+branch.they+' — ':'')+branch.we,...(m.p||[])],more:{credit:m.credit,link:m.link,src:m.src}}); return; }
@@ -19,7 +19,7 @@ const S='islam/quran/science-errors/';
 add('islam/quran/d-dr-everything-is-made-in-pairs',N(AV('allah-hat-alles-in-paare-erschaffen','1283244846328447079'),
  "Not everyone has a partner: many men lived and died without a wife.",
  "“Pairs” doesn't mean every individual has a spouse. Ibn Kathīr explains the pairs as day and night, sun and moon, light and darkness, woman and man, water and fire, land and sea, jinn and humans, and much more.",
- "Ibn Kathīr's pairs",["Ibn Kathīr on 51:49: the pairs are complementary opposites in creation, not a promise that each person will marry.","Ten scans from the tafsīr literature in the channel (to capture)."],["Qurʾān 51:49","Ibn Kathīr on 51:49"]));
+ "Ibn Kathīr's pairs",["Ibn Kathīr on 51:49: the pairs are complementary opposites in creation, not a promise that each person will marry."],["Qurʾān 51:49","Ibn Kathīr on 51:49"]));
 
 /* 86:5–7 */
 add('islam/quran/d-ia-scientific-allegations-against-the-quran/t-surah-86-5-7-semen-the-backbone-claim',N(AV('sperma-in-rippen','1282898057972940821'),
@@ -29,8 +29,7 @@ add('islam/quran/d-ia-scientific-allegations-against-the-quran/t-surah-86-5-7-se
   "Sperm is only 2–5% of the fluid; the seminal vesicles and prostate produce about 90%, and the bulbourethral glands add mucus.",
   "Objection: the ribs are too high. Answer: the head is still “between the shoulders” though higher, and the genitals “between the legs” though higher.",
   "Makkī ibn Abī Ṭālib al-Qaysī: “from between the loins and the ribs” means the human comes forth from between the man's loins and the woman's ribs (tafsīr, c. 1000 CE).",
-  "Wisdom of Solomon 7:1–2 (LXX): “in the womb of a mother I was moulded into flesh, within a period of ten months, compacted with blood, from the seed of a man and the pleasure of marriage.” Blood-and-seed conception is Greek medicine, and ten months is wrong.",
-  "Two detailed dossiers on 86:7 are in the channel (to capture)."],["Qurʾān 86:5–7","Wisdom of Solomon 7:1–2"]));
+  "Wisdom of Solomon 7:1–2 (LXX): “in the womb of a mother I was moulded into flesh, within a period of ten months, compacted with blood, from the seed of a man and the pleasure of marriage.” Blood-and-seed conception is Greek medicine, and ten months is wrong."],["Qurʾān 86:5–7","Wisdom of Solomon 7:1–2"],[],{shots:[{src:'shots/m2-semen-86-anatomy.webp',cap:"Anatomical diagram of the seminal vesicles and prostate (producing ~90% of seminal fluid) relative to the spine and front pelvic wall."}]}));
 
 /* mountains */
 const MO=AV('berge-pflöcke','1287057629730050100');
@@ -56,7 +55,7 @@ card(S+'bees-eat-fruit-16-69',{title:"Do bees eat fruit? (16:69)",k:"Biology",bl
  claim:"16:69 tells the bee to “eat from all the fruits”, but bees drink nectar.",
  tree:N(BE,"“Then eat from all the fruits” (16:69). Bees don't eat fruit.",
   "They do: honey bees feed on ripe fruit such as plums, peaches, grapes, apples, figs and pears, especially when nectar is scarce, and can pierce the skin of overripe fruit, whose smell attracts them (non-Muslim beekeeping sources). And the Qurʾān uses “eat” in a general sense of taking sustenance, including drink.",
-  "Sources",["honeybeesuite.com, “Do honey bees eat fruit?”; buzzbeekeepingsupplies.com: bees target overripe fruit.","“Eat” as general sustenance: 2:168; 5:88; 16:114; 20:81.","Screenshots in the channel (to capture)."],["Qurʾān 16:69"]),
+  "Sources",["honeybeesuite.com, “Do honey bees eat fruit?”; buzzbeekeepingsupplies.com: bees target overripe fruit.","“Eat” as general sustenance: 2:168; 5:88; 16:114; 20:81."],["Qurʾān 16:69"],[],{shots:[{src:'shots/m2-bees-fruit.webp',cap:"Honeybees feeding directly on ripe fruit, confirming Q 16:69's literal wording alongside Arabic kul ('take sustenance')."}]}),
  sum:"Bees do feed on ripe fruit, and kul (“eat”) in Arabic covers taking sustenance generally."});
 
 /* shooting stars */

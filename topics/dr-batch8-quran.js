@@ -129,7 +129,8 @@ card('islam/quran/history/ad-and-thamud-archaeology',{
       },
       shots:[
         S('dr8-ad-thamud-1.webp','Arabic monograph (Al-Mabḥath al-Rābiʿ: Madāʾin Ṣāliḥ wa-Masākin Thamūd) listing the six missionary premises and opening the rebuttal.'),
-        S('dr8-ad-thamud-2.webp','Lexical proof from Shams al-ʿUlūm on masākin and Shuʿayb al-Arnaʾūṭ’s grading of the Musnad Aḥmad Muḥammad ibn Abī Kabshah narration as ḍaʿīf.')
+        S('dr8-ad-thamud-2.webp','Lexical proof from Shams al-ʿUlūm on masākin and Shuʿayb al-Arnaʾūṭ’s grading of the Musnad Aḥmad Muḥammad ibn Abī Kabshah narration as ḍaʿīf.'),
+        S('m2-iram-arabic-p5.webp','Classical Arabic & epigraphic primary citations on ʿĀd al-Ūlā, ʿĀd al-Ākhirah, and Iram (al-Hamdānī, Yāqūt, al-Ṭabarī, al-Farrāʾ, Abū ʿUbayda).')
       ]
     }
   ),{
@@ -446,7 +447,10 @@ card('islam/quran/history/joseph-and-knives-12-31',{
       },
       shots:[
         S('dr8-joseph-knives-1.webp','Page 213 (notes 102–103) from Joseph Witztum critiquing James Kugel and highlighting that only the Qurʾān declares Joseph innocent before the banquet.'),
-        S('dr8-joseph-knives-2.webp','Scholarly excerpt comparing Muqātil b. Sulaymān’s citron/Zulaikha report with Midrash Tanḥūmā and asking whether Tanḥūmā actually predates Islam.')
+        S('dr8-joseph-knives-2.webp','Scholarly excerpt comparing Muqātil b. Sulaymān’s citron/Zulaikha report with Midrash Tanḥūmā and asking whether Tanḥūmā actually predates Islam.'),
+        S('m2-joseph-kugel-p213.webp','Joseph Witztum, The Syriac Milieu of the Quran (p. 213, nn. 102–103) — highlighting the critique of Kugel on Q 12:31.'),
+        S('m2-joseph-muqatil.webp','Tafsīr Muqātil ibn Sulaymān on Q 12:31 — post-Qurʾānic exegetical expansion parallel to late midrash.'),
+        S('m2-witztum-joseph-p224.webp','Joseph Witztum (p. 224) — Syriac Joseph tradition comparison showing independent Qurʾānic narrative shaping.')
       ]
     }
   ),{
@@ -864,5 +868,24 @@ add('christianity/jesus/d-dr-jesus-never-said-ahmed',P(N(
   theyWho:'Watch out · if they say',
   who:'Show para- + klētós/kleitós itself means Aḥmad'
 }));
+
+/* Attach M2 primary scans to dr-batch5-islam Qurʾān cards (loaded before dr-batch8-quran) */
+const attachUp=(key,shots)=>{
+  for(let i=TOPICS.length-1;i>=0;i--){
+    const t=TOPICS[i], k=t.path.join('/'); let a=null;
+    if(k===key) a=t.node.article;
+    else if(key.startsWith(k+'/')&&t.node.children){ const c=t.node.children[key.slice(k.length+1)]; a=c&&c.article; }
+    if(!a||!a.tree) continue;
+    const m=a.tree.more=a.tree.more||{};
+    m.shots=m.shots||[];
+    const seen=new Set(m.shots.map(s=>typeof s==='string'?s:s.src));
+    for(const s of shots) if(s&&s.src&&!seen.has(s.src)){ seen.add(s.src); m.shots.push(s); }
+    return;
+  }
+  console.warn('dr-batch8-quran: no card for shots',key);
+};
+attachUp('islam/quran/science-errors/five-keys-of-the-unseen',[S('m2-five-keys-obs.webp','Atmospheric & meteorological observation diagram — showing empirical forecasting vs. Q 31:34’s five keys of absolute unseen knowledge.')]);
+attachUp('islam/quran/science-errors/sun-orbit-and-destination',[S('m2-sun-orbit-izutsu.webp','Toshihiko Izutsu (2002) — cosmic phenomena in the Qurʾān functioning as signs (āyāt) pointing to the Creator.')]);
+attachUp('islam/quran/history/david-and-chainmail',[S('m2-david-chainmail.webp','Historical iron mail and scale armour comparison illustrating Q 21:80 & 34:10–11 (woven coats of mail).')]);
 
 })();

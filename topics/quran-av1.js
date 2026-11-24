@@ -3,9 +3,7 @@
    Ibn Masʿūd & 113–114 (#masud-rezitiert-anders, Nawawī/al-Māzarī), 37:12 (#allah-erstaunt: al-Qurṭubī, Ibn ʿĀshūr, Bible).
    New cards in Preservation › Common claims: sūra 33 “200 verses”, Ubayy's muṣḥaf, ʿĀʾisha's muṣḥaf (33:56 + “first rows”),
    Abū al-Dardāʾ and 92:3, the 1,027,000 letters ḥadīth, al-Suyūṭī and ʿurub (56:37).
-   #stillen-vers-aisha was done in hadith-block3 (ten-sucklings card).
-   PDF-only channels (scans/PDFs to capture): #musnaf-masud-fehlt-2-suren, #ibn-masud-versteckt-mansukript, #abu-darda (PDF), #suyuti-sagt-hure (6 imgs),
-   #suyuti-aisha-musnaf (3 imgs), #sure-33 (1 img). */
+   #stillen-vers-aisha was done in hadith-block3 (ten-sucklings card). */
 (()=>{
 const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});
 const N=(cr,they,we,h,p,src,next)=>({they,we,more:Object.assign({h,p,src},cr),next:next||[]});
@@ -34,7 +32,7 @@ add(P+'d-ia-the-process-of-quran-preservation',N(QA,"Zayd says the Prophet ﷺ d
 const MR=AV('masud-rezitiert-anders','1286002945363546163');
 add(CC+'t-ibn-mas-ud-surahs-113-114',N(MR,"Ibn Masʿūd's muṣḥaf differed from ʿUthmān's and lacked sūras.",
  "Al-Nawawī, quoting al-Māzarī: Ibn Masʿūd wrote in his personal copy what he wanted, including explanations, and ʿUthmān and the community objected so later people wouldn't take them for Qurʾān. The dispute was a fiqh question, whether one may write explanations in a muṣḥaf. Leaving out al-Muʿawwidhatayn may mean he didn't think everything had to be written, since everyone knew them.",
- "Al-Nawawī, Sharḥ Muslim 6/109",["Al-Nawawī (Sharḥ Ṣaḥīḥ Muslim 6/109), from al-Māzarī: the quote above.","Ibn Ḥajar and al-Nawawī: the differing readings of Abū al-Dardāʾ and Ibn Masʿūd (e.g. 92:3) were probably abrogated; later neither taught them, and in Kūfa and Shām everyone followed the muṣḥaf of ʿUthmān.","Two further documents on Ibn Masʿūd's muṣḥaf are in the Averroes channels (to capture)."],["al-Nawawī, Sharḥ Muslim 6/109"]));
+ "Al-Nawawī, Sharḥ Muslim 6/109",["Al-Nawawī (Sharḥ Ṣaḥīḥ Muslim 6/109), from al-Māzarī: the quote above.","Ibn Ḥajar and al-Nawawī: the differing readings of Abū al-Dardāʾ and Ibn Masʿūd (e.g. 92:3) were probably abrogated; later neither taught them, and in Kūfa and Shām everyone followed the muṣḥaf of ʿUthmān."],["al-Nawawī, Sharḥ Muslim 6/109"]));
 
 /* ── 37:12: al-Qurṭubī, Ibn ʿĀshūr, and the Bible ── */
 const ER=AV('allah-erstaunt','1285968654227345533');
@@ -84,7 +82,7 @@ card(CC+'aisha-mushaf-first-rows',{title:"ʿĀʾisha's muṣḥaf: “…and tho
  claim:"Al-Suyūṭī reports that ʿĀʾisha's muṣḥaf had 33:56 with “and upon those who pray in the first rows”, “before ʿUthmān changed the maṣāḥif”. So ʿUthmān altered the Qurʾān.",
  tree:N(AM,"Ḥumayda bint Abī Yūnus: her father, aged 80, recited from ʿĀʾisha's muṣḥaf: “Allah and His angels send blessings on the Prophet… and on those who stand in the first rows,” “before ʿUthmān changed (ghayyara) the maṣāḥif” (al-Itqān 3/82; Abū ʿUbayd, Faḍāʾil 1/324; Ibn Abī Dāwūd, al-Maṣāḥif 238).",
   "The report is weak, and the added words were never Qurʾān: they are a ḥadīth of the Prophet ﷺ. ʿĀʾisha narrates: “Allah and His angels send blessings on the first rows” (Ṣaḥīḥ Ibn Ḥibbān 2163–2164; also from al-Barāʾ ibn ʿĀzib). A ḥadīth got mixed into the verse in this one weak line.",
-  "The ḥadīth behind it",["عَنْ عَائِشَةَ قَالَتْ: قَالَ النَّبِيُّ ﷺ: «إنَّ اللَّهَ عَزَّ وَجَلّ وملَائِكَتَهُ يُصلون علَى الصُّفُوفِ الْأُوَلِ» (Ibn Ḥibbān 2163–2164; Ibn al-Muqriʾ, al-Muʿjam).","Scans of the grading in the channel (to capture)."],["al-Suyūṭī, al-Itqān 3/82","Ṣaḥīḥ Ibn Ḥibbān 2163–2164"]),
+  "The ḥadīth behind it",["عَنْ عَائِشَةَ قَالَتْ: قَالَ النَّبِيُّ ﷺ: «إنَّ اللَّهَ عَزَّ وَجَلّ وملَائِكَتَهُ يُصلون علَى الصُّفُوفِ الْأُوَلِ» (Ibn Ḥibbān 2163–2164; Ibn al-Muqriʾ, al-Muʿjam)."],["al-Suyūṭī, al-Itqān 3/82","Ṣaḥīḥ Ibn Ḥibbān 2163–2164"]),
  sum:"The report is weak, and “those in the first rows” is a ḥadīth (Ibn Ḥibbān 2163) that got mixed into 33:56 in one line."});
 
 /* ── new: Abū al-Dardāʾ and 92:3 ── */
@@ -93,7 +91,7 @@ card(CC+'abu-darda-92-3',{title:"Abū al-Dardāʾ and 92:3: “by the male and t
  claim:"Abū al-Dardāʾ said the Prophet ﷺ recited 92:3 as “wa-l-dhakari wa-l-unthā”, without “wa mā khalaqa”, and Ibn Masʿūd too. So the Qurʾān was changed.",
  tree:N(AD,"Abū al-Dardāʾ: the Prophet ﷺ recited “and by the male and the female”, and so did Ibn Masʿūd; our muṣḥaf has “and by Him who created the male and the female” (Bukhārī 4943).",
   "It's one word, and a single witness against the whole Umma. Every other Companion, including Abū Bakr, ʿUmar, ʿUthmān and ʿAlī, transmitted today's wording. Al-Qurṭubī: this lone report was affected by forgetfulness. If 9,999 people heard a sentence one way and one person another, who misheard?",
-  "Two explanations",["A lone report (khabar wāḥid) against the mass transmission is rejected.","Or abrogation: Qāḍī ʿIyāḍ and al-Māzarī say it was a reading whose recitation was abrogated, and those who differed hadn't learned of the abrogation; it isn't part of what was agreed in ʿUthmān's compilation. Ibn Ḥajar and al-Nawawī likewise.","Neither Abū al-Dardāʾ nor Ibn Masʿūd taught it later; Kūfa and Shām followed ʿUthmān's muṣḥaf. (See also the aḥruf card.)","A PDF on this is in the channel (to capture)."],["Bukhārī 4943","al-Qurṭubī on 92:3"]),
+  "Two explanations",["A lone report (khabar wāḥid) against the mass transmission is rejected.","Or abrogation: Qāḍī ʿIyāḍ and al-Māzarī say it was a reading whose recitation was abrogated, and those who differed hadn't learned of the abrogation; it isn't part of what was agreed in ʿUthmān's compilation. Ibn Ḥajar and al-Nawawī likewise.","Neither Abū al-Dardāʾ nor Ibn Masʿūd taught it later; Kūfa and Shām followed ʿUthmān's muṣḥaf. (See also the aḥruf card.)"],["Bukhārī 4943","al-Qurṭubī on 92:3"]),
  sum:"Abū al-Dardāʾ's “by the male and female” is a lone report against everyone else, or an abrogated reading he hadn't heard was abrogated."});
 
 /* ── new: 1,027,000 letters ── */
@@ -111,6 +109,6 @@ card(CC+'suyuti-urub-56-37',{title:"Did al-Suyūṭī gloss ʿurub (56:37) as �
  claim:"Al-Suyūṭī explains the ʿurub of Paradise (56:37) as qaḥba, “whores”.",
  tree:N(SH,"An edition of al-Suyūṭī's work glosses ʿurub as qaḥba (prostitute).",
   "Only one print edition, by Dr. Muḥammad Sayyid al-Rifāʿī, has this; no other edition does, and the manuscript has ghanija (affectionate, playful, loving), not qaḥba. The same book, on the same page (26), says the commentators and linguists all agree ʿurub means loving and playful.",
-  "Editions and manuscript",["The edition of ʿĀdil al-ʿĀmil does not say ʿurub means ghahba/qaḥba.","Same book, p. 26: the mufassirūn and linguists agree ʿurub is ghanija: loving, playful.","The manuscript of the tafsīr has غنجة, not القحبة: an error or interpolation in al-Rifāʿī's edition. (6 scans in the channel; to capture.)"],["Qurʾān 56:37"]),
+  "Editions and manuscript",["The edition of ʿĀdil al-ʿĀmil does not say ʿurub means ghahba/qaḥba.","Same book, p. 26: the mufassirūn and linguists agree ʿurub is ghanija: loving, playful.","The manuscript of the tafsīr has غنجة, not القحبة: an error or interpolation in al-Rifāʿī's edition."],["Qurʾān 56:37"]),
  sum:"The “prostitute” gloss exists in only one modern edition; the manuscript and all other editions have ghanija, loving and playful."});
 })();

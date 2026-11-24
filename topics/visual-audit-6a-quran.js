@@ -10,17 +10,52 @@
     }
     return null;
   }
+  function mergeShots(more, list) {
+    if (!Array.isArray(list) || !list.length) return;
+    more.shots = more.shots || [];
+    const seen = new Set(more.shots.map(s => (typeof s === 'string' ? s : s.src)));
+    for (const s of list) {
+      const src = typeof s === 'string' ? s : s.src;
+      if (src && !seen.has(src)) { seen.add(src); more.shots.push(s); }
+    }
+  }
+  function stripPh(arr) {
+    if (!Array.isArray(arr)) return arr;
+    return arr
+      .map(s => s
+        .replace(/\s*\([^)]*(?:to capture|scans? in the channel)[^)]*\)\.?/gi, '.')
+        .replace(/\s*Channel media note:[^.]*\./gi, '')
+        .replace(/\s*\.\./g, '.')
+        .trim())
+      .filter(Boolean);
+  }
   function up(key, patch) {
     const a = findArt(key);
     if (!a) { console.warn('visual-audit-6a: missing', key); return; }
     if (a.type === 'explainer') {
       if (patch.visual && !a.visual) a.visual = patch.visual;
+      if (patch.evidence) a.evidence = patch.evidence;
       if (Array.isArray(a.cards) && a.cards.length) {
         const c = a.cards[0];
         c.more = c.more || {};
         if (patch.facts) c.more.facts = patch.facts;
         if (patch.quotes) c.more.quotes = patch.quotes;
         if (patch.cardVisual) c.more.visual = patch.cardVisual;
+        if (patch.shots) mergeShots(c.more, patch.shots);
+        if (patch.cardPatches) {
+          for (const [idxStr, cp] of Object.entries(patch.cardPatches)) {
+            const ci = Number(idxStr);
+            const card = a.cards[ci];
+            if (!card) continue;
+            if (cp.p) card.p = cp.p;
+            if (cp.short) card.short = cp.short;
+            card.more = card.more || {};
+            if (cp.facts) card.more.facts = cp.facts;
+            if (cp.quotes) card.more.quotes = cp.quotes;
+            if (cp.visual) card.more.visual = cp.visual;
+            if (cp.shots) mergeShots(card.more, cp.shots);
+          }
+        }
       }
       return;
     }
@@ -34,8 +69,33 @@
     if (patch.quotes) t.more.quotes = patch.quotes;
     if (patch.visual) t.more.visual = patch.visual;
     if (patch.p) t.more.p = patch.p;
+    if (patch.shots) mergeShots(t.more, patch.shots);
     if (patch.optWho && Array.isArray(t.next)) {
       t.next.forEach((c, j) => { if (patch.optWho[j]) c.optWho = patch.optWho[j]; });
+    }
+    if (patch.nextPatch) {
+      for (const [pathStr, np] of Object.entries(patch.nextPatch)) {
+        let cur = t;
+        for (const seg of String(pathStr).split('.')) {
+          if (!cur || !Array.isArray(cur.next)) { cur = null; break; }
+          cur = cur.next[Number(seg)];
+        }
+        if (!cur) continue;
+        cur.more = cur.more || {};
+        if (np.p) cur.more.p = np.p;
+        if (np.appendP) cur.more.p = (cur.more.p || []).concat(np.appendP);
+        if (np.facts) cur.more.facts = np.facts;
+        if (np.quotes) cur.more.quotes = np.quotes;
+        if (np.visual) cur.more.visual = np.visual;
+        if (np.shots) mergeShots(cur.more, np.shots);
+      }
+    }
+    if (patch.stripPlaceholders) {
+      const walkStrip = n => {
+        if (n.more && Array.isArray(n.more.p)) n.more.p = stripPh(n.more.p);
+        (n.next || []).forEach(walkStrip);
+      };
+      walkStrip(t);
     }
   }
 
@@ -79,6 +139,12 @@
       'Warning against disputing: Abū Hurayra reports: “The Qurʾān was revealed in seven aḥruf; disputing about the Qurʾān is disbelief; recite what you know of it and leave what you don\'t know to one who knows” (Aḥmad 7989). Ḥudhayfa warned: don\'t turn away from a ḥarf you were taught because you dislike it (Aḥmad 23273).',
       'Counting up to seven: Ibn ʿAbbās reports: “Jibrīl taught me one ḥarf; I kept asking him to increase it and he increased it until it ended at seven” (Bukhārī 3219; Abū ʿUbayd, Faḍāʾil 730). Ubayy reports: “one ḥarf or two?… until we reached seven” (Bukhārī 4991).',
       'Yaqeen Institute paper: The Yaqeen Institute paper “The ʿUthmānic Codex” (linked by Deenresponds) explains how ʿUthmān\'s codex preserved what was revealed.'
+    ],
+    shots: [
+      { src: 'shots/m2-lattice-7ahruf-s4.webp', cap: 'The Quranic Lattice (Slide 4) — the seven aḥruf as a prophetic concession (rukhṣa).' },
+      { src: 'shots/m2-lattice-7faces-s5.webp', cap: 'The Quranic Lattice (Slide 5) — seven complementary linguistic dimensions of the aḥruf.' },
+      { src: 'shots/m2-lattice-untangling-s10.webp', cap: 'The Quranic Lattice (Slide 10) — untangling the seven aḥruf from the ten qirāʾāt.' },
+      { src: 'shots/m2-pres-razi-p8.webp', cap: 'Abū al-Faḍl al-Rāzī, al-Lawāmiḥ (p. 8) — classical clarification of the seven aḥruf and ʿUthmānic consensus.' }
     ]
   });
 
@@ -113,6 +179,34 @@
       ['Finding 1', 'Distinct from Prophet\'s ﷺ speech'],
       ['Finding 2', 'Single author throughout']
     ],
+    quotes: [
+      {
+        by: 'Dr. Ali Ataie (summarizing Sidky, van Putten, Anthony)',
+        en: 'We have 100% of the Qurʾān in extant MSS witnesses from the first Islamic century. (Dr. Hythem Sidky, Dr. Marijn Van Putten, and Dr. Sean Anthony) ... "The entirety of the text is attested in the first century" hijrī; this is without question.',
+        ref: 'Preservation of the Qur\'anic Text, Slide 4'
+      },
+      {
+        by: 'Dr. Marijn van Putten',
+        en: 'However, as interest in these early fragments grew, it was noticed quite quickly that the text that we find in these fragments is word-for-word identical to the text as we have it today. This already speaks in favor of an early canonization of the text.',
+        ref: 'Quranic Studies / p. 154'
+      },
+      {
+        by: 'Dr. Raymond Farrin',
+        en: 'In short, our study offers further evidence that the entire Qur\'an, form and content, traces directly to the Prophet.',
+        ref: 'Structure and Qur\'anic Interpretation'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-ataie-common-ancestor-s14.webp', cap: 'Dr. Ali Ataie (Slide 14) — stemmatic proof of a single written archetype.' },
+      { src: 'shots/m2-scholar-vanputten.webp', cap: 'Marijn van Putten (p. 154) — early fragments match today\'s text word-for-word and point to early canonization.' },
+      { src: 'shots/m2-scholar-farrin.webp', cap: 'Raymond Farrin — structural ring symmetry tracing the entire Qurʾān directly to the Prophet ﷺ.' },
+      { src: 'shots/m2-scholar-kara.webp', cap: 'Seyfeddin Kara — scholarly attestation of early Qurʾānic textual transmission.' },
+      { src: 'shots/m2-scholar-bell.webp', cap: 'Richard Bell — critical Western assessment of early Qurʾānic textual stability.' },
+      { src: 'shots/m2-scholar-landau.webp', cap: 'Rom Landau — historical testimony to the reliability of Qurʾānic preservation.' },
+      { src: 'shots/m2-scholar-lane.webp', cap: 'Edward William Lane — classical lexicographical testimony to Qurʾānic Arabic.' },
+      { src: 'shots/m2-scholar-bodley-p2.webp', cap: 'R. V. C. Bodley (p. 2) — attestation on the preservation of the Qurʾān.' },
+      { src: 'shots/m2-scholar-bodley-p236.webp', cap: 'R. V. C. Bodley (p. 236) — witness to textual fidelity since the 7th century.' }
+    ],
     cardVisual: {
       kind: 'compare',
       left: {
@@ -143,6 +237,22 @@
       ['Classical source', 'al-Nawawī, Sharḥ Muslim 6/109'],
       ['Ḥadīth evidence', 'Sunan Abī Dāwūd'],
       ['Transmission', 'Ibn Masʿūd\'s qirāʾa has all 114']
+    ],
+    quotes: [
+      {
+        by: 'Imām al-Nawawī',
+        ar: 'باطل ليس بصحيح عنه',
+        en: 'False — it is not authentically established from him [Ibn Masʿūd].',
+        ref: 'al-Majmūʿ / Sharḥ Ṣaḥīḥ Muslim 6/109'
+      },
+      {
+        by: 'Dr. Ali Ataie (summarizing Ibn al-Jazarī, Kitāb al-Nashr)',
+        en: 'According to Imām Shams al-Dīn al-Jazarī (Kitāb al-Nashr fī Qirāʾat al-ʿAshr), FOUR of the TEN mass-transmitted Readings Traditions: ʿĀṣim, Ḥamzah, al-Kisāʾī, Khalaf, all in Iraq, can be traced to the Prophet through Abdullah Ibn Masʿūd. All recite surahs 113 and 114.',
+        ref: 'Preservation of the Qur\'anic Text, Slide 20'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-masud-113-114-ataie-s20.webp', cap: 'Ali Ataie (Slide 20) — ʿĀṣim, Ḥamzah, al-Kisāʾī, and Khalaf all trace to Ibn Masʿūd and recite Sūrahs 113 & 114.' }
     ],
     visual: {
       kind: 'compare',
@@ -175,6 +285,22 @@
       ['Qurʾānic method', 'Tawātur (mass transmission)'],
       ['Written check', 'Scribes from day one'],
       ['Standardisation', 'Copies sent with reciters']
+    ],
+    quotes: [
+      {
+        by: 'The Quranic Lattice (Ibn al-Jazarī\'s Criteria)',
+        en: 'The recitation must possess a Ṣaḥīḥ (authentic) or Mutawātir (mass-transmitted) chain: Ḍabṭ (absolute, flawless memory retention by the narrator), ʿAdālah (unimpeachable personal and religious character), and Simāʿ (continuous, direct auditory reception linking back to the Prophet).',
+        ref: 'The_Quranic_Lattice.pdf, Slide 15'
+      },
+      {
+        by: 'Prophet Muḥammad ﷺ',
+        en: 'I have revealed to you a Book that water cannot wash away.',
+        ref: 'Ṣaḥīḥ Muslim 2865'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-lattice-anatomy-s12.webp', cap: 'The Quranic Lattice (Slide 12) — branching multi-teacher sanad network vs. linear telephone chain.' },
+      { src: 'shots/m2-lattice-sanad-s15.webp', cap: 'The Quranic Lattice (Slide 15) — Ibn al-Jazarī\'s transmission criteria (Ḍabṭ, ʿAdālah, Simāʿ).' }
     ],
     visual: {
       kind: 'compare',
@@ -220,6 +346,10 @@
         ref: 'Tirmidhī 1431 (ṣaḥīḥ)'
       }
     ],
+    shots: [
+      { src: 'shots/m2-suyuti-stoning-p61.webp', cap: 'al-Suyūṭī, al-Itqān (p. 61) — Ubayy b. Kaʿb report on the verse of stoning.' },
+      { src: 'shots/m2-suyuti-burhan-p64.webp', cap: 'al-Suyūṭī, al-Itqān (p. 64) — citing al-Burhān on ʿUmar\'s refusal to add to the Book of Allah.' }
+    ],
     visual: {
       kind: 'steps',
       items: [
@@ -256,6 +386,9 @@
         ref: '17:106'
       }
     ],
+    shots: [
+      { src: 'shots/m2-makkan-madeenan-p3.webp', cap: 'Makkan & Madinan Soorahs (p. 3) — Ibn Masʿūd on knowing when and where every āyah was revealed.' }
+    ],
     visual: {
       kind: 'steps',
       items: [
@@ -281,6 +414,22 @@
       ['First compilation', 'Abū Bakr post-Yamāmah (Bukhārī 7191)'],
       ['Lead scribe', 'Zayd ibn Thābit (Bukhārī 4990)'],
       ['Trigger', 'Ḥudhayfah saw regional disputes']
+    ],
+    quotes: [
+      {
+        by: 'The Quranic Lattice (Uthmanic Standardization)',
+        en: 'Caliph Uthman orders the recall and burning of all individual, private codices—which contained personal notes and unverified dialectal readings—to establish a single universal master text based purely on the Prophet\'s final oral review.',
+        ref: 'The_Quranic_Lattice.pdf, Slide 8'
+      },
+      {
+        by: 'Ṣaḥīḥ al-Bukhārī 4987',
+        en: 'Send us the manuscripts of the Qurʾān so that we may compile the Qurʾānic materials in perfect copies and return the manuscripts to you.',
+        ref: 'Bukhārī 4987 (ʿUthmān to Ḥafṣah)'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-lattice-hudhayfah-s7.webp', cap: 'The Quranic Lattice (Slide 7) — Ḥudhayfah\'s warning and the ʿUthmānic standardization.' },
+      { src: 'shots/m2-lattice-uthmanic-rasm-s8.webp', cap: 'The Quranic Lattice (Slide 8) — standardizing the master rasm from Ḥafṣah\'s primary compilation.' }
     ],
     visual: {
       kind: 'steps',
@@ -313,6 +462,9 @@
         en: 'By He who created the male and the female',
         ref: '92:3 (cf. Bukhārī 4944)'
       }
+    ],
+    shots: [
+      { src: 'shots/m2-masud-fatihah-ataie-s19.webp', cap: 'Ali Ataie (Slide 19) — Ibn Masʿūd omitting al-Fātiḥa from a personal codex for memory/brevity, not rejecting revelation.' }
     ],
     visual: {
       kind: 'compare',
@@ -353,6 +505,9 @@
         ref: 'Musnad Aḥmad 25/134 (on 21207)'
       }
     ],
+    shots: [
+      { src: 'shots/m2-suyuti-ahzab-p61.webp', cap: 'al-Suyūṭī, al-Itqān (p. 61) — the weak Ibn Lahīʿa report regarding 200 verses of Sūrat al-Aḥzāb.' }
+    ],
     visual: {
       kind: 'compare',
       left: {
@@ -387,6 +542,10 @@
         en: 'if the son of Ādam had a valley of gold…',
         ref: 'Bukhārī 6438'
       }
+    ],
+    shots: [
+      { src: 'shots/m2-ubayy-qunut-ataie-s21.webp', cap: 'Ali Ataie (Slide 21) — text of al-Khalʿ and al-Ḥafd identified as Duʿāʾ al-Qunūt supplications.' },
+      { src: 'shots/m2-ubayy-qunut-ataie-s22.webp', cap: 'Ali Ataie (Slide 22) — Sunan Ibn Mājah 1182, al-Nasāʾī 1699 & al-Tirmidhī 401 attesting Qunūt.' }
     ],
     visual: {
       kind: 'compare',
@@ -430,6 +589,11 @@
         ref: 'Ṣaḥīḥ Ibn Ḥibbān 2163–2164'
       }
     ],
+    shots: [
+      { src: 'shots/m2-aisha-rows-hadith.webp', cap: 'Ṣaḥīḥ Ibn Ḥibbān 2163–2164 — authentic prophetic ḥadīth on blessings upon the first rows.' },
+      { src: 'shots/m2-aisha-rows-grading.webp', cap: 'Isnād and scholarly grading showing why the Ḥumayda report conflated the ḥadīth with Q 33:56.' },
+      { src: 'shots/m2-suyuti-aisha-rows-p61.webp', cap: 'al-Suyūṭī, al-Itqān (p. 61) — Abū Yūnus report regarding ʿĀʾisha\'s personal muṣḥaf.' }
+    ],
     visual: {
       kind: 'compare',
       left: {
@@ -448,8 +612,7 @@
       }
     },
     p: [
-      'Actual ḥadīth wording: عَنْ عَائِشَةَ قَالَتْ: قَالَ النَّبِيُّ ﷺ: «إنَّ اللَّهَ عَزَّ وَجَلّ وملَائِكَتَهُ يُصلون علَى الصُّفُوفِ الْأُوَلِ» (Ibn Ḥibbān 2163–2164; Ibn al-Muqriʾ, al-Muʿjam).',
-      'Channel note: Scans of the grading in the channel (to capture).'
+      'Actual ḥadīth wording: عَنْ عَائِشَةَ قَالَتْ: قَالَ النَّبِيُّ ﷺ: «إنَّ اللَّهَ عَزَّ وَجَلّ وملَائِكَتَهُ يُصلون علَى الصُّفُوفِ الْأُوَلِ» (Ibn Ḥibbān 2163–2164; Ibn al-Muqriʾ, al-Muʿjam).'
     ]
   });
 
@@ -460,6 +623,18 @@
       ['Source', 'Ṣaḥīḥ al-Bukhārī 4943'],
       ['Consensus', 'Abū Bakr, ʿUmar, ʿUthmān, ʿAlī & others'],
       ['Scholars', 'al-Qurṭubī; Qāḍī ʿIyāḍ; al-Nawawī; Ibn Ḥajar']
+    ],
+    quotes: [
+      {
+        by: 'Qurʾān — Sūrat al-Layl (Canonical Reading)',
+        ar: 'وَمَا خَلَقَ الذَّكَرَ وَالْأُنثَىٰ',
+        en: 'And [by] He who created the male and female (92:3) — Bukhārī 4943–4944 & Muslim 824a note Abū al-Dardāʾ\'s earlier ḥarf prior to the final review.',
+        ref: 'Qurʾān 92:3; Bukhārī 4943–4944; Muslim 824a'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-abudarda-bukhari-4944.webp', cap: 'Ṣaḥīḥ al-Bukhārī 4944 — Abū al-Dardāʾ and ʿAlqamah report on Q 92:3.' },
+      { src: 'shots/m2-lattice-shadh-s18.webp', cap: 'The Quranic Lattice (Slide 18) — fail-safe distinction between canonical mutawātir readings and shādhdh/abrogated reports.' }
     ],
     visual: {
       kind: 'compare',
@@ -481,8 +656,7 @@
     p: [
       'Lone report vs tawātur: A lone report (khabar wāḥid) against the mass transmission is rejected.',
       'Abrogated reading: Qāḍī ʿIyāḍ and al-Māzarī say it was a reading whose recitation was abrogated, and those who differed hadn\'t learned of the abrogation; it isn\'t part of what was agreed in ʿUthmān\'s compilation. Ibn Ḥajar and al-Nawawī likewise.',
-      'Later practice in Kūfa and Shām: Neither Abū al-Dardāʾ nor Ibn Masʿūd taught it later; Kūfa and Shām followed ʿUthmān\'s muṣḥaf. (See also the aḥruf card.)',
-      'Channel reference: A PDF on this is in the channel (to capture).'
+      'Later practice in Kūfa and Shām: Neither Abū al-Dardāʾ nor Ibn Masʿūd taught it later; Kūfa and Shām followed ʿUthmān\'s muṣḥaf. (See also the aḥruf card.)'
     ]
   });
 
@@ -529,6 +703,19 @@
       ['Faulty print', 'Dr. Muḥammad Sayyid al-Rifāʿī edition'],
       ['Other editions', 'ʿĀdil al-ʿĀmil & p. 26 agree on ghanija']
     ],
+    quotes: [
+      {
+        by: 'Qurʾān — Sūrat al-Wāqiʿah',
+        ar: 'عُرُبًا أَتْرَابًا',
+        en: 'Devoted [and loving] companions of equal age — consistently glossed by classical commentators and linguists (p. 26) as غنجة (ghanija: affectionate, playful).',
+        ref: 'Qurʾān 56:37'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-suyuti-urub-title.webp', cap: 'Title page of the print edition of al-Suyūṭī\'s commentary.' },
+      { src: 'shots/m2-suyuti-urub-print.webp', cap: 'Print edition (al-Rifāʿī) showing the isolated typographical corruption alongside p. 26\'s true lexical gloss.' },
+      { src: 'shots/m2-suyuti-urub-ms.webp', cap: 'Primary manuscript folio reading غنجة (ghanija, \'affectionate/loving\'), refuting the print error.' }
+    ],
     visual: {
       kind: 'compare',
       left: {
@@ -549,7 +736,7 @@
     p: [
       'ʿĀdil al-ʿĀmil edition: The edition of ʿĀdil al-ʿĀmil does not say ʿurub means ghahba/qaḥba.',
       'Same book, p. 26: the mufassirūn and linguists agree ʿurub is ghanija: loving, playful.',
-      'Manuscript evidence: The manuscript of the tafsīr has غنجة, not القحبة: an error or interpolation in al-Rifāʿī\'s edition. (6 scans in the channel; to capture.)'
+      'Manuscript evidence: The manuscript of the tafsīr has غنجة, not القحبة: an error or interpolation in al-Rifāʿī\'s edition.'
     ]
   });
 
@@ -560,6 +747,18 @@
       ['Report source', 'Kanz al-ʿUmmāl 2/569'],
       ['Narrator', 'Bajāla al-Tamīmī (Tirmidhī 1586–1587)'],
       ['Meaning', 'Metaphorical, like “mothers” in 33:6']
+    ],
+    quotes: [
+      {
+        by: 'Qurʾān — Sūrat al-Aḥzāb',
+        ar: 'النَّبِيُّ أَوْلَىٰ بِالْمُؤْمِنِينَ مِنْ أَنفُسِهِمْ ۖ وَأَزْوَاجُهُ أُمَّهَاتُهُمْ',
+        en: 'The Prophet is more worthy of the believers than themselves, and his wives are [in the position of] their mothers.',
+        ref: 'Qurʾān 33:6'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-ubayy-33-6-q33-40.webp', cap: 'Qurʾān 33:6 & 33:40 — spiritual paternity/maternity vs. biological fatherhood.' },
+      { src: 'shots/m2-ubayy-33-6-tafsir.webp', cap: 'Classical tafsīr analysis on Ubayy\'s explanatory gloss (wa-huwa abun lahum) in 33:6.' }
     ],
     visual: {
       kind: 'compare',
@@ -580,8 +779,7 @@
     },
     p: [
       'Bajāla al-Tamīmī: ʿUmar told the boy to erase it; the boy refused, saying it was in Ubayy\'s muṣḥaf; ʿUmar went to Ubayy (raising his voice in one version); Ubayy replied that the Qurʾān occupied him as the noise of the markets occupied ʿUmar.',
-      'On Bajāla: al-Shāfiʿī\'s editor calls him unknown, but al-Jāḥiẓ lists him among Baṣra\'s ascetics, Mujāhid ibn Mūsā and Abū Zurʿa call him reliable, and al-Tirmidhī graded two of his ḥadīth ḥasan ṣaḥīḥ (1586–1587).',
-      'Channel scans: Eight scans in the channel (to capture).'
+      'On Bajāla: al-Shāfiʿī\'s editor calls him unknown, but al-Jāḥiẓ lists him among Baṣra\'s ascetics, Mujāhid ibn Mūsā and Abū Zurʿa call him reliable, and al-Tirmidhī graded two of his ḥadīth ḥasan ṣaḥīḥ (1586–1587).'
     ]
   });
 
@@ -641,6 +839,10 @@
         ref: '2:34'
       }
     ],
+    shots: [
+      { src: 'shots/m2-iblis-q18-50.webp', cap: 'Qurʾān 18:50 — explicitly identifying Iblīs as "min al-jinn" (one of the jinn).' },
+      { src: 'shots/m2-witztum-iblis-p90.webp', cap: 'Joseph Witztum, The Syriac Milieu of the Quran (p. 90) — Syriac Cave of Treasures parallel on Iblīs.' }
+    ],
     visual: {
       kind: 'compare',
       left: {
@@ -675,6 +877,20 @@
       ['Adam\'s descent', '2:36–38; 7:23; 20:122'],
       ['ʿĀd\'s punishment', '41:13 vs 41:16'],
       ['Wind duration', '54:19; 41:16; 69:6–7']
+    ],
+    quotes: [
+      {
+        by: 'Qurʾān — Sūrat al-Muʾminūn',
+        ar: 'فَإِذَا اسْتَوَيْتَ أَنتَ وَمَن مَّعَكَ عَلَى الْفُلْكِ',
+        en: 'And when you have boarded the ship, you and those with you, then say: Praise to Allah who has saved us from the wrongdoing people.',
+        ref: '23:27–28'
+      },
+      {
+        by: 'Qurʾān — Sūrat Hūd',
+        ar: 'حَتَّىٰ إِذَا جَاءَ أَمْرُنَا وَفَارَ التَّنُّورُ قُلْنَا احْمِلْ فِيهَا مِن كُلٍّ زَوْجَيْنِ اثْنَيْنِ',
+        en: 'Until when Our command came and the oven overflowed, We said: Load upon it of each [kind] two mates and your family.',
+        ref: '11:40'
+      }
     ],
     visual: {
       kind: 'steps',
@@ -801,6 +1017,9 @@
         ref: '4:66'
       }
     ],
+    shots: [
+      { src: 'shots/m2-suyuti-2-54-p293.webp', cap: 'al-Suyūṭī, al-Itqān (p. 293) — Qurʾān 2:54 ("fa tūbū ilā bārīkum") lexical and grammatical note.' }
+    ],
     visual: {
       kind: 'compare',
       left: {
@@ -841,6 +1060,10 @@
         ref: '6:145'
       }
     ],
+    shots: [
+      { src: 'shots/m2-donkey-q6-145.webp', cap: 'Qurʾān 6:145 — Makkan restriction ("in what has been revealed to me [thus far]") before later Medinan prohibitions.' },
+      { src: 'shots/m2-donkey-bukhari-5115.webp', cap: 'Ṣaḥīḥ al-Bukhārī 5115 (and Muslim 1407) — Medinan prohibition of domestic donkey meat at Khaybar (7 AH).' }
+    ],
     visual: {
       kind: 'steps',
       items: [
@@ -851,8 +1074,7 @@
     },
     p: [
       'Meccan revelation (6.145): “Say: I don\'t find in what has been revealed to me anything forbidden… except carrion, poured-out blood, swine flesh, or what is offered to other than Allah” (6:145): what had been revealed until then.',
-      'Khaybar prohibition (7 AH): ʿAlī reports that the Prophet ﷺ forbade mutʿa and the flesh of domestic donkeys on the day of Khaybar (Muslim 1407).',
-      'Channel scans: Four scans in the channel (to capture).'
+      'Khaybar prohibition (7 AH): ʿAlī reports that the Prophet ﷺ forbade mutʿa and the flesh of domestic donkeys on the day of Khaybar (Muslim 1407).'
     ]
   });
 
@@ -894,8 +1116,9 @@
       }
     },
     p: [
-      'Force of the phrase: The emphatic “worse in position and further astray” stresses their many evil traits; in the Hereafter their abode is the Fire.',
-      'Immediate context (5.59): “O People of the Book, do you resent us only because we believe in Allah…?” (5:59).'
+      'Immediate context (5.59): “O People of the Book, do you resent us only because we believe in Allah and what was revealed to us and what was revealed before, and because most of you are defiantly disobedient?” (5:59).',
+      'Concessive rhetorical reply (Ṭanṭāwī): In Arabic rhetoric, sharran min dhālika (“worse than that”) adopts the mockers\' premise only hypothetically to highlight the far worse state of those cursed and turned away from Allah\'s mercy—never an admission that belief in Allah is evil.',
+      'Parallel in Q 34:24: The Qurʾān uses the exact same dialectical framing in 34:24 (“And indeed, we or you are either upon guidance or in clear error”) so listeners confront the contrast directly.'
     ]
   });
 
@@ -1210,9 +1433,13 @@
         ]
       }
     },
+    shots: [
+      { src: 'shots/m2-5-75-5-116-quran.webp', cap: 'Qurʾān 5:75 & 5:116 text — addressing worship of Jesus and Mary alongside (min dūni Allāh).' },
+      { src: 'shots/m2-trinity-5-116-mariology.webp', cap: 'Historical Mariology & Collyridian veneration background on Q 5:116.' }
+    ],
     p: [
       'Trinity addressed elsewhere: 5:116 never mentions a Trinity. The Qurʾān rejects the Trinity separately and explicitly in 4:171 and 5:73.',
-      'Channel tafsīr scan: Ibn Kathīr\'s commentary on the verse is shown in the channel (scan).'
+      'Tafsīr context: Ibn Kathīr and the attached Q 5:75 / 5:116 primary text and historical Mariology notes confirm the verse addresses taking Jesus and Mary as gods besides Allah, not a Triune formula.'
     ]
   });
 
@@ -1249,6 +1476,11 @@
         ]
       }
     },
+    shots: [
+      { src: 'shots/m2-3-55-q61-14.webp', cap: 'Qurʾān 61:14 — identifying the believing Israelite faction among Jesus\' disciples.' },
+      { src: 'shots/m2-3-55-q61-11.webp', cap: 'Qurʾān 61:11–14 — context of believing and striving in the way of Allah.' },
+      { src: 'shots/m2-3-55-pseudoclem.webp', cap: 'Pseudo-Clementine Homilies & early Jewish-Christian testimony on Jamesian followers of Jesus.' }
+    ],
     p: [
       'Qurʾān 61.14 clarifies 3.55: “O you who believe, be supporters of Allah, as when Jesus son of Mary said to the disciples: Who are my supporters for Allah? The disciples said: We are supporters of Allah. A faction of the Children of Israel believed and a faction disbelieved. So We supported those who believed against their enemy, and they became dominant” (61:14).',
       'True followers vs Pauline shift: There were those who disbelieved in ʿĪsā, such as Paul and his followers, and the outright rejecters of ʿĪsā. Those who believed were the Jamesian community and the Ebionites, who became dominant in a spiritual sense, as the Pseudo-Clementine Homilies attest.',
@@ -1279,6 +1511,12 @@
         en: 'the Son can do nothing of his own accord',
         ref: 'John 5:19'
       }
+    ],
+    shots: [
+      { src: 'shots/m2-9-31-quran.webp', cap: 'Qurʾān 9:31 Arabic & translation — condemning taking rabbis, monks, and the Messiah as lords besides Allah.' },
+      { src: 'shots/m2-9-31-tabari.webp', cap: 'Tafsīr al-Ṭabarī on Q 9:31 — iʿrāb showing al-Masīḥa is coordinated as direct object of ittakhadhū.' },
+      { src: 'shots/m2-ataie-9-31-p327.webp', cap: 'Ali Ataie, Islam — In Defense Of (p. 327) — grammatical & exegetical analysis of Q 9:31.' },
+      { src: 'shots/m2-ataie-4-171-p52.webp', cap: 'Ali Ataie, Islam — In Defense Of (p. 52) — explaining “Word” and “Spirit from Him” in Q 4:171.' }
     ],
     visual: {
       kind: 'compare',
@@ -1338,6 +1576,65 @@
       'Ibn Kathīr: the pronoun refers to Jesus, as the context speaks of him, and to his return before the Day of Resurrection; cf. 4:159.',
       'Ibn ʿĀshūr reports three readings: al-Ḥasan, Qatāda and Saʿīd ibn Jubayr took “it” as the Qurʾān (it informs about the Hour); Ibn ʿAbbās, Mujāhid and Qatāda took it as Jesus\' return; or a general reference to the signs of the Hour.',
       'Biblical comparison (Mark 13.32): See also the card on Mark 13:32: in the Bible, the Son doesn\'t know the hour.'
+    ]
+  });
+
+  // 35. “A goat ate verses of the Qurʾān” (Ibn Mājah #1944)
+  up('islam/quran/preservation/d-dr-goat-ate-verses', {
+    stripPlaceholders: true,
+    quotes: [
+      {
+        by: 'Sunan Ibn Mājah #1944 (ʿĀʾishah report, via Ibn Isḥāq)',
+        en: 'The Verse of stoning and of breastfeeding an adult ten times was revealed, and the paper was with me under my pillow. When the Messenger of Allah died, we were preoccupied with his death, and a tame sheep came in and ate it.',
+        ref: 'Ali Ataie, Preservation of the Qur\'anic Text, Slide 39 (citing Sunan Ibn Mājah #1944)'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-goat-ate-ataie-s39.webp', cap: 'Ali Ataie, Preservation of the Qur\'anic Text (Slide 39) — documenting Ibn Isḥāq\'s mudallas chain in Sunan Ibn Mājah #1944 vs Mālik/Yaḥyā.' },
+      { src: 'shots/m2-goat-ate-isnad.webp', cap: 'Isnād & textual comparison — Muwaṭṭaʾ / Bukhārī / Muslim versions without the Ibn Isḥāq “tame sheep” addition.' }
+    ]
+  });
+
+  // 36. Six days or eight? (7:54 vs 41:9–12)
+  up('islam/quran/d-dr-how-many-days-for-creation', {
+    stripPlaceholders: true,
+    shots: [
+      { src: 'shots/m2-creation-days-muallimi.webp', cap: 'ʿAbd al-Raḥmān al-Muʿallimī / classical Arabic philology — inclusive “in four days” construction in Q 41:9–12.' }
+    ]
+  });
+
+  // 37. How the Qurʾān was preserved (multi-layered Lattice + primary scans)
+  up('islam/quran/preservation/d-ia-the-process-of-quran-preservation', {
+    quotes: [
+      {
+        by: 'Imām Ibn Taymiyyah',
+        ar: 'وَأَمَّا مَا اتَّحَدَ لَفْظُهُ وَمَعْنَاهُ وَإِنَّمَا يَتَنَوَّعُ صِفَةُ النُّطْقِ بِهِ كَالْهَمَزَاتِ وَالْمَدَّاتِ وَالْإِمَالَاتِ وَنَقْلِ الْحَرَكَاتِ وَالْإِظْهَارِ وَالْإِدْغَامِ وَالِاخْتِلَاسِ وَتَرْقِيقِ اللَّامَاتِ وَالرَّاءَاتِ أَوْ تَغْلِيظِهَا وَنَحْوِ ذَٰلِكَ مِمَّا يُسَمَّى الْقِرَاءَاتِ الْأُصُولَ',
+        en: 'As for that which is identical in its word and its meaning, where only the attribute of its pronunciation varies—such as hamzas, madds, imālahs, naql al-ḥarakāt, iẓhār, idghām, ikhtilās, and the light/heavy pronunciation of lāms and rāʾs—this is what is termed uṣūl al-qirāʾāt.',
+        ref: 'Majmūʿ al-Fatāwā, Vol. 13, p. 391 (via Preservation of the Quran .pdf, p. 6)'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-process-birmingham-ms.webp', cap: 'Birmingham Qurʾān manuscript folio (MS Mingana Islamic Arabic 1572a) — radiocarbon dated 568–645 CE.' },
+      { src: 'shots/m2-process-birmingham-plaque.webp', cap: 'University of Birmingham exhibition plaque — radiocarbon dating and early Hijazi script summary.' },
+      { src: 'shots/m2-process-isnad-tree.webp', cap: 'Qurʾānic isnād & mutawātir transmission lattice linking oral recitation and written codices.' },
+      { src: 'shots/m2-lattice-dual-engine-s2.webp', cap: 'The Quranic Lattice (Slide 2) — dual-engine oral (ḥifẓ) and written (rasm) preservation model.' },
+      { src: 'shots/m2-lattice-3pillars-s14.webp', cap: 'The Quranic Lattice (Slide 14) — the three canonical pillars of authentic qirāʾāt.' },
+      { src: 'shots/m2-lattice-timeline-s19.webp', cap: 'The Quranic Lattice (Slide 19) — historical transmission timeline from Revelation to ʿUthmān and Ibn Mujāhid.' },
+      { src: 'shots/m2-pres-ibn-taymiyya-p6.webp', cap: 'Preservation of the Quran (p. 6) — Ibn Taymiyyah (Majmūʿ al-Fatāwā 13:391) on uṣūl al-qirāʾāt.' }
+    ]
+  });
+
+  // 38. Codex Wetzstein II 1913
+  up('islam/quran/preservation/d-ia-quranic-manuscripts/t-codex-wetzstein-ii-1913', {
+    quotes: [
+      {
+        by: 'Corpus Coranicum (Berlin-Brandenburgische Akademie der Wissenschaften)',
+        en: 'Dated 660–710 CE (39–91 AH); 216 surviving folios hold roughly 85% of the Qurʾān out of an estimated 245–250 folios originally.',
+        ref: 'Codex Wetzstein II 1913 (Staatsbibliothek zu Berlin)'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-codex-wetzstein-ii.webp', cap: 'Codex Wetzstein II 1913 (Berlin, ~660–710 CE / 39–91 AH) — 216 surviving folios covering ~85% of the Qurʾān.' }
     ]
   });
 })();

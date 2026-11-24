@@ -1,5 +1,13 @@
 # Burhān — overnight fill log
 
+## ROUND 6b (2026-11-24) — “God never sleeps, but Jesus slept” Playbook
+- NEW `christianity/trinity/jesus-slept` (`topics/jesus-slept-playbook.js`, 16 nodes) from Noel's debate notes: sleep syllogism
+  (Ps 121:3–4, Isa 40:28, John 4:6, Mark 4:38 + Q 2:255, 5:75, 50:38, 25:58, Muslim 179) → Opening 01 “natures don't sleep, persons do”
+  → Angles A qua/transitivity · B De Morgan ¬(Cd∨Ch) · C two minds+wills = two agents (Boethius, Constantinople III) · D two-monitor
+  model, 2 bugs · E three exits (redefine / kenosis / mystery) → 9 steelmanned traps (Ps 44:23, communicatio idiomatum, Pawl,
+  anaesthesia, hypostasis-as-owner, Morris/VR, kenosis, mystery, Muslim tu quoque).
+- Loop paused here: hadith block 3 (German Averroes hadith tiles → English) was dumped (/private/tmp/claude-501/aisha/hb3.txt) but not written.
+
 ## ROUND 6 (2026-11-23) — Trinity in the Old Testament Category, Flagship Angel of the LORD & Islamic Dilemma Playbooks (129 Scripts, 634 Cards, 551 Scans)
 **Site State (`https://damandam.github.io/burhan/` & `http://localhost:5179/`, 129 topic scripts):**
 - **634 live visible cards** | **0 load warnings** | **0 `noSum`** | **0 `emptyEx`** | **0 missing `shots/` files** | **0 cards lacking visual structure (`100%` covered!)**

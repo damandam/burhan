@@ -12,17 +12,65 @@
     }
     return null;
   }
+  function appendShots(arr, add) {
+    const out = Array.isArray(arr) ? arr.slice() : [];
+    const seen = new Set(out.map(s => (typeof s === 'string' ? s : s && s.src)).filter(Boolean));
+    (add || []).forEach(s => {
+      const src = typeof s === 'string' ? s : s && s.src;
+      if (src && !seen.has(src)) { out.push(s); seen.add(src); }
+    });
+    return out;
+  }
+  function applyMore(m, patch) {
+    if (patch.facts) m.facts = patch.facts;
+    if (patch.quotes) m.quotes = patch.quotes;
+    if (patch.visual) m.visual = patch.visual;
+    if (patch.p) m.p = patch.p;
+    if (patch.filterShots && Array.isArray(m.shots)) {
+      const drop = new Set(patch.filterShots);
+      m.shots = m.shots.filter(s => !drop.has(typeof s === 'string' ? s : s && s.src));
+    }
+    if (patch.shots) m.shots = appendShots(m.shots, patch.shots);
+  }
+  function walkTree(root, nodes) {
+    if (!root || !Array.isArray(nodes) || !nodes.length) return;
+    const flat = [];
+    (function collect(n) {
+      flat.push(n);
+      if (Array.isArray(n.next)) n.next.forEach(collect);
+    })(root);
+    nodes.forEach(np => {
+      let target = null;
+      if (typeof np.idx === 'number') target = flat[np.idx];
+      if (!target && np.match) {
+        const re = np.match instanceof RegExp ? np.match : null;
+        target = flat.find(n => n.more && n.more.h && (re ? re.test(n.more.h) : n.more.h.includes(np.match)));
+      }
+      if (target) {
+        target.more = target.more || {};
+        applyMore(target.more, np);
+      }
+    });
+  }
   function up(key, patch) {
     const a = findArt(key);
     if (!a) { console.warn('visual-audit-5b: missing', key); return; }
     if (a.type === 'explainer') {
       if (patch.visual && !a.visual) a.visual = patch.visual;
-      if (Array.isArray(a.cards) && a.cards.length) {
-        const c = a.cards[0];
+      if (patch.addCard && Array.isArray(a.cards)) a.cards.push(patch.addCard);
+      const ci = patch.cardIdx || 0;
+      if (Array.isArray(a.cards) && a.cards[ci]) {
+        const c = a.cards[ci];
         c.more = c.more || {};
         if (patch.facts) c.more.facts = patch.facts;
         if (patch.quotes) c.more.quotes = patch.quotes;
         if (patch.cardVisual) c.more.visual = patch.cardVisual;
+        if (patch.p) { if (Array.isArray(c.p)) c.p = patch.p; else c.more.p = patch.p; }
+        if (patch.filterShots && Array.isArray(c.more.shots)) {
+          const drop = new Set(patch.filterShots);
+          c.more.shots = c.more.shots.filter(s => !drop.has(typeof s === 'string' ? s : s && s.src));
+        }
+        if (patch.shots) c.more.shots = appendShots(c.more.shots, patch.shots);
       }
       return;
     }
@@ -32,13 +80,110 @@
     if (patch.who) t.who = patch.who;
     if (patch.forkTitle && (t.next || []).length > 1) t.forkTitle = patch.forkTitle;
     if (patch.forkSub && (t.next || []).length > 1) t.forkSub = patch.forkSub;
-    if (patch.facts) t.more.facts = patch.facts;
-    if (patch.quotes) t.more.quotes = patch.quotes;
-    if (patch.visual) t.more.visual = patch.visual;
-    if (patch.p) t.more.p = patch.p;
+    applyMore(t.more, patch);
     if (patch.optWho && Array.isArray(t.next)) {
       t.next.forEach((c, j) => { if (patch.optWho[j]) c.optWho = patch.optWho[j]; });
     }
+    if (patch.nodes) walkTree(t, patch.nodes);
+  }
+
+  /* Hook post-5b add() calls on existing cards (block6-ia-av-scans, dr-uncovered-islam) */
+  const hrelArt = findArt('christianity/bible/d-ia-general-refutations/t-a-comprehensive-proving-hadith-are-reliable');
+  if (hrelArt && Array.isArray(hrelArt.cards)) {
+    const origPush = hrelArt.cards.push;
+    hrelArt.cards.push = function(...items) {
+      items.forEach(c => {
+        if (c && c.more) {
+          applyMore(c.more, {
+            filterShots: ['shots/ia-hadith-rel-1.webp', 'shots/ia-hadith-rel-2.webp'],
+            shots: [
+              { src: 'shots/m3-motzki-hadith-1.webp', cap: 'Harald Motzki & Western isnād-cum-matn verification of early ḥadīth transmission (1)' },
+              { src: 'shots/m3-motzki-hadith-2.webp', cap: 'Early ḥadīth reliability analysis: independent chains and matn corroboration (2)' },
+              { src: 'shots/m3-motzki-hadith-3.webp', cap: 'Primary documentation on ḥadīth transmission benchmarks vs. oral folklore (3)' },
+              { src: 'shots/m3-motzki-hadith-4.webp', cap: 'Scholarly verification of 1st-century transmission routes (4)' }
+            ]
+          });
+        }
+      });
+      return origPush.apply(this, items);
+    };
+  }
+  const coccyxArt = findArt('islam/hadith/unseen/tailbone-coccyx-hadith');
+  if (coccyxArt && coccyxArt.tree && Array.isArray(coccyxArt.tree.next)) {
+    const origNextPush = coccyxArt.tree.next.push;
+    coccyxArt.tree.next.push = function(...branches) {
+      branches.forEach(b => {
+        if (b && b.more) {
+          applyMore(b.more, {
+            filterShots: ['shots/dr-new-coccyx-1.webp'],
+            shots: [
+              { src: 'shots/m3-coccyx-muslim2955.webp', cap: 'Ṣaḥīḥ Muslim 2955a vs. 2955b textual comparison on minhu khuliqa' },
+              { src: 'shots/m3-coccyx-q36.webp', cap: 'Qurʾān 36:78–79 on resurrection from decayed bones' }
+            ]
+          });
+        }
+      });
+      return origNextPush.apply(this, branches);
+    };
+  }
+
+  /* Deferred window.topic hook for post-5b islam/hadith/* cards */
+  if (typeof window !== 'undefined' && typeof window.topic === 'function') {
+    const origTopic = window.topic;
+    window.topic = function(path, node) {
+      const k = Array.isArray(path) ? path.join('/') : String(path || '');
+      const t = node && node.article && node.article.tree;
+      if (t) {
+        t.more = t.more || {};
+        if (k === 'islam/hadith/law/fly-wing-hadith') {
+          applyMore(t.more, {
+            filterShots: ['shots/dr-new-fly-hadith-1.webp', 'shots/dr-new-fly-hadith-2.webp'],
+            shots: [
+              { src: 'shots/m3-fly-pollination-ar.webp', cap: 'Ṣaḥīḥ Muslim date-palm pollination ḥadīth separating waḥy from worldly al-ṭibb' },
+              { src: 'shots/m3-fly-tafsir-manar.webp', cap: 'Classical & modern commentary on worldly vs. legislative prophetic remarks' }
+            ]
+          });
+        } else if (k === 'islam/hadith/law/no-contagion-hadith') {
+          applyMore(t.more, {
+            filterShots: ['shots/dr5-contagion-1.webp'],
+            shots: [
+              { src: 'shots/m3-contagion-malik.webp', cap: 'Muwaṭṭaʾ Mālik: “Do not bring the sick herd to the healthy — it is harmful”' },
+              { src: 'shots/m3-contagion-tirmidhi2143.webp', cap: 'Jāmiʿ al-Tirmidhī 2143 & Bedouin mangy-camel dialogue' }
+            ],
+            quotes: appendQuotes(t.more.quotes, [
+              { by: 'Muwaṭṭaʾ Mālik (Abū Hurayra)', ar: 'لا عدوى، ولا هام، ولا صفر، ولا يحل الممرض على المصح، وليحلل المصح حيث شاء، قال: ولما ذلك، يا رسول الله؟ قال: إنه أذى', en: 'No [autonomous] contagion, no hāmah, no ṣafar; the owner of sick camels must not water them with the healthy—when asked why, he ﷺ said: “It is harmful.”', ref: 'Muwaṭṭaʾ Mālik' },
+              { by: 'Ṣaḥīḥ al-Bukhārī & Muslim (Plague Quarantine)', ar: 'إذا سمعتم بالطاعون بأرض فلا تدخلوها، وإذا وقع بأرض وأنتم بها فلا تخرجوا منها', en: 'If you hear of a plague in a land, do not enter it; and if it breaks out in a land while you are in it, do not leave it.', ref: 'Ṣaḥīḥ al-Bukhārī 5728; Muslim 2218' }
+            ])
+          });
+        } else if (k === 'islam/hadith/unseen/satan-passes-wind-adhan') {
+          applyMore(t.more, {
+            shots: [
+              { src: 'shots/m3-satan-wind-ar.webp', cap: 'Primary Arabic narrations of Bukhārī 608, Muslim 389, and the lexical root ḍ-r-ṭ' },
+              { src: 'shots/m3-satan-wind-lane.webp', cap: 'Lane’s Arabic-English Lexicon (p. 1786) attesting proverbial usage of ḍ-r-ṭ' }
+            ]
+          });
+        } else if (k === 'islam/hadith/unseen/beardless-youth-hadith') {
+          t.more.quotes = [
+            { by: 'Imām Ibn al-Ṣalāḥ', en: 'Weak and baseless (ḍaʿīf lā aṣla lahu).', ref: 'Classical ḥadīth grading of the beardless-youth report' },
+            { by: 'Ibn al-Qaṭṭān al-Fāsī', en: 'Weak (ḍaʿīf).', ref: 'Classical isnād assessment' },
+            { by: 'Muḥammad Nāṣir al-Dīn al-Albānī', en: 'Fabricated / forged (mawḍūʿ).', ref: 'Silsilat al-Aḥādīth al-Ḍaʿīfa' }
+          ];
+        } else if (k === 'islam/hadith/law/killing-geckos-hadith') {
+          t.more.quotes = [
+            { by: 'ʿĀʾisha bint Abī Bakr (al-Dāraquṭnī, al-ʿIlal 14/121)', ar: 'وذلك وهمٌ من عبدالرحمن بن إسحاق. والصحيح بِهَذَا الْإِسْنَادِ؛ أَنَّ النَّبِيَّ صَلَّى اللَّهُ عَلَيْهِ وسلم قال: «الوزغ فويسق»، قالت عائشة: ولم أسمع النبي صلى الله عليه وسلم أمر بقتله', en: 'That addition is an error by ʿAbd al-Raḥmān ibn Isḥāq. What is authentic by this chain is that the Prophet ﷺ said: “The gecko is a fuwaysiq (little harmful pest),” and ʿĀʾisha said: “I did not hear him command killing it.”', ref: 'al-Dāraquṭnī, al-ʿIlal 14/121' },
+            { by: 'Dr. Khālid al-Ḥāyak', ar: 'لا يصح حديث في أن الوَزغ كان ينفخ النار على إبراهيم عليه الصلاة والسلام! ... وكلّ الروايات ... معلولة، ولا يصح منها شيء! وهي منكرة!', en: 'No ḥadīth is authentic stating that the gecko blew on the fire of Ibrāhīm! Every such narration is defective, none of it is sound, and it is munkar.', ref: 'al-Fajr alladhī Bazagh' },
+            { by: 'Imām al-Nawawī', ar: 'تَسْمِيَتُهُ فُوَيْسِقًا؛ لِأَنَّهُ نَظِيرُ الفَوَاسِقِ الخَمْسِ الَّتِي تُقْتَلُ فِي الحِلِّ وَالحَرَمِ', en: 'Calling it fuwaysiq puts it in the category of the five harmful pests permitted to be killed in both sacred and non-sacred precincts.', ref: 'Sharḥ Ṣaḥīḥ Muslim 7/404' }
+          ];
+        }
+      }
+      return origTopic.apply(this, arguments);
+    };
+  }
+  function appendQuotes(existing, extra) {
+    const out = Array.isArray(existing) ? existing.slice() : [];
+    const seen = new Set(out.map(q => q && q.en));
+    (extra || []).forEach(q => { if (q && !seen.has(q.en)) { out.push(q); seen.add(q.en); } });
+    return out;
   }
 
   /* 1. Will Maryam be the Prophet's wife in Paradise? */
@@ -76,9 +221,18 @@
       }
     ],
     p: [
-      'Al-Albānī (al-Silsila al-Ḍaʿīfa): Graded fabricated (mawḍūʿ).',
-      'Chain defects: 1) weak; 2) a fabricated chain; 3) its narrator is one al-Bukhārī calls munkar al-ḥadīth (Lisān al-Mīzān 6/332).',
-      'Channel scans: Nine scans of the gradings in the channel (to capture).'
+      'Al-Albānī (al-Silsila al-Ḍaʿīfa, no. 811): Explicitly grades the narration fabricated (mawḍūʿ) and inadmissible in Islamic theology or eschatology.',
+      'Multiple chain defects across all routes: Every transmitted path collapses under rijāl scrutiny—(1) an interrupted weak chain with no verified hearing from Abū Umāma; (2) a fabricated isnād attributed to Anas; and (3) a transmitter whom Imām al-Bukhārī graded munkar al-ḥadīth (rejected in transmission), as documented in Ibn Ḥajar’s Lisān al-Mīzān (6/332).'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-maryam-paradise-1.webp',
+        cap: 'Al-Albānī (Silsilat al-Aḥādīth al-Ḍaʿīfa no. 811) grading the Maryam marriage narration mawḍūʿ'
+      },
+      {
+        src: 'shots/m3-maryam-paradise-2.webp',
+        cap: 'Lisān al-Mīzān (6/332) & classical rijāl verdicts declaring the narrator munkar al-ḥadīth'
+      }
     ]
   });
 
@@ -159,13 +313,43 @@
     quotes: [
       {
         by: 'Qurʾān (Sūrat al-Ḥāqqa)',
+        ar: 'وَلَوْ تَقَوَّلَ عَلَيْنَا بَعْضَ الْأَقَاوِيلِ ۝ لَأَخَذْنَا مِنْهُ بِالْيَمِينِ ۝ ثُمَّ لَقَطَعْنَا مِنْهُ الْوَتِينَ',
         en: 'Had he fabricated against Us some sayings, We would have seized him by the right hand, then severed from him the aorta (al-watīn).',
         ref: 'Qurʾān 69:44–46'
       },
       {
         by: 'al-Zamakhsharī',
-        en: 'The pain kept returning to him until it cut his abhar, i.e. destroyed him.',
+        ar: 'ومن المجاز: … ومازال يراجعه الألم حتى قطع أبهره أي أهلكه',
+        en: 'Figuratively: the pain kept returning to him until it cut his abhar, i.e. destroyed him.',
         ref: 'Asās al-Balāgha 1/84 (root B-H-R)'
+      },
+      {
+        by: 'Sunan Abī Dāwūd 4513',
+        ar: 'وَرُبَّمَا حَدَّثَ عَبْدُ الرَّزَّاقِ بِهَذَا الْحَدِيثِ مُرْسَلًا عَنْ مَعْمَرٍ عَنِ الزُّهْرِيِّ عَنِ النَّبِيِّ ﷺ',
+        en: 'Sometimes ʿAbd al-Razzāq narrated this ḥadīth mursal from Maʿmar from al-Zuhrī from the Prophet ﷺ.',
+        ref: 'Abū Dāwūd 4513'
+      }
+    ],
+    shots: [
+      {
+        src: 'shots/m3-aorta-atlas-p1.webp',
+        cap: 'Lexical distinction between al-watīn (69:46) and al-abhar (Bukhārī 4428) (1)'
+      },
+      {
+        src: 'shots/m3-aorta-atlas-p3.webp',
+        cap: 'Conditional structure of Qurʾān 69:44–46 and timeline of the 23-year mission (2)'
+      },
+      {
+        src: 'shots/m3-aorta-atlas-p9.webp',
+        cap: 'Arabic medical & lexical authorities on “cut his abhar” as an idiom for fatal pain (3)'
+      },
+      {
+        src: 'shots/m3-aorta-bukhari4428.webp',
+        cap: 'Ṣaḥīḥ al-Bukhārī 4428 showing the simile ka-anna (“as if”) and mursal variants'
+      },
+      {
+        src: 'shots/m3-aorta-taj.webp',
+        cap: 'Tāj al-ʿArūs & Asās al-Balāgha entries for watīn and abhar'
       }
     ],
     p: [
@@ -239,6 +423,18 @@
     },
     quotes: [
       {
+        by: 'Musnad Aḥmad 3788 (with narrator shakk)',
+        ar: 'حَدَّثَنَا عَارِمٌ، وَعَفَّانُ، قَالَا: حَدَّثَنَا مُعْتَمِرٌ، قَالَ: قَالَ أَبِي: حَدَّثَنِي أَبُو تَمِيمَةَ، عَنْ عَمْرٍو – لَعَلَّهُ أَنْ يَكُونَ قَدْ قَالَ: الْبِكَالِيَّ يُحَدِّثُهُ عَمْرٌو – عَنْ عَبْدِ اللهِ بْنِ مَسْعُودٍ – قَالَ عَمْرٌو إِنَّ عَبْدَ اللهِ',
+        en: '…from ʿAmr – perhaps he said: al-Bikālī, ʿAmr narrating it – from ʿAbdullāh ibn Masʿūd… (explicit narrator doubt in the sanad).',
+        ref: 'Musnad Aḥmad 3788'
+      },
+      {
+        by: 'Imām al-Bukhārī',
+        ar: 'لَا يُعْرَفُ لِعَمْرٍو سَمَاعٌ مِنِ ابْنِ مَسْعُودٍ',
+        en: 'ʿAmr [al-Bikālī] is not known to have heard directly from Ibn Masʿūd.',
+        ref: 'al-Tārīkh al-Kabīr / cited in Musnad 3788 tahqīq'
+      },
+      {
         by: 'ʿAbdullāh ibn Masʿūd',
         en: 'I have never seen anything resembling them except the jinn on the Night of the Jinn; they were scattered, one following another.',
         ref: 'Athar via Abū ʿUthmān al-Nahdī'
@@ -247,6 +443,24 @@
         by: 'Jāmiʿ al-Tirmidhī',
         en: 'As if they were Zuṭṭ, with thick hair and strong bodies; I could see no nakedness (ʿawra) and no skin.',
         ref: 'Tirmidhī 2861'
+      }
+    ],
+    shots: [
+      {
+        src: 'shots/m3-zutt-atlas-p3.webp',
+        cap: 'Isnād analysis of Musnad Aḥmad 3788 showing narrator shakk and interruption'
+      },
+      {
+        src: 'shots/m3-zutt-atlas-p4.webp',
+        cap: 'Muslim 450a & Tirmidhī 2861 proving jinn context and “no nakedness”'
+      },
+      {
+        src: 'shots/m3-zutt-lane-q72.webp',
+        cap: 'Classical Arabic lexicon on the non-sexual sense of “surrounded / crowded” (Q 72)'
+      },
+      {
+        src: 'shots/m3-zutt-musnad-p367.webp',
+        cap: 'Musnad Aḥmad (al-Arnaʾūṭ ed., pp. 365–367) grading 3788 ḍaʿīf'
       }
     ],
     p: [
@@ -291,6 +505,12 @@
     p: [
       'Ibn ʿĀshūr on Iqraʾ (Bukhārī 3): The squeeze and threefold “Iqraʾ” are explained by Ibn ʿĀshūr as settling him into the recitation; after it he recited the first five verses of al-ʿAlaq and went home reciting them.',
       'Detailed rebuttals: The channel links two full articles — Islamic Discourse (“Was Gabriel ‘demonic’ because he squeezed Muhammad ﷺ?”) and Call to Monotheism’s rebuttal to Sam Shamoun.'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-gabriel-ibn-hisham.webp',
+        cap: 'Sīrat Ibn Hishām & al-Ṭabarī confirming Jibrīl reassured the Prophet ﷺ'
+      }
     ]
   });
 
@@ -374,6 +594,21 @@
     p: [
       'Bukhārī 4826: “The son of Ādam abuses time, and I am time (al-dahr): in My hand is the command, I turn the night and the day.”',
       'Full-context rule: Reading one line without the rest of the ḥadīth produces the misunderstanding.'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-is-allah-time-muslim2246.webp',
+        cap: 'Ṣaḥīḥ Muslim 2246 & Ibn Taymiyya explaining al-dahr as divine sovereignty over night and day'
+      }
+    ],
+    nodes: [
+      {
+        match: 'Muslim 2246 and Ibn Taymiyya',
+        p: [
+          '“In My hand are the night and the day; I alternate them” makes clear Allah is the controller of time, not time itself.',
+          'The ḥadīth follows directly after the explanatory context in the same chapter of Ṣaḥīḥ Muslim (no. 2246).'
+        ]
+      }
     ]
   });
 
@@ -487,6 +722,12 @@
         by: 'Ibn Ḥazm',
         en: 'It isn’t in this ḥadīth that the Israelites saw his private part. They saw him in a state that made clear he was free of the defect they accused him of, which any onlooker can see without seeing the private part, just from the area between his thighs being free.',
         ref: 'al-Muḥallā 3/213 (masʾala 349)'
+      },
+      {
+        by: 'Yaḥyā ibn Saʿīd al-Qaṭṭān',
+        ar: 'كان عوف عن الحسن عن النبي ﷺ وخلاس ومحمد عن أبي هريرة',
+        en: 'ʿAwf narrated it from al-Ḥasan as mursal from the Prophet ﷺ, whereas Khilās and Muḥammad [ibn Sīrīn] narrated it from Abū Hurayra (establishing the mawqūf origin of the closing stone-marks remark).',
+        ref: 'Classical ʿilal criticism via Ibn Sīrīn'
       }
     ],
     p: [
@@ -630,7 +871,13 @@
       'Chain 1 (agreed in Bukhārī & Muslim): Al-Aʿmash, Yūnus ibn ʿUbayd, Mūsā ibn al-Musayyab, and Hārūn ibn Saʿd report the sun “goes and prostrates beneath the Throne, then asks permission to rise… until it is told: return to where you came from, and it rises from its place of setting,” then recited 36:38 — no spring is mentioned.',
       'Chain 2 (lone spring addition): Only al-Ḥakam ibn ʿUtayba from Ibrāhīm — exclusively via Yazīd ibn Hārūn ← Sufyān ibn Ḥusayn ← al-Ḥakam — adds “It sets in a spring of hot water” (Aḥmad 35/363; Abū Dāwūd 4002; al-Bazzār 9/407; al-Ḥākim 2/267).',
       'Al-Bazzār (al-Baḥr al-Zakhkhār 9/407): “We know of no one except Sufyān ibn Ḥusayn who narrated this from al-Ḥakam… while Yūnus ibn ʿUbayd, al-Aʿmash and Hārūn ibn Saʿd narrated it from Ibrāhīm” without it.',
-      'Channel chain chart: The chart in the channel marks the chains, showing only the red line (al-Ḥakam) has the deviating spring wording (scan to capture).'
+      'Chain comparison diagram: Tracing the transmission tree shows that only the lone red line (al-Ḥakam ← Sufyān ibn Ḥusayn) carries the deviating spring wording.'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-sonne-chain-chart.webp',
+        cap: 'Isnād transmission chart: only the lone red line (al-Ḥakam) adds the spring wording'
+      }
     ]
   });
 
@@ -718,7 +965,13 @@
       'Al-Tirmidhī (Jāmiʿ al-Tirmidhī 2550): Explicitly calls it “gharīb”.',
       'Ibn al-Jawzī (al-Mawḍūʿāt): “Not authentic; the accused is ʿAbd al-Raḥmān ibn Isḥāq, Abū Shayba al-Wāsiṭī.” Aḥmad: “He is nothing; rejected.” Yaḥyā: “abandoned.”',
       'Al-Ṭabarānī’s version (al-Awsaṭ): Has Muḥammad ibn Kathīr and Jābir al-Juʿfī, “both very weak” (al-Haythamī, Majmaʿ al-Zawāʾid).',
-      'Channel scans: Scans of the gradings are in the channel (to capture).'
+      'Classical grading sources: Jāmiʿ al-Tirmidhī (no. 2550), Ibn al-Jawzī’s al-Mawḍūʿāt, and Majmaʿ al-Zawāʾid independently confirm the weakness of every chain.'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-bilder-paradies-tirmidhi2550.webp',
+        cap: 'Jāmiʿ al-Tirmidhī 2550 & classical rijāl verdicts grading the chain weak/gharīb'
+      }
     ]
   });
 
@@ -1040,8 +1293,15 @@
     quotes: [
       {
         by: 'Prophet’s ﷺ Wives',
-        en: 'No! By Allah, we think what the Messenger of Allah ﷺ commanded Sahla was only a permission for Sālim. No one will come in to us this way!',
+        ar: 'والله ما نرى هذا إلا رخصة أرخصها رسول الله ﷺ لسالم خاصة',
+        en: 'No! By Allah, we think what the Messenger of Allah ﷺ commanded Sahla was only a permission for Sālim specifically. No one will come in to us this way!',
         ref: 'Muwaṭṭaʾ, Kitāb al-Raḍāʿ 30/12'
+      },
+      {
+        by: 'Qāḍī ʿIyāḍ & Imām al-Nawawī',
+        ar: 'إذ لا يجوز رؤية الثدي ولا مسه / من غير أن يمس ثديها ولا التقت بشرتاهما',
+        en: 'It is never permissible for an adult man to look at or touch a woman’s breast; rather, Sahla expressed her milk so Sālim drank it without touching her breast or skin meeting skin.',
+        ref: 'Sharḥ Ṣaḥīḥ Muslim (on Muslim 1453)'
       },
       {
         by: 'ʿĀʾisha (Ṣaḥīḥ al-Bukhārī)',
@@ -1119,7 +1379,31 @@
           'Openly marrying her declares lawful what Allah has forbidden'
         ]
       }
-    }
+    },
+    quotes: [
+      {
+        by: 'Shuʿayb al-Arnaʾūṭ',
+        ar: 'إسناده ضعيف لاضطرابه كسابقه',
+        en: 'Its chain is weak due to severe inconsistency (iḍṭirāb), just like the preceding narration.',
+        ref: 'Sunan Abī Dāwūd 5/505, fn. 1'
+      },
+      {
+        by: 'Qurʾān (Sūrat al-Nisāʾ)',
+        ar: 'وَلَا تَنكِحُوا مَا نَكَحَ آبَاؤُكُم مِّنَ النِّسَاءِ',
+        en: 'And do not marry those women whom your fathers married.',
+        ref: 'Qurʾān 4:22'
+      }
+    ],
+    p: [
+      'Chain defect (iḍṭirāb): Shuʿayb al-Arnaʾūṭ (Sunan Abī Dāwūd 5/505, fn. 1) grades Abū Dāwūd 4457 weak due to iḍṭirāb—narrators conflict over the chain links, exact wording, and identity of the person.',
+      'Actual case in the text (Qurʾān 4:22): The report does not describe zinā with a biological mother; it describes a man who openly contracted a marriage with his father’s former wife—an act explicitly forbidden in Qurʾān 4:22 and treated as public istiḥlāl (declaring lawful what Allah prohibited).'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-zina-ad4457-idtirab.webp',
+        cap: 'Sunan Abī Dāwūd (5/505, fn. 1): al-Arnaʾūṭ grading the chain weak due to iḍṭirāb'
+      }
+    ]
   });
 
   /* 27. Did the Prophet prescribe camel urine? */
@@ -1152,6 +1436,18 @@
     },
     quotes: [
       {
+        by: 'al-Khaṭīb al-Baghdādī (al-Faṣl li-l-Waṣl al-Mudraj fī al-Naql, 2/612)',
+        ar: 'فقال لهم رسول الله ﷺ: لو خرجتم إلى إبل الصدقة فشربتم من ألبانها — قال حميد: قال قتادة: وأبوالها، ولم أسمعه من أنس',
+        en: 'The Messenger of Allah ﷺ said to them: “If only you went out to the charity camels and drank of their milk” — Ḥumayd said: Qatāda said: “and their urine,” and I did not hear that from Anas.',
+        ref: 'al-Khaṭīb al-Baghdādī, al-Faṣl 2/612'
+      },
+      {
+        by: 'Ibn Ḥajar al-ʿAsqalānī',
+        ar: 'فرواية إسماعيل على هذا فيها إدراج وتسوية',
+        en: 'Accordingly, Ismāʿīl’s narration contains both an explanatory insertion (idrāj) and levelling of the chain (taswiya).',
+        ref: 'al-Nukat ʿalā Kitāb Ibn al-Ṣalāḥ 2/833'
+      },
+      {
         by: 'Muṣannaf Ibn Abī Shayba',
         en: 'I don’t know what that is.',
         ref: 'Ibn Abī Shayba 25201 (Ibn Sīrīn on drinking camel urine)'
@@ -1162,6 +1458,16 @@
       'Classical & modern scholarship: Al-Khaṭīb al-Baghdādī and al-Zarkashī identify it as idrāj (an insertion into the ḥadīth), and Dr. Māhir Yāsīn al-Faḥl (ḥadīth professor, University of Anbar) discusses it (shamela.ws/book/1768/157).',
       'Parallel chains without urine: Aḥmad ibn Ḥanbal and al-Nasāʾī have versions without “and its urine”, and Muslim 1671a with about five other chains says only “If you wish…”.',
       'Bukhārī 1501 context: In Bukhārī 1501 the wording is that they asked and he allowed them to go out to the charity camels and drink their milk and urine.'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-kamel-urin-idraj.webp',
+        cap: 'al-Faṣl li-l-Waṣl (2/612) & al-Nukat (2/833) proving idrāj of “and their urine” via Qatāda'
+      },
+      {
+        src: 'shots/m3-kamel-urin-maarif.webp',
+        cap: 'Maʿārif al-Sunan & parallel chains omitting “and their urine”'
+      }
     ]
   });
 
@@ -1250,6 +1556,94 @@
       'Reported as Ibn ʿAqīl’s view: A page later Ibn Taymiyya reports that Ibn ʿAqīl and some of his companions said he may masturbate, making clear it is their view, not his — and Ibn Qudāma does the same in his Ḥanbalī fiqh.',
       'Necessity hypothetical vs. core Sunna: It is a hard fiqh case about necessity (fear of real bodily harm), not general permission; the core text is the Prophet’s ﷺ: “Young men, whoever can marry should marry; whoever cannot should fast, for it is a shield” (Bukhārī 5066; Muslim 1400).',
       'Testicles don’t burst from abstinence: The scenario is speculative and literal, not a real-world ruling.'
+    ]
+  });
+
+  /* 30. Satan touches every newborn (Maryam & Isa) */
+  up('islam/hadith/unseen/satan-touches-newborn', {
+    shots: [
+      {
+        src: 'shots/m3-satan-newborn-ar.webp',
+        cap: 'Classical Arabic sources on Qurʾān 3:36, Satan’s touch as temptation (al-Bayḍāwī, Ibn Malak), and the birth-cry ʿilla'
+      }
+    ]
+  });
+
+  /* 31. Did the Prophet ride on a jinn? */
+  up('islam/hadith/unseen/jinn-riding', {
+    quotes: [
+      {
+        by: 'Imām al-Bukhārī',
+        ar: 'لَا يُعْرَفُ لِعَمْرٍو سَمَاعٌ مِنِ ابْنِ مَسْعُودٍ',
+        en: 'ʿAmr al-Bikālī is not known to have heard directly from Ibn Masʿūd.',
+        ref: 'al-Tārīkh al-Kabīr / cited via al-Marāsīl'
+      },
+      {
+        by: 'al-Bayhaqī & Classical Rijāl Masters',
+        en: 'Shuʿab al-Īmān 8669 runs through weak Abū Bakr ibn Abī Maryam and unknown al-Mujāshiʿ al-Azdī; no. 8670 contains Aḥmad ibn Bashīr al-Marthadī, explicitly called foolish (aḥmaq) and the defect of the narration.',
+        ref: 'al-Bayhaqī, Shuʿab al-Īmān 8669–8670'
+      },
+      {
+        by: 'Shuʿayb al-Arnaʾūṭ & Zubayr ʿAlī Zaʾī',
+        en: 'Graded weak (ḍaʿīf) across both Tirmidhī 2861 / Mishkāt 3139 and Musnad Aḥmad 4353 (including the wine-wuḍūʾ variant).',
+        ref: 'Tirmidhī 2861; Musnad Aḥmad 4353 tahqīq'
+      }
+    ]
+  });
+
+  /* 32. Black woman in the dream (Bukhari 7038) — structured compare visual */
+  up('islam/general/d-av-sonstiges-islam-1/c-schwarzefrau-pest', {
+    visual: {
+      kind: 'compare',
+      left: {
+        title: 'Bukhārī 7038 (Dream Symbolism)',
+        items: [
+          { h: 'Dream genre', sub: 'Depicts a prophetic dream (ruʾyā), not an ethnological statement' },
+          { h: 'Explicit interpretation', sub: 'The Prophet ﷺ immediately explained it meant the Medina fever moving to al-Juḥfa' },
+          { h: 'Islamic equality baseline', sub: 'Same Prophet ﷺ affirmed no Arab/non-Arab or white/black superiority except by taqwā' }
+        ]
+      },
+      right: {
+        title: 'Contrast: Patristic Literature',
+        items: [
+          { h: 'Athanasius, Life of Antony 6', sub: 'Satan explicitly appears “as a black boy” and calls himself the spirit of fornication' },
+          { h: 'Jeremiah 13:23', sub: '“Can the Ethiopian change his skin… then also you can do good who are accustomed to do evil”' },
+          { h: 'Jerome, Homily 3 on Psalm 7', sub: 'Equates Ethiopian dark skin with Saul’s wicked soul' }
+        ]
+      }
+    }
+  });
+
+  /* 33. Bukhari 7142 ("a head like a raisin") — new scans & placeholder fixes in cross-file nodes */
+  up('islam/hadith/d-ia-contributed-refutations/t-sahih-al-bukhari-7142', {
+    shots: [
+      {
+        src: 'shots/m3-bukhari-7142-arnaut.webp',
+        cap: 'Musnad Aḥmad 27488 (al-Arnaʾūṭ ed.): grading the “black and white” addition ḍaʿīf due to Abū al-Rabīʿ'
+      },
+      {
+        src: 'shots/m3-bukhari-7142-tirmidhi2955.webp',
+        cap: 'Jāmiʿ al-Tirmidhī 2955 & rijāl commentary on the weak creation-colour addition'
+      }
+    ],
+    nodes: [
+      {
+        match: 'Metaphor in 3:106',
+        p: [
+          'Sin, not race: In Qurʾānic idiom, faces “darkening” or “turning black” on the Day of Resurrection refers to the spiritual disgrace of disbelief and lying against Allah, not skin colour.',
+          'Prophetic household and Companions: Bilāl ibn Rabāḥ (raḍiya Allāhu ʿanhu) is among the people of Paradise, and the Prophet’s ﷺ own household included Black believers—his adopted son (Zayd’s son Usāma) and his nursemaid (Umm Ayman) were Black.',
+          'Cross-reference: See the primary Prophetic texts above affirming human equality regardless of lineage or skin colour.',
+          'Primary rijāl documentation: Ibn al-Qayyim (al-Manār al-Munīf) and Shuʿayb al-Arnaʾūṭ’s tahqīq explicitly refute both fabricated anti-Black reports and weak chain additions.'
+        ]
+      },
+      {
+        match: 'Al-Arnaʾūṭ',
+        p: [
+          'Missing from the sound chain: Al-Arnaʾūṭ explicitly notes that the authentic transmission path lacks the addition specifying “black and white”.',
+          'A fortiori chain weakness: Even the core narration without that addition is only ṣaḥīḥ because of corroborating chains (ṣaḥīḥ li-ghayrihi). When even the core depends on external corroboration, an isolated addition not found in the corroborating paths is even more clearly unauthentic.',
+          'Rijāl verdict on Abū al-Rabīʿ: Al-Arnaʾūṭ confirms Sulaymān ibn ʿUtba (Abū al-Rabīʿ) is disputed and cannot carry a solitary textual addition (tafarrud).'
+        ]
+      }
     ]
   });
 })();

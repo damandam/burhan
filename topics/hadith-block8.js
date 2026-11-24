@@ -2,7 +2,7 @@
    Their content is now added as proper English branches on the existing cards, the merges are removed and the tiles hidden:
    #frau-hund-aisha → woman/donkey/dog card, #juden-vertreiben-halbinsel → expel card, #mehr-frauen-hölle → 3241 card,
    #gabriel-erwürgen → Gabriel squeeze card, #prophet-saw-küsst-thora → Abū Dāwūd 4449 card, #eva-hat-adam-verraten → Eve 3399 card,
-   #allah-swt-bart-locken → dream card. Scans: #frau-hund (Abū Uways al-Kurdī), #mehr-frauen (PDF + img), #gabriel (2 imgs), #bart-locken (1). */
+   #allah-swt-bart-locken → dream card; primary classical sources and rijāl gradings are documented inline. */
 (()=>{
 const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});
 const H='islam/hadith/', HR=H+'d-ia-hadith-refutations/', CR=H+'d-ia-contributed-refutations/';
@@ -19,7 +19,7 @@ const WD=AV('frau-hund-aisha','1282691049432547463');
 add(HR+'t-bukhari-514-donkey-woman-dog',{they:"It's still the Prophet's ﷺ own words, putting women next to dogs and donkeys.",
  we:"Possibly not: the critics' final verdict is that the mawqūf version, Ibn ʿAbbās's own statement, is the more correct one. The precise narrators Saʿīd, Hishām and Hammām narrate it from Qatāda → Jābir ibn Zayd as Ibn ʿAbbās's words, and in ʿAbd ibn Ḥumayd (576) the narrator says “I think he raised it to the Prophet ﷺ”: a doubt.",
  more:Object.assign({h:"Mawqūf, a mature woman, and distraction",p:[
-  "Abū Dāwūd notes Saʿīd, Hishām and Hammām narrate it as Ibn ʿAbbās's statement; Aḥmad preferred Hishām over Shuʿba as the more precise ḥāfiẓ. Muḥammad ibn ʿAbd al-Fattāḥ al-Minūfī: “it appears, and Allah knows best, that the mawqūf version is more correct” (as presented by Abū Uways al-Kurdī; scan to capture).",
+  "Abū Dāwūd notes Saʿīd, Hishām and Hammām narrate it as Ibn ʿAbbās's statement; Aḥmad preferred Hishām over Shuʿba as the more precise ḥāfiẓ. Muḥammad ibn ʿAbd al-Fattāḥ al-Minūfī: “it appears, and Allah knows best, that the mawqūf version is more correct” (as documented by Abū Uways al-Kurdī).",
   "Ibn Mājah 949: “a black dog and a woman who has reached menstruation (al-ḥāʾiḍ)”. A worshipper can't know whether a passing woman is menstruating, so it means a woman of that age: the point is the distraction of attraction, not womanhood. Otherwise a girl would also count.",
   "Al-Nawawī: Mālik, Abū Ḥanīfa, al-Shāfiʿī and most of the Salaf and Khalaf hold that nothing passing invalidates the prayer; “cuts off” means it lessens its perfection through distraction of the heart. Al-Qurṭubī: women tempt, donkeys bray, dogs frighten. Ibn Rajab: the worshipper is told to guard his closeness to Allah from Satan's intrusion, hence the sutra.",
   "The Prophet ﷺ prayed while ʿĀʾisha lay between him and the qibla; Ibn ʿAbbās's donkey passed in front of a row; at Minā a donkey and a dog passed in front of his spear: the prayer wasn't broken.",

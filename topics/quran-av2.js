@@ -1,8 +1,7 @@
 /* Qurʾān AV batch 2 — 2026-11-20. Aḥruf & qirāʾāt: the two thin Deenresponds cards (#defense-of-ahruf, #defense-of-qiraat: Yaqeen papers +
    Sh. Yousef Wahb lecture) rebuilt as debates with the full Averroes material: #7-qirat-ist-nicht-7, #lesarten-hadithe-beispiele-sahaba-allgemein,
    #alles-wo-sind-die-6-ahruf-hin, #anomalie-abweichende-leseart, #daif-hadithe-dazu, #shubah-und-hafs, #allgemein-gelehrte, #analogie-und-geschichte,
-   #lesarten-qirat-alles (Koran Scheinargumente 1), #quran-leseart-qirat-identisch-mehrere-qurane (2 PDFs).
-   Scans/PDFs to capture: #lesarten-qirat-alles (3 imgs), #analogie (2 imgs incl. Ibn Mujāhid), #alles-wo-sind (5 imgs/PDFs), #identisch (2 PDFs). */
+   #lesarten-qirat-alles (Koran Scheinargumente 1), #quran-leseart-qirat-identisch-mehrere-qurane (2 PDFs). */
 (()=>{
 const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});
 const DR=(n,id)=>({credit:'Deenresponds · #'+n,link:'https://discord.com/channels/1328402309297733662/'+id});

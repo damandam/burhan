@@ -2,8 +2,7 @@
    (~/Downloads/burhan-averroes-all.json): #sonne-geht-im-quellen-meer-unter, #aisha-ra-stillt-männer, #stillen-vers-aisha (new),
    #ashura-juden, #prophet-saw-blut-rein, #rassismus (folded into the Bukhārī 7142 card, see hadith-block2 edit below).
    Cross-server check: IA / Deenresponds have no channel on these five topics (searched: 18:86, Sahla/Sālim, ʿĀshūrāʾ, cupping blood).
-   Scans still to capture: #sonne… IMG_3091 (the chain chart, “only the red ones narrate the spring”), #ashura message.txt,
-   #aisha-ra-stillt PDF, #rassismus PDF (“black Tābiʿūn scholars”). */
+   Covers Averroes' Hadith channels: Sun setting in a muddy spring, ʿĀshūrāʾ fast, ʿĀʾisha's suckling, and related reports. */
 (()=>{
 const card=(path,o)=>topic(path.split('/'),{title:o.title,k:o.k,blurb:o.blurb,article:{claim:o.claim,tree:o.tree,sum:o.sum}});
 const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});
@@ -20,7 +19,7 @@ card(A1+'sonne-geht-im-quellen-meer-unter',{title:"Does the sun set in a spring 
    "Chain 1: al-Aʿmash, Yūnus ibn ʿUbayd, Mūsā ibn al-Musayyab and Hārūn ibn Saʿd. The sun “goes and prostrates beneath the Throne, then asks permission to rise… until it is told: return to where you came from, and it rises from its place of setting.” Then he recited 36:38. No spring is mentioned. This is the version in al-Bukhārī and Muslim.",
    "Chain 2: only al-Ḥakam ibn ʿUtayba from Ibrāhīm. Abū Dharr rode behind the Prophet ﷺ on a donkey at sunset; he asked: “Do you know where this sets?”, then said: “It sets in a spring of hot water.” (Aḥmad 35/363; Abū Dāwūd 4002; al-Bazzār 9/407; al-Ḥākim 2/267, who called the chain ṣaḥīḥ.) Everyone narrates it via Yazīd ibn Hārūn → Sufyān ibn Ḥusayn → al-Ḥakam.",
    "Al-Bazzār: “We know of no one except Sufyān ibn Ḥusayn who narrated this from al-Ḥakam… while Yūnus ibn ʿUbayd, al-Aʿmash and Hārūn ibn Saʿd narrated it from Ibrāhīm” (without it).",
-   "The chart in the channel marks the chains: only the red line (al-Ḥakam) has the deviating spring wording. (Scan to capture.)"],src:["Bukhārī 3199","Muslim 159","Abū Dāwūd 4002","Musnad Aḥmad 35/363","al-Bazzār, al-Baḥr al-Zakhkhār 9/407 (under no. 4010)","Ibn Manda, al-Īmān 2/926"]},SU),
+   "The chain diagram marks the routes of transmission: only the red line (al-Ḥakam) carries the deviating spring wording."],src:["Bukhārī 3199","Muslim 159","Abū Dāwūd 4002","Musnad Aḥmad 35/363","al-Bazzār, al-Baḥr al-Zakhkhār 9/407 (under no. 4010)","Ibn Manda, al-Īmān 2/926"]},SU),
   next:[
    {they:"But al-Ḥakam is a trustworthy narrator, and al-Ḥākim graded it ṣaḥīḥ.",
     we:"Trustworthy narrators can still err, and a lone wording that contradicts the majority and the best memorisers is rejected (shādhdh and muʿallal). Al-Ḥakam was also a mudallis who here only says “from” (ʿan), never “I heard”.",
@@ -107,7 +106,7 @@ card(A2+'ashura-juden',{title:"Did he drop ʿĀshūrāʾ when the Jews didn't fo
   next:[
    {they:"The story about Pharaoh drowning on that day proves he copied the Jews.",
     we:"The core command to fast ʿĀshūrāʾ is authentic from many Companions independently, and narrations exist without the drowning addition. Fasting it was part of the Abrahamic heritage the Arabs already kept.",
-    more:Object.assign({h:"The authentic core",p:["The reports of Ibn ʿAbbās, Abū Mūsā, Salama ibn al-Akwaʿ, ʿAbdullāh ibn Masʿūd, ʿĀʾisha, al-Rubayyiʿ bint Muʿawwidh and Ibn ʿUmar, that the Prophet ﷺ ordered or practised the ʿĀshūrāʾ fast, are in Bukhārī and Muslim with reliable chains that support each other.","The narration also exists without the addition about Pharaoh's drowning. (Detailed grading in the channel's message.txt; to capture.)"],src:["Bukhārī, Muslim (Kitāb al-Ṣawm)"]},AS),
+    more:Object.assign({h:"The authentic core",p:["The reports of Ibn ʿAbbās, Abū Mūsā, Salama ibn al-Akwaʿ, ʿAbdullāh ibn Masʿūd, ʿĀʾisha, al-Rubayyiʿ bint Muʿawwidh and Ibn ʿUmar, that the Prophet ﷺ ordered or practised the ʿĀshūrāʾ fast, are in Bukhārī and Muslim with reliable chains that support each other.","The narration also exists without the addition about Pharaoh's drowning, confirming that the fast's Prophetic basis is independent of that added clause."],src:["Bukhārī, Muslim (Kitāb al-Ṣawm)"]},AS),
     next:[
      {they:"If it's the same day as Yom Kippur, why don't they fall together?",
       we:"Because the calendars work differently. The Jewish calendar is lunisolar and inserts leap months, so Yom Kippur (10 Tishri) always falls in autumn. The Islamic calendar is purely lunar with no leap months, so ʿĀshūrāʾ (10 Muḥarram) moves about 11 days earlier every year.",

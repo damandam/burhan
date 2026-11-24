@@ -3,8 +3,7 @@
    Satan in the ear (DR #hadiths-on-satan → icraa article by W. A. Cheema + AV #satan-urin-ohr),
    Mūsā and the stone (DR #moses-and-the-rock → icraa article + AV #moses-sprechender-stein),
    and the three urine reports (AV #frau-trink-urin-vom-propheten-saw, #kamel-urin, #sahaba-trinken-urin-brunnen).
-   IA has no channel on these. Scans to capture: #frau-trink-urin (Abū Uways al-Kurdī page), #moses-sprechender-stein (mawqūf scan,
-   2 PDFs “Der fliehende Stein”), #kamel-urin (“Belegmappe” PDF + 1 img). */
+   IA has no channel on these; primary Arabic gradings and isnād analyses are cited directly in each entry. */
 (()=>{
 const card=(path,o)=>topic(path.split('/'),{title:o.title,k:o.k,blurb:o.blurb,article:{claim:o.claim,tree:o.tree,sum:o.sum}});
 const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});
@@ -88,7 +87,7 @@ card(H+'d-dr-moses-and-the-rock',{title:"Mūsā and the stone that ran off with 
     next:[
      {they:"A prophet running after a stone and beating it is undignified.",
       we:"It was a spontaneous human reaction, like Mūsā throwing down the tablets and seizing Hārūn in anger (7:150; 20:94; Exodus 32:19). He didn't know in that moment that Allah was using the event to clear his name.",
-      more:Object.assign({h:"Mūsā's reaction",p:["Ibn Hubayra, al-Ifṣāḥ 7/210: Mūsā's spontaneous reaction.","The marks on the stone (Aḥmad 8301; al-Thaʿlabī 1/204) may be folklore Abū Hurayra heard in al-Shām, as Ibn Ḥajar indicates (Fatḥ al-Bārī 6/437). The channel also has a scan arguing that part is mawqūf (on Abū Hurayra), checked via Ibn Sīrīn's narration (to capture)."],src:["Qurʾān 7:150; 20:94","Exodus 32:19","Musnad Aḥmad 8301"]},MD),
+      more:Object.assign({h:"Mūsā's reaction",p:["Ibn Hubayra, al-Ifṣāḥ 7/210: Mūsā's spontaneous reaction.","The marks on the stone (Aḥmad 8301; al-Thaʿlabī 1/204) may be folklore Abū Hurayra heard in al-Shām, as Ibn Ḥajar indicates (Fatḥ al-Bārī 6/437), and classical ḥadīth critics note that this closing detail is mawqūf on Abū Hurayra via Ibn Sīrīn's narration."],src:["Qurʾān 7:150; 20:94","Exodus 32:19","Musnad Aḥmad 8301"]},MD),
       next:[
        {they:"A stone running away is a fairy tale.",
         we:"For a Christian, the Bible is full of stones and nature acting: a stone that “heard all the words of the LORD” and witnesses (Joshua 24:27), stones that would cry out (Luke 19:40), a stone crying out from the wall (Habakkuk 2:11), trees clapping (Isaiah 55:12), a talking altar addressed by the prophet (1 Kings 13:2). Paul even has a rock that followed the Israelites (1 Corinthians 10:4).",

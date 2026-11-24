@@ -12,17 +12,68 @@
     return null;
   }
 
+  function appendShots(arr, add) {
+    const out = Array.isArray(arr) ? arr.slice() : [];
+    const seen = new Set(out.map(s => (typeof s === 'string' ? s : s && s.src)).filter(Boolean));
+    (add || []).forEach(s => {
+      const src = typeof s === 'string' ? s : s && s.src;
+      if (src && !seen.has(src)) { out.push(s); seen.add(src); }
+    });
+    return out;
+  }
+
+  function applyMore(m, patch) {
+    if (patch.facts) m.facts = patch.facts;
+    if (patch.quotes) m.quotes = patch.quotes;
+    if (patch.visual) m.visual = patch.visual;
+    if (patch.p) m.p = patch.p;
+    if (patch.filterShots && Array.isArray(m.shots)) {
+      const drop = new Set(patch.filterShots);
+      m.shots = m.shots.filter(s => !drop.has(typeof s === 'string' ? s : s && s.src));
+    }
+    if (patch.shots) m.shots = appendShots(m.shots, patch.shots);
+  }
+
+  function walkTree(root, nodes) {
+    if (!root || !Array.isArray(nodes) || !nodes.length) return;
+    const flat = [];
+    (function collect(n) {
+      flat.push(n);
+      if (Array.isArray(n.next)) n.next.forEach(collect);
+    })(root);
+    nodes.forEach(np => {
+      let target = null;
+      if (typeof np.idx === 'number') target = flat[np.idx];
+      if (!target && np.match) {
+        const re = np.match instanceof RegExp ? np.match : null;
+        target = flat.find(n => n.more && n.more.h && (re ? re.test(n.more.h) : n.more.h.includes(np.match)));
+      }
+      if (target) {
+        target.more = target.more || {};
+        applyMore(target.more, np);
+      }
+    });
+  }
+
   function up(key, patch) {
     const a = findArt(key);
     if (!a) { console.warn('visual-audit-5a: missing', key); return; }
     if (a.type === 'explainer') {
       if (patch.visual && !a.visual) a.visual = patch.visual;
-      if (Array.isArray(a.cards) && a.cards.length) {
-        const c = a.cards[0];
+      if (patch.addCard && Array.isArray(a.cards)) a.cards.push(patch.addCard);
+      const ci = patch.cardIdx || 0;
+      if (Array.isArray(a.cards) && a.cards[ci]) {
+        const c = a.cards[ci];
         c.more = c.more || {};
         if (patch.facts) c.more.facts = patch.facts;
         if (patch.quotes) c.more.quotes = patch.quotes;
         if (patch.cardVisual) c.more.visual = patch.cardVisual;
+        if (patch.p) { if (Array.isArray(c.p)) c.p = patch.p; else c.more.p = patch.p; }
+        if (patch.filterShots && Array.isArray(c.more.shots)) {
+          const drop = new Set(patch.filterShots);
+          c.more.shots = c.more.shots.filter(s => !drop.has(typeof s === 'string' ? s : s && s.src));
+        }
+        if (patch.shots) c.more.shots = appendShots(c.more.shots, patch.shots);
       }
       return;
     }
@@ -32,13 +83,11 @@
     if (patch.who) t.who = patch.who;
     if (patch.forkTitle && (t.next || []).length > 1) t.forkTitle = patch.forkTitle;
     if (patch.forkSub && (t.next || []).length > 1) t.forkSub = patch.forkSub;
-    if (patch.facts) t.more.facts = patch.facts;
-    if (patch.quotes) t.more.quotes = patch.quotes;
-    if (patch.visual) t.more.visual = patch.visual;
-    if (patch.p) t.more.p = patch.p;
+    applyMore(t.more, patch);
     if (patch.optWho && Array.isArray(t.next)) {
       t.next.forEach((c, j) => { if (patch.optWho[j]) c.optWho = patch.optWho[j]; });
     }
+    if (patch.nodes) walkTree(t, patch.nodes);
   }
 
   /* 1 */
@@ -52,6 +101,7 @@
     quotes: [
       {
         by: 'Abū Nuʿaym al-Iṣfahānī',
+        ar: 'قُتِلَ عُمَرُ يَوْمَ الْأَرْبِعَاءِ لِأَرْبَعِ لَيَالٍ بَقِينَ مِنْ ذِي الْحِجَّةِ سَنَةَ ثَلَاثٍ وَعِشْرِينَ',
         en: 'ʿUmar was killed on Wednesday, when four nights remained of Dhū al-Ḥijja, in the year 23 AH.',
         ref: 'Kitāb Maʿrifat al-Ṣaḥāba 1/39'
       }
@@ -114,21 +164,39 @@
         }
       ]
     },
+    quotes: [
+      {
+        by: 'Surviving 1st-century compilation (Hammām ibn Munabbih, student of Abū Hurayra)',
+        en: 'A written collection (ṣaḥīfa) from Abū Hurayra’s student, which survives and matches the later canonical books.',
+        ref: 'Ṣaḥīfat Hammām ibn Munabbih'
+      },
+      {
+        by: 'Abū Qilāba (d. 104 AH)',
+        en: 'He bequeathed his books to his student Ayyūb al-Sakhtiyānī, who paid more than ten dirhams to have them carried on a camel.',
+        ref: 'Early 1st-century AH written legacies'
+      }
+    ],
+    shots: [
+      {
+        src: 'shots/m3-first-century-writers.webp',
+        cap: 'Catalog of documented 1st-century AH written ḥadīth collections prior to the Six Books'
+      }
+    ],
     cardVisual: {
       kind: 'compare',
       left: {
         title: 'Myth: 3rd-century starting point',
         items: [
-          'Assumes the Six Books compiled oral reports from scratch',
-          'Overlooks documented first-century written works'
+          { h: 'Ignores earlier books', sub: 'Assumes the Six Books compiled oral reports from scratch' },
+          { h: 'Omits ṣaḥīfas', sub: 'Overlooks documented first-century written works' }
         ]
       },
       right: {
         title: 'Record: 1st-century collections',
         items: [
-          'Hammām ibn Munabbih’s ṣaḥīfa survives and matches later books',
-          'Abū Qilāba (d. 104 AH) left a camel-load of books to Ayyūb',
-          'Khālid ibn Maʿdān & al-Ḥasan al-Baṣrī kept written collections'
+          { h: 'Hammām ibn Munabbih', sub: 'His ṣaḥīfa survives and matches later canonical books' },
+          { h: 'Abū Qilāba (d. 104 AH)', sub: 'Left a camel-load of books to his student Ayyūb al-Sakhtiyānī' },
+          { h: 'Early contemporaries', sub: 'Khālid ibn Maʿdān & al-Ḥasan al-Baṣrī kept written collections' }
         ]
       }
     }
@@ -142,6 +210,12 @@
       ['First-century deaths', 'Saʿīd b. Jubayr (95 AH), ʿUmar II (101)'],
       ['Western concession', 'Ignaz Goldziher (Muslim Studies)'],
       ['Primary reference', 'M. Z. Ṣiddīqī, Ḥadīth Literature 1/27']
+    ],
+    shots: [
+      {
+        src: 'shots/m3-200y-siddiqi.webp',
+        cap: 'M. Z. Ṣiddīqī, Hadith Literature (p. 27), citing Goldziher on early Companion ṣaḥīfas'
+      }
     ],
     quotes: [
       {
@@ -199,6 +273,22 @@
         by: 'Ibn Shihāb al-Zuhrī',
         en: 'When I passed through the markets, I feared my ears would memorise the people’s words and their insults to each other.',
         ref: 'Cited by Shaykh ʿAbd al-Salām al-Shuwayʿir'
+      },
+      {
+        by: 'Imām al-Bukhārī',
+        ar: 'كُنْتُ إِذَا كَتَبْتُ عَنْ رَجُلٍ سَأَلْتُهُ عَنِ اسْمِهِ وَكُنْيَتِهِ وَنِسْبَتِهِ وَحَمْلِهِ الْحَدِيثَ، إِنْ كَانَ الرَّجُلُ فَهْمًا. فَإِنْ لَمْ يَكُنْ سَأَلْتُهُ أَنْ يُخْرِجَ إِلَيَّ أَصْلَهُ وَنُسْخَتَهُ. فَأَمَّا الْآخَرُونَ لَا يُبَالُونَ مَا يَكْتُبُونَ، وَكَيْفَ يَكْتُبُونَ.',
+        en: 'Whenever I wrote from a man, I asked his name, kunya, lineage, and how he bore the ḥadīth if he was discerning; otherwise I asked him to bring out his original manuscript (aṣl) and copy (nuskha). Others pay no attention to what or how they write.',
+        ref: 'al-Dhahabī, Siyar Aʿlām al-Nubalāʾ 12/406'
+      }
+    ],
+    shots: [
+      {
+        src: 'shots/m3-memorisation-azami.webp',
+        cap: 'M. M. al-Aʿẓamī, Studies in Early Hadith Literature, on Companions preserving the Qurʾān and Sunnah'
+      },
+      {
+        src: 'shots/m3-memorisation-siyar.webp',
+        cap: 'Siyar Aʿlām al-Nubalāʾ (12/406): al-Bukhārī’s rigorous verification of both memorisation and original manuscripts'
       }
     ],
     visual: {
@@ -230,6 +320,7 @@
     quotes: [
       {
         by: 'Muḥammad ʿAbduh',
+        ar: 'إلّا أن عموم البلوى بالأكاذيب حقّ على الناس بلاؤه في دولة الأمويين، فكثر الناقلون، وقلّ الصادقون، وامتنع كثير من أجلّة الصحابة عن الحديث إلّا لمن يثقون بحفظه، خوفاً من التحريف فيما يؤخذ عنهم',
         en: 'During the Umayyad era, ḥadīth forgeries were so widespread that they inflicted misfortune on the people. The number of narrators greatly increased while the truthful ones were few. Most of the Ṣaḥāba refused to narrate except to a few people they trusted.',
         ref: 'Tārīkh al-Ustādh al-Imām 2/347'
       },
@@ -237,6 +328,22 @@
         by: 'ʿAbdullāh ibn al-Mubārak',
         en: 'The giants will live for them.',
         ref: 'al-Khaṭīb al-Baghdādī, al-Kifāya'
+      },
+      {
+        by: 'Shaykh Muqbil ibn Hādī al-Wādiʿī',
+        ar: 'وإن كان قد وجد في بني أمية من يشرب الخمر، ومن يستمع إلى القينات، ومن لا يبالي بالرعايا',
+        en: 'Even though among the Umayyads there were rulers who drank wine, listened to singing girls, and paid little heed to their subjects, the scholars of ḥadīth stood apart from court corruption and safeguarded transmission.',
+        ref: 'Tuḥfat al-Mujīb p. 91'
+      }
+    ],
+    shots: [
+      {
+        src: 'shots/m3-umayyad-tarikh.webp',
+        cap: 'Tārīkh al-Ustādh al-Imām (2/347): ʿAbduh notes the Companions narrated only to those they trusted'
+      },
+      {
+        src: 'shots/m3-umayyad-tuhfat.webp',
+        cap: 'Tuḥfat al-Mujīb (p. 91): distinguishing Umayyad political rulers from the muḥaddithūn'
       }
     ],
     visual: {
@@ -272,6 +379,20 @@
       ['Qirāʾāt master', 'Imām ʿĀṣim (d. 127 AH, Ḥafṣ)'],
       ['Tafsīr pioneer', 'Muqātil ibn Sulaymān'],
       ['Endorsements', 'Al-Shāfiʿī & Ibn Taymiyya']
+    ],
+    shots: [
+      {
+        src: 'shots/m3-dilemma-ibnkathir-tabari.webp',
+        cap: 'Ibn Kathīr & al-Ṭabarī on scriptural corruption and field-specific grading'
+      },
+      {
+        src: 'shots/m3-dilemma-muqatil.webp',
+        cap: 'Al-Shāfiʿī & Ibn Taymiyya endorsing Muqātil ibn Sulaymān in tafsīr despite his ḥadīth weakness'
+      },
+      {
+        src: 'shots/m3-dilemma-tabari-5-48.webp',
+        cap: 'Tafsīr al-Ṭabarī on Qurʾān 5:48 and the Torah'
+      }
     ],
     quotes: [
       {
@@ -322,13 +443,31 @@
     quotes: [
       {
         by: 'Ṣaḥīḥ al-Bukhārī 3241 / Muslim 907',
-        en: 'I saw that most of its inhabitants were women. They asked: Why, O Messenger of Allah? He said: Because of their ingratitude… They are ungrateful to their companions (husbands) and ungrateful for good done to them.',
-        ref: 'Bukhārī 29, 1052, 3241; Muslim 907'
+        ar: 'تُكْثِرْنَ اللَّعْنَ، وَتَكْفُرْنَ الْعَشِيرَ',
+        en: 'I saw that most of its inhabitants were women. They asked: Why, O Messenger of Allah? He said: Because of their ingratitude… You curse frequently and are ungrateful to your husbands.',
+        ref: 'Bukhārī 29, 304, 1052, 3241; Muslim 907'
       },
       {
         by: 'Qāḍī ʿIyāḍ',
+        ar: 'قَالَ الْقَاضِي ظَاهِرُ هَذَا الْحَدِيثِ أَنَّ النِّسَاءَ أَكْثَرُ أَهْلِ الْجَنَّةِ وَفِي الْحَدِيثِ الْآخَرِ أَنَّهُنَّ أَكْثَرُ أَهْلِ النَّارِ قَالَ فَيَخْرُجُ مِنْ مَجْمُوعِ هَذَا أَنَّ النِّسَاءَ أَكْثَرُ وَلَدِ آدَمَ',
         en: 'This ḥadīth shows women are the majority of the people of Paradise, and another ḥadīth that they are the majority of the people of the Fire. It follows that women are the majority of the children of Ādam.',
-        ref: 'Sharḥ al-Nawawī ʿalā Muslim, on 2834'
+        ref: 'Sharḥ al-Nawawī ʿalā Muslim 17/172 (on 2834)'
+      },
+      {
+        by: 'Ibn Ḥajar al-ʿAsqalānī',
+        ar: 'وَتَكْفُرْنَ العَشِيرَ — الخليط، وهو الزوج، أو أعم من ذلك',
+        en: 'Al-ʿAshīr refers to the close companion—meaning the husband, or more generally one’s spouse and associates.',
+        ref: 'Fatḥ al-Bārī 1/406'
+      }
+    ],
+    shots: [
+      {
+        src: 'shots/m3-bukhari-3241-fayd.webp',
+        cap: 'Fayḍ al-Qadīr & classical commentary reconciling Paradise and Hellfire majorities'
+      },
+      {
+        src: 'shots/m3-bukhari-3241-hadiths.webp',
+        cap: 'Parallel authentic narrations on women as the majority in both abodes'
       }
     ],
     visual: {
@@ -366,6 +505,12 @@
       ['Majority fiqh', 'Mālik, Abū Ḥanīfa, al-Shāfiʿī'],
       ['Meaning of “cut”', 'Shortage in focus, not invalidation'],
       ['Chain verdict', 'Mawqūf (Ibn ʿAbbās) more accurate']
+    ],
+    shots: [
+      {
+        src: 'shots/m3-bukhari-514-scholars.webp',
+        cap: 'Scholarly citations (al-Nawawī, Ibn Ḥajar, Abū Dāwūd, al-Minūfī) on “cutting” concentration and the mawqūf grading'
+      }
     ],
     quotes: [
       {
@@ -457,13 +602,20 @@
     quotes: [
       {
         by: 'Authentic core (Muslim 1403)',
-        en: 'If one of you admires a woman and she falls into his heart, let him go to his wife and be intimate with her, for that repels what is in his soul.',
-        ref: 'Ṣaḥīḥ Muslim 1403 (via Maʿqil ibn ʿUbaydillāh)'
+        ar: 'إِنَّ الْمَرْأَةَ تُقْبِلُ فِي صُورَةِ شَيْطَانٍ وَتُدْبِرُ فِي صُورَةِ شَيْطَانٍ، فَإِذَا أَبْصَرَ أَحَدُكُمُ امْرَأَةً فَلْيَأْتِ أَهْلَهُ، فَإِنَّ ذَلِكَ يَرُدُّ مَا فِي نَفْسِهِ',
+        en: 'A woman advances in the image of a devil and retreats in the image of a devil, so when one of you sees a woman [and feels desire], let him go to his wife, for that repels what is in his soul.',
+        ref: 'Ṣaḥīḥ Muslim 1403'
       },
       {
         by: 'Al-Nawawī (citing Qāḍī ʿIyāḍ)',
         en: 'It doesn’t mean he was affected by the woman. He showed us what to do in such a case and did it so we would do the same.',
         ref: 'Sharḥ Ṣaḥīḥ Muslim 9/254'
+      }
+    ],
+    shots: [
+      {
+        src: 'shots/m3-frau-teufel-muslim1403.webp',
+        cap: 'Ṣaḥīḥ Muslim 1403 with Abū al-Zubayr ← Jābir transmission breakdown'
       }
     ],
     visual: {
@@ -615,7 +767,13 @@
       }
     },
     p: [
-      'Al-Nawawī’s proof from Taymāʾ: Al-Nawawī reasons from the report that ʿUmar sent them to Taymāʾ and Arīḥā; had all of Arabia been meant, Taymāʾ wouldn’t have been allowed (Sharḥ Muslim, scans in the channel).'
+      'Al-Nawawī’s proof from Taymāʾ: Al-Nawawī reasons from the report that ʿUmar sent them to Taymāʾ and Arīḥā; had all of Arabia been meant, Taymāʾ wouldn’t have been allowed (Sharḥ Ṣaḥīḥ Muslim).'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-expel-arabia-sources.webp',
+        cap: 'Al-Nawawī (Sharḥ Ṣaḥīḥ Muslim) and classical sources on the Ḥijāz vs. Taymāʾ'
+      }
     ]
   });
 
@@ -659,6 +817,20 @@
     p: [
       'Ibn Ḥazm on this very report: “As for the report in which the Prophet took the Torah and said ‘I believe in you’, it is a fabricated false report that did not reach us with a proper chain” (al-Fiṣal fī al-Milal 1/237).',
       'Isolated wording rejected: Abū Dāwūd’s is the only one with this wording. It’s weak or fabricated, so no Muslim has to accept it, let alone the critics’ reasoning with it.'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-ad4449-hadith-rijal.webp',
+        cap: 'Rijāl evaluations of Hishām ibn Saʿd in Abū Dāwūd 4449'
+      },
+      {
+        src: 'shots/m3-ad4449-ibn-abbas.webp',
+        cap: 'Bukhārī 7363: Ibn ʿAbbās’s explicit report on textual alterations'
+      },
+      {
+        src: 'shots/m3-ad4449-q3-78.webp',
+        cap: 'Tafsīr evidence on Qurʾān 3:78 and scriptural alteration'
+      }
     ]
   });
 
@@ -700,7 +872,28 @@
       }
     },
     p: [
-      'Attribution and chain strength: Ibn Kathīr, Tafsīr 3:78, and Ibn Ḥajar both attribute the words to Ibn ʿAbbās; Ibn Ḥajar notes it isn’t narrated with a sound chain (scans in the channel).'
+      'Attribution and chain strength: Ibn Kathīr, Tafsīr 3:78, and Ibn Ḥajar both attribute the words to Ibn ʿAbbās; Ibn Ḥajar notes it isn’t narrated with a sound chain.'
+    ],
+    filterShots: [
+      'shots/bukh-torah-1.webp',
+      'shots/bukh-torah-3.webp',
+      'shots/bukh-torah-4.webp',
+      'shots/bukh-torah-5.webp',
+      'shots/bukh-torah-6.webp'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-bukh-torah-ibnkathir-3-78.webp',
+        cap: 'Tafsīr Ibn Kathīr on 3:78 discussing the attribution to Ibn ʿAbbās and the Preserved Tablet'
+      },
+      {
+        src: 'shots/m3-bukhari-torah-fath.webp',
+        cap: 'Fatḥ al-Bārī (Kitāb al-Tawḥīd): Ibn Ḥajar’s chain critique and Preserved Tablet context'
+      },
+      {
+        src: 'shots/m3-razi-arbain-2-77.webp',
+        cap: 'Fakhr al-Dīn al-Rāzī, al-Arbaʿīn fī Uṣūl al-Dīn (2/77), on the Torah’s corruption in Babylon'
+      }
     ]
   });
 
@@ -749,6 +942,20 @@
       'Ibn al-Qayyim: “It is said that this was in a specific situation, when they marched to Banū Qurayẓa” (Zād al-Maʿād 2/388).',
       'Wartime context, not neighbours: Qurayẓa were an Arabised Jewish tribe who claimed Israelite descent and had broken their treaty in wartime. Pushing an enemy to the narrow side of the road was a show of strength in a state of war, not a rule for neighbours.',
       'Restraint after betrayal: Even there he allowed returning their greeting. Read with its context, the ḥadīth is restraint toward people who had just betrayed a treaty.'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-keine-juden-bukhari6528.webp',
+        cap: 'Ṣaḥīḥ al-Bukhārī 6528 and parallel texts on the greeting context'
+      },
+      {
+        src: 'shots/m3-keine-juden-fath-11-40.webp',
+        cap: 'Fatḥ al-Bārī (11/40): Ibn Ḥajar on the Banū Qurayẓa occasion and peacetime greetings'
+      },
+      {
+        src: 'shots/m3-keine-juden-muslim2167.webp',
+        cap: 'Ṣaḥīḥ Muslim 2167 with al-Nawawī’s commentary'
+      }
     ]
   });
 
@@ -866,6 +1073,12 @@
         by: 'Abū Dāwūd 4980 (Ḥudhayfa’s version)',
         en: 'Don’t say ‘what Allah wills and so-and-so wills’, but say ‘what Allah wills, then what so-and-so wills’.',
         ref: 'Abū Dāwūd 4980; Musnad Aḥmad 38/300'
+      },
+      {
+        by: 'Shaykh ʿAbd al-ʿAzīz ibn Bāz',
+        ar: 'هذا من الشرك الأصغر',
+        en: 'Swearing by other than Allah or equating human will with Allah’s via wa (“and”) constitutes minor shirk (al-shirk al-aṣghar).',
+        ref: 'Majmūʿ Fatāwā Ibn Bāz'
       }
     ],
     visual: {
@@ -907,14 +1120,26 @@
     quotes: [
       {
         by: 'Ibn Masʿūd (Bukhārī 6929 / Muslim 1792)',
+        ar: 'عَنْ عَبْدِ اللَّهِ قَالَ كَأَنِّي أَنْظُرُ إِلَى رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَحْكِي نَبِيًّا مِنَ الأَنْبِيَاءِ ضَرَبَهُ قَوْمُهُ وَهُوَ يَمْسَحُ الدَّمَ عَنْ وَجْهِهِ وَيَقُولُ رَبِّ اغْفِرْ لِقَوْمِي فَإِنَّهُمْ لاَ يَعْلَمُونَ',
         en: 'It is as if I am looking at the Messenger of Allah ﷺ telling of one of the prophets, whose people beat him while he wiped the blood from his face, saying: My Lord, forgive my people, for they do not know.',
         ref: 'Bukhārī 6929; Muslim 1792'
       },
       {
         by: 'Imām al-Nawawī',
-        en: 'In this is the forbearance, patient endurance, forgiveness and compassion of the prophets for their people: their prayers for them to be guided and forgiven, and excusing their crimes against themselves because they did not know.',
+        ar: 'فِيهِ مَا كَانُوا عَلَيْهِ صَلَوَاتُ اللَّهِ وَسَلَامُهُ عَلَيْهِمْ مِنَ الْحِلْمِ وَالتَّصَبُّرِ وَالْعَفْوِ وَالشَّفَقَةِ عَلَى قَوْمِهِمْ … وَهَذَا النَّبِيُّ الْمُشَارُ إِلَيْهِ مِنَ الْمُتَقَدِّمِينَ وَقَدْ جَرَى لِنَبِيِّنَا صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ مِثْلُ هَذَا يَوْمَ أُحُدٍ',
+        en: 'In this is the forbearance, patient endurance, forgiveness and compassion of the prophets for their people: their prayers for them to be guided and forgiven, and excusing their crimes against themselves because they did not know — and this happened to our Prophet ﷺ at Uḥud.',
         ref: 'Sharḥ al-Nawawī ʿalā Muslim 12/150'
       }
+    ],
+    shots: [
+      {
+        src: 'shots/m3-bukhari-6929-uhud.webp',
+        cap: 'Ṣaḥīḥ al-Bukhārī 6929 & Sharḥ al-Nawawī (12/150) placing the report under Uḥud'
+      }
+    ],
+    p: [
+      'Narrative subject: Ibn Masʿūd explicitly narrates that the Prophet ﷺ was telling the story of a previous prophet beaten by his people, wiping blood from his face — nothing mentions a cross or crucifixion.',
+      'Uḥud parallel (al-Nawawī 12/150): Ṣaḥīḥ Muslim places the ḥadīth in the chapter on the Battle of Uḥud, where the Prophet ﷺ himself wiped blood from his face and uttered the same supplication for his people (also recorded in Ibn Ḥibbān 985).'
     ],
     visual: {
       kind: 'compare',
@@ -979,6 +1204,36 @@
       ['Child in report', 'His grandson al-Ḥasan'],
       ['Biographical source', 'Tahdhīb al-Tahdhīb']
     ],
+    quotes: [
+      {
+        by: 'al-Adab al-Mufrad 1183 (via Hishām ibn Saʿd)',
+        ar: 'حَدَّثَنَا إِبْرَاهِيمُ بْنُ الْمُنْذِرِ، قَالَ: حَدَّثَنِي ابْنُ أَبِي فُدَيْكٍ، قَالَ: حَدَّثَنِي هِشَامُ بْنُ سَعْدٍ، عَنْ نُعَيْمِ بْنِ الْمُجْمِرِ، عَنْ أَبِي هُرَيْرَةَ... أَنَّ النَّبِيَّ صلى الله عليه وسلم يَفْتَحُ فَاهُ فَيُدْخِلُ فَاهُ فِي فِيهِ',
+        en: 'Narrated through Hishām ibn Saʿd from Nuʿaym al-Mujmir from Abū Hurayra — the very weak/criticised chain on which the disputed wording rests.',
+        ref: 'al-Adab al-Mufrad 1183'
+      },
+      {
+        by: 'Imām al-Dhahabī (on Qābūs ibn Abī Ẓabyān)',
+        ar: 'قابوس بن أبي ظبيان ... قال أبو حاتم: لا يُحتجّ به، وقال النسائي: ليس بالقوي، وقال ابن حبان: رديء الحفظ ينفرد عن أبيه بما لا أصل له، فربما رفع المراسيل وأسند الموقوف',
+        en: 'Abū Ḥātim said: he is not used as proof; al-Nasāʾī said: not strong; Ibn Ḥibbān said: poor in memory, isolates narrations from his father with no basis, elevating mursal reports and attributing mawqūf ones.',
+        ref: 'Mīzān al-Iʿtidāl #6794'
+      },
+      {
+        by: 'Shuʿba ibn al-Ḥajjāj & Ibn al-Jawzī (on the zabība variant)',
+        ar: 'مَا رَأَيْتُ أَحَدًا أَسْوَأَ حِفْظًا مِنْ ابْنِ أَبِي لَيْلَى / هَذَا حَدِيثٌ مَوْضُوعٌ إِسْنَادًا وَمَتْنًا',
+        en: 'Shuʿba: “I have never seen anyone with a worse memory than Ibn Abī Laylā.” Ibn al-Jawzī: “This ḥadīth is fabricated in both chain and text.”',
+        ref: 'al-Mawḍūʿāt / Classical rijāl criticism'
+      }
+    ],
+    shots: [
+      {
+        src: 'shots/m3-kissed-boy-adab1183.webp',
+        cap: 'al-Adab al-Mufrad 1183 highlighting Hishām ibn Saʿd in the isnād'
+      },
+      {
+        src: 'shots/m3-kissed-boy-zabiba-ar.webp',
+        cap: 'Mīzān al-Iʿtidāl #6794 & classical rijāl verdicts dismantling the zabība chain'
+      }
+    ],
     visual: {
       kind: 'compare',
       left: {
@@ -999,7 +1254,7 @@
       }
     },
     p: [
-      'Majority narrator critique: Aḥmad, founder of a school of fiqh and author of the largest ḥadīth collection (the Musnad), and al-Nasāʾī, author of the Sunan, did not consider Hishām ibn Saʿd a good narrator (scan of the gradings in the channel; see also Farid Responds).'
+      'Majority narrator critique: Aḥmad, founder of a school of fiqh and author of the largest ḥadīth collection (the Musnad), and al-Nasāʾī, author of the Sunan, did not consider Hishām ibn Saʿd a good narrator (see Farid Responds and the primary classical rijāl gradings in Tahdhīb al-Tahdhīb and Mīzān al-Iʿtidāl).'
     ]
   });
 
@@ -1034,6 +1289,29 @@
     p: [
       'Intuition from familiarity: The same principle applies: the scribe had an intuitive thought, perhaps from recognising a pattern or theme in the surrounding verses. As a scribe he was in constant contact with revelation, which increased his familiarity with the text.',
       'Modern parallel: People today can anticipate a verse-ending if they’ve read the Qurʾān in Arabic for a long time.'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-apostate-bukhari3617.webp',
+        cap: 'Ṣaḥīḥ al-Bukhārī 3617: full account including the earth repeatedly rejecting his corpse'
+      },
+      {
+        src: 'shots/m3-apostate-bukhari402.webp',
+        cap: 'Ṣaḥīḥ al-Bukhārī 402: ʿUmar’s three agreements showing lawful intuition of Qurʾānic phrasing'
+      },
+      {
+        src: 'shots/m3-apostate-tirmidhi3686.webp',
+        cap: 'Jāmiʿ al-Tirmidhī 3686 & Ibn Kathīr on the scribe’s false boast vs. revelation'
+      }
+    ],
+    nodes: [
+      {
+        match: 'Al-Nasāʾī 4067',
+        p: [
+          'Weak isnād: Sunan al-Nasāʾī 4067 transmits this report via Ismāʿīl ibn ʿAbd al-Raḥmān al-Suddī (criticised as unreliable and an extreme Shīʿī) and Asbāṭ ibn Naṣr al-Hamdānī (graded no independent proof, as cross-referenced in the editor’s notes at nos. 454, 3873, and 4352).',
+          'Pardon and subsequent service: Authentic historical reports record that ʿAbdullāh ibn Saʿd ibn Abī Sarḥ was pardoned at the Conquest of Mecca through ʿUthmān’s intercession, returned sincerely to Islam, and later served as governor of Egypt.'
+        ]
+      }
     ]
   });
 
@@ -1090,6 +1368,12 @@
       ['Bible parallels', 'Mark 7:33; 2 Kings 4:34']
     ],
     quotes: [
+      {
+        by: 'Abū Hurayra (al-Ṭabarānī 2588)',
+        ar: 'مَا شَأْنُ ابْنَيَّ... الْعَطَشُ... فَأَدْلَعَ لَهُ لِسَانَهُ فَجَعَلَ يَمُصُّهُ حَتَّى هَدَأَ أَوْ سَكَنَ',
+        en: 'What is wrong with my sons? They said: Thirst. So he extended his tongue for him, and he sucked it until he became calm and quiet.',
+        ref: 'al-Ṭabarānī, al-Muʿjam al-Kabīr 2588 (ḥasan)'
+      },
       {
         by: 'Qāḍī ʿIyāḍ',
         en: 'He gave al-Ḥasan and al-Ḥusayn his tongue and they sucked it; they had been crying from thirst, and they became quiet.',
@@ -1170,7 +1454,17 @@
       'Al-Arnaʾūṭ on the related Musnad chain: “Its chain is weak and consists of unknowns, as we explained at no. 15945” (al-Mizzī has it in Tahdhīb al-Kamāl 12/312–313 via Aḥmad).',
       'Chronological disconnects: His hearing from ʿUmar is also doubted: Ibn Abī Ḥātim, Abū Ḥātim (interrupted), Ibn Ḥajar (disputed), Ibn al-Barqī, Ibn Maʿīn, al-Khalīlī, Abū Dāwūd; Ibn Ḥazm: he didn’t meet Bilāl or ʿUmar; al-Bayhaqī: he didn’t meet Muʿādh or ʿAbdullāh ibn Zayd. Death dates make a meeting with Usayd (d. 20 AH) equally unlikely.',
       'Father vs. son clarification: Several narrator critiques posted in the channel concern Muḥammad ibn ʿAbd al-Raḥmān ibn Abī Laylā, the judge, whom Aḥmad, al-Nasāʾī and others called weak; the father is reliable, but the gap to Usayd remains.',
-      'Additional channel gradings: The channel also has screenshots of the gradings, including al-Albānī’s (to capture).'
+      'Additional scholarly gradings: Contemporary and classical scholars, including al-Albānī and al-Arnaʾūṭ, likewise classify the chain as weak.'
+    ],
+    shots: [
+      {
+        src: 'shots/m3-mann-kuesst-ad1669.webp',
+        cap: 'Abū Dāwūd 5224 / Aḥmad grading notes on the narration chain'
+      },
+      {
+        src: 'shots/m3-mann-kuesst-isnad.webp',
+        cap: 'Tahdhīb al-Kamāl & Tanqīḥ al-Taḥqīq on Ibn Abī Laylā’s chronological disconnect from Usayd'
+      }
     ]
   });
 
@@ -1212,7 +1506,13 @@
           'Prophet ﷺ cursed imitation of the opposite sex (Bukhārī 5885–5886)'
         ]
       }
-    }
+    },
+    shots: [
+      {
+        src: 'shots/m3-aisha-kleidung-wrap.webp',
+        cap: 'Classical lexical illustrations of thawb, liḥāf (blanket), and the wide unisex mirṭ cloak'
+      }
+    ]
   });
 
   /* 28 */
@@ -1297,5 +1597,47 @@
         ]
       }
     }
+  });
+
+  /* 30: Explainer quotes + scans for general inquiry */
+  up('islam/hadith/d-dr-hadith-general-inquiry-and-news', {
+    quotes: [
+      {
+        by: 'Imām Aḥmad ibn Ḥanbal',
+        en: 'This is a fabricated ḥadīth. [Regarding the multiple weak chains for “Seeking knowledge is obligatory on every Muslim”, which fail to corroborate because weak narrators could have drawn from one another.]',
+        ref: 'Classical rijāl & corroboration criticism'
+      },
+      {
+        by: 'ʿAlī ibn al-Madīnī (quoting ʿAbd al-Raḥmān ibn Mahdī)',
+        en: 'Ibn Mahdī told me: “All of its narrations revolve around Abū al-ʿĀliya.” Tracing each apparently independent mursal chain showed they shared a single source.',
+        ref: 'al-ʿIlal / al-Marāsīl methodology'
+      }
+    ],
+    shots: [
+      {
+        src: 'shots/m3-inquiry-cohorts.webp',
+        cap: 'Generational isnād cohorts from Companions to the classical compilers'
+      },
+      {
+        src: 'shots/m3-inquiry-isnad-tree.webp',
+        cap: 'Independent vs. derived transmission paths (mutābaʿa and shāhid analysis)'
+      }
+    ]
+  });
+
+  /* 31: Explainer quotes for ʿUlūm al-Ḥadīth primer */
+  up('islam/hadith/d-ia-introduction-to-the-sciences-of-hadith', {
+    quotes: [
+      {
+        by: 'Shaykh Suhayb Hasan',
+        en: 'Every ḥadīth consists of the isnād (chain of transmitters) and the matn (actual wording). Even a text that sounds wise or pious is not attributed to the Prophet ﷺ unless its chain passes strict historical and biographical verification.',
+        ref: 'An Introduction to the Science of Hadith'
+      },
+      {
+        by: 'Shaykh Suhayb Hasan (Rijāl & grading rules)',
+        en: 'Multiple independent mildly weak chains can corroborate one another up to ḥasan li-ghayrihi, whereas severely weak or fabricated chains can never elevate each other.',
+        ref: 'An Introduction to the Science of Hadith (appendix grading 26 popular sayings)'
+      }
+    ]
   });
 })();

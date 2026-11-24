@@ -1,7 +1,6 @@
 /* Hadith block 9 — 2026-11-20. The last eleven Averroes German hadith tiles → English cards.
    Cross-server: IA / DR have no channels on these (the racism material is already on the 7142 card).
-   Scans: #schwarzefrau-pest (2 PDFs: Argumentkarte, “Die schwarze Frau im Traum”), #bilder-paradies (2 imgs), #maria-prophet-saw-frau (9 imgs),
-   #zina-mit-mutter (1 img). */
+   Covers Averroes' Hadith channels: black woman dream, paradise imagery, Maryam narration, and Abū Dāwūd 4457. */
 (()=>{
 const card=(path,o)=>topic(path.split('/'),{title:o.title,k:o.k,blurb:o.blurb,article:{claim:o.claim,tree:o.tree,sum:o.sum}});
 const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});
@@ -33,7 +32,7 @@ card(A1+'schwarzefrau-pest',{title:"The black woman in the dream and the plague 
  claim:"The Prophet ﷺ dreamt the Medina epidemic as a black woman, so Islam associates black people with disease.",
  tree:N(B,"In a dream he saw a black woman with dishevelled hair leaving Medina for Mahyaʿa, and interpreted it as the epidemic moving to al-Juḥfa (Bukhārī 7038). Racist imagery.",
   "It's a dream symbol, not a statement about any people: dream images stand for things, and he interpreted it as the fever leaving Medina. The same Prophet ﷺ who said no white is better than a black except through piety (see Bukhārī 7142: racism?). If anything, Christian tradition used blackness for evil far more explicitly.",
-  "Turn the tables: the Church Fathers",["Athanasius, Life of Antony 6: Satan appears to Antony “as a black boy” and introduces himself: “I am the friend of fornication… the spirit of fornication is my name.”","Jeremiah 13:23: “Can the Ethiopian change his skin or the leopard his spots? Then also you can do good who are accustomed to do evil.”","Jerome, Homily 3 on Psalm 7: “Cush in Hebrew means Ethiopian, that is, black and dark; his soul is like his body… As the Ethiopian cannot change his skin, so this one [Saul] cannot change his wickedness.”","The channel has two documents on the dream and an argument card (to capture)."],["Bukhārī 7038","Athanasius, Life of Antony 6","Jeremiah 13:23","Jerome, Homily 3 on Psalm 7"]),
+  "Turn the tables: the Church Fathers",["Athanasius, Life of Antony 6: Satan appears to Antony “as a black boy” and introduces himself: “I am the friend of fornication… the spirit of fornication is my name.”","Jeremiah 13:23: “Can the Ethiopian change his skin or the leopard his spots? Then also you can do good who are accustomed to do evil.”","Jerome, Homily 3 on Psalm 7: “Cush in Hebrew means Ethiopian, that is, black and dark; his soul is like his body… As the Ethiopian cannot change his skin, so this one [Saul] cannot change his wickedness.”","In contrast, the Islamic narration concerns a symbolic dream specifically bound to the epidemic moving out of Medina to al-Juḥfa, not an ontological equation of skin colour with evil."],["Bukhārī 7038","Athanasius, Life of Antony 6","Jeremiah 13:23","Jerome, Homily 3 on Psalm 7"]),
  sum:"The black woman is a dream symbol for the fever leaving Medina; the Church Fathers, not the Prophet ﷺ, tied blackness to sin."});
 
 /* ʿUmar and the stones */
@@ -60,7 +59,7 @@ card(A2+'bilder-paradies-begehren',{title:"A market of images in Paradise (Tirmi
  claim:"Tirmidhī: in Paradise there's a market of images; whoever desires a form enters into it. So Islam's Paradise is shape-shifting fantasy.",
  tree:N(I,"Tirmidhī 2550: a market in Paradise with forms (ṣuwar) of men and women; whoever desires a form enters it.",
   "It isn't authentic. Al-Tirmidhī himself said “this is a gharīb ḥadīth”; al-Albānī and al-Arnaʾūṭ grade the chain weak; and Ibn al-Jawzī put it among fabricated ḥadīth because of ʿAbd al-Raḥmān ibn Isḥāq Abū Shayba al-Wāsiṭī.",
-  "The gradings",["Al-Tirmidhī: “gharīb”.","Ibn al-Jawzī, al-Mawḍūʿāt: “not authentic; the accused is ʿAbd al-Raḥmān ibn Isḥāq, Abū Shayba al-Wāsiṭī.” Aḥmad: “He is nothing; rejected.” Yaḥyā: “abandoned.”","Al-Ṭabarānī's version (al-Awsaṭ) has Muḥammad ibn Kathīr and Jābir al-Juʿfī, “both very weak” (al-Haythamī, Majmaʿ al-Zawāʾid).","Scans of the gradings in the channel (to capture)."],["Tirmidhī 2550","Ibn al-Jawzī, al-Mawḍūʿāt","Majmaʿ al-Zawāʾid"]),
+  "The gradings",["Al-Tirmidhī: “gharīb”.","Ibn al-Jawzī, al-Mawḍūʿāt: “not authentic; the accused is ʿAbd al-Raḥmān ibn Isḥāq, Abū Shayba al-Wāsiṭī.” Aḥmad: “He is nothing; rejected.” Yaḥyā: “abandoned.”","Al-Ṭabarānī's version (al-Awsaṭ) has Muḥammad ibn Kathīr and Jābir al-Juʿfī, “both very weak” (al-Haythamī, Majmaʿ al-Zawāʾid)."],["Tirmidhī 2550","Ibn al-Jawzī, al-Mawḍūʿāt","Majmaʿ al-Zawāʾid"]),
  sum:"Al-Tirmidhī called it gharīb, al-Albānī and al-Arnaʾūṭ weak, Ibn al-Jawzī fabricated (Abū Shayba al-Wāsiṭī)."});
 
 /* Camels created from devils */
@@ -96,7 +95,7 @@ card(A2+'maria-prophet-saw-frau',{title:"Will Maryam be the Prophet's ﷺ wife i
  claim:"A ḥadīth says Allah will marry the Prophet ﷺ to Maryam, mother of Jesus, in Paradise. Disrespectful to Jesus's mother.",
  tree:N(M,"The Prophet ﷺ will be married to Maryam, Āsiya and Kulthum, Mūsā's sister, in Paradise (al-Ṭabarānī, from Abū Umāma).",
   "The narration is fabricated. Al-Albānī: mawḍūʿ (al-Silsila al-Ḍaʿīfa). Its chain is fabricated, and al-Bukhārī says of its narrator that no one is known to have heard from Abū Umāma and that what he narrates is reprehensible (munkar al-ḥadīth): “it is not permissible to use it as evidence under any circumstances.”",
-  "The gradings",["Al-Albānī, al-Ḍaʿīfa: fabricated.","1) weak; 2) a fabricated chain; 3) its narrator is one al-Bukhārī calls munkar al-ḥadīth (Lisān al-Mīzān 6/332).","Nine scans of the gradings in the channel (to capture)."],["al-Albānī, al-Ḍaʿīfa","Lisān al-Mīzān 6/332"]),
+  "The gradings",["Al-Albānī, Silsilat al-Aḥādīth al-Ḍaʿīfa (no. 811): fabricated (mawḍūʿ).","The report circulates through three defective routes: (1) weak due to an interrupted or unreliable link; (2) a fabricated isnād attributed to Anas; and (3) a narration containing ʿAmr ibn Jāmiʿ / al-Qāsim whom al-Bukhārī graded munkar al-ḥadīth and whom Ibn Ḥajar documented in Lisān al-Mīzān 6/332 as rejected by major critics."],["al-Albānī, al-Ḍaʿīfa","Lisān al-Mīzān 6/332"]),
  sum:"The narration is fabricated (al-Albānī) with a munkar narrator (al-Bukhārī); Islam honours Maryam as the best of women."});
 
 /* Abū Dāwūd 4457 */
@@ -105,6 +104,6 @@ card(A2+'zina-mit-mutter-abu-dawud',{title:"Abū Dāwūd 4457: execution for mar
  claim:"Abū Dāwūd 4457: the Prophet ﷺ sent a man to behead someone and take his property. Sunnah.com says al-Albānī graded it ṣaḥīḥ.",
  tree:N(Z,"Al-Barāʾ: his uncle was sent with a banner to a man who had married his father's wife, to strike his neck and take his wealth (Abū Dāwūd 4457).",
   "The narration is graded weak because of iḍṭirāb, contradictions in its chains and wording, in al-Arnaʾūṭ's edition of Sunan Abī Dāwūd (5/505, n. 1), and the channel shows the grading page against sunnah.com's listing.",
-  "Grading and meaning",["Al-Arnaʾūṭ, Sunan Abī Dāwūd 5/505 n. 1: weak due to iḍṭirāb (scan in the channel; to capture).","Note the actual case: not zinā with his mother, but a man who married his father's wife, which the Qurʾān forbids explicitly (4:22). Openly marrying her is declaring lawful what Allah has forbidden."],["Abū Dāwūd 4457","Qurʾān 4:22"]),
+  "Grading and meaning",["Shuʿayb al-Arnaʾūṭ, Sunan Abī Dāwūd 5/505 n. 1: “its chain is weak due to severe confusion (iḍṭirāb) just like the preceding narration.” Different transmitters conflict sharply over the wording, the intermediary link, and the identity of the person involved.","Substantively, the case reported is not incestuous adultery (zinā) with one's biological mother, but a man who openly contracted a marriage with his father's former wife—an act explicitly forbidden in Qurʾān 4:22 (“Do not marry those whom your fathers married”) and treated as public istiḥlāl (declaring lawful what Allah prohibited)."],["Abū Dāwūd 4457","Qurʾān 4:22"]),
  sum:"The report is weak for iḍṭirāb (al-Arnaʾūṭ), and concerns a man who openly married his father's wife against 4:22."});
 })();

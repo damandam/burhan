@@ -10,17 +10,52 @@
     }
     return null;
   }
+  function mergeShots(more, list) {
+    if (!Array.isArray(list) || !list.length) return;
+    more.shots = more.shots || [];
+    const seen = new Set(more.shots.map(s => (typeof s === 'string' ? s : s.src)));
+    for (const s of list) {
+      const src = typeof s === 'string' ? s : s.src;
+      if (src && !seen.has(src)) { seen.add(src); more.shots.push(s); }
+    }
+  }
+  function stripPh(arr) {
+    if (!Array.isArray(arr)) return arr;
+    return arr
+      .map(s => s
+        .replace(/\s*\([^)]*(?:to capture|scans? in the channel)[^)]*\)\.?/gi, '.')
+        .replace(/\s*Channel media note:[^.]*\./gi, '')
+        .replace(/\s*\.\./g, '.')
+        .trim())
+      .filter(Boolean);
+  }
   function up(key, patch) {
     const a = findArt(key);
     if (!a) { console.warn('visual-audit-6b: missing', key); return; }
     if (a.type === 'explainer') {
       if (patch.visual && !a.visual) a.visual = patch.visual;
+      if (patch.evidence) a.evidence = patch.evidence;
       if (Array.isArray(a.cards) && a.cards.length) {
         const c = a.cards[0];
         c.more = c.more || {};
         if (patch.facts) c.more.facts = patch.facts;
         if (patch.quotes) c.more.quotes = patch.quotes;
         if (patch.cardVisual) c.more.visual = patch.cardVisual;
+        if (patch.shots) mergeShots(c.more, patch.shots);
+        if (patch.cardPatches) {
+          for (const [idxStr, cp] of Object.entries(patch.cardPatches)) {
+            const ci = Number(idxStr);
+            const card = a.cards[ci];
+            if (!card) continue;
+            if (cp.p) card.p = cp.p;
+            if (cp.short) card.short = cp.short;
+            card.more = card.more || {};
+            if (cp.facts) card.more.facts = cp.facts;
+            if (cp.quotes) card.more.quotes = cp.quotes;
+            if (cp.visual) card.more.visual = cp.visual;
+            if (cp.shots) mergeShots(card.more, cp.shots);
+          }
+        }
       }
       return;
     }
@@ -34,8 +69,33 @@
     if (patch.quotes) t.more.quotes = patch.quotes;
     if (patch.visual) t.more.visual = patch.visual;
     if (patch.p) t.more.p = patch.p;
+    if (patch.shots) mergeShots(t.more, patch.shots);
     if (patch.optWho && Array.isArray(t.next)) {
       t.next.forEach((c, j) => { if (patch.optWho[j]) c.optWho = patch.optWho[j]; });
+    }
+    if (patch.nextPatch) {
+      for (const [pathStr, np] of Object.entries(patch.nextPatch)) {
+        let cur = t;
+        for (const seg of String(pathStr).split('.')) {
+          if (!cur || !Array.isArray(cur.next)) { cur = null; break; }
+          cur = cur.next[Number(seg)];
+        }
+        if (!cur) continue;
+        cur.more = cur.more || {};
+        if (np.p) cur.more.p = np.p;
+        if (np.appendP) cur.more.p = (cur.more.p || []).concat(np.appendP);
+        if (np.facts) cur.more.facts = np.facts;
+        if (np.quotes) cur.more.quotes = np.quotes;
+        if (np.visual) cur.more.visual = np.visual;
+        if (np.shots) mergeShots(cur.more, np.shots);
+      }
+    }
+    if (patch.stripPlaceholders) {
+      const walkStrip = n => {
+        if (n.more && Array.isArray(n.more.p)) n.more.p = stripPh(n.more.p);
+        (n.next || []).forEach(walkStrip);
+      };
+      walkStrip(t);
     }
   }
 
@@ -172,7 +232,13 @@
     },
     p: [
       'Relative proportions: Shares like two-thirds, a sixth and an eighth are fixed relative to each other. When they sum above one, all are scaled down so each heir keeps the same proportion.',
-      'Worked calculation and credit: The channel works through the case and the ʿawl calculation in scans (to capture). Credit: The Orthodox Muslim, with help from ʿĀqib.'
+      'Worked calculation and credit: The channel works through the case and the ʿawl calculation proportionally. Credit: The Orthodox Muslim, with help from ʿĀqib.'
+    ],
+    shots: [
+      { src: 'shots/m2-awl-sunan-en.webp', cap: 'Worked ʿawl inheritance calculation showing proportional reduction when shares exceed 100%.' },
+      { src: 'shots/m2-awl-bukhari-6429.webp', cap: 'Ṣaḥīḥ al-Bukhārī / classical inheritance transmission on proportional shares.' },
+      { src: 'shots/m2-awl-ibnmajah-43.webp', cap: 'Sunan Ibn Mājah #43 — command to follow the Sunna of the Prophet ﷺ and the rightly guided caliphs.' },
+      { src: 'shots/m2-awl-bayhaqi-p569.webp', cap: 'Al-Bayhaqī, al-Sunan al-Kubrā — mawqūf transmission of ʿUmar\'s ʿawl consultation with the Companions.' }
     ]
   });
 
@@ -213,7 +279,14 @@
     },
     p: [
       'Singular on worship and tawḥīd: Whenever the Qurʾān speaks about worship and tawḥīd, it uses the singular: “Indeed, I am Allah; there is no god except Me, so worship Me” (20:14).',
-      'Arabic grammar resources: The channel also links an Arabic101 video, “Why does Allah use PLURAL نحن/we in the Quran?”, and has three scans on the grammar (to capture).'
+      'Arabic grammar resources: The channel also links an Arabic101 video, “Why does Allah use PLURAL نحن/we in the Quran?”, alongside Ibn Taymiyya\'s grammatical analysis in al-Tadmuriyya.'
+    ],
+    shots: [
+      { src: 'shots/m2-we-almaany.webp', cap: 'Arabic lexicographical entry (al-Maʿānī) — plural pronoun naḥnu used for majestic singular.' },
+      { src: 'shots/m2-we-taymiyya-1.webp', cap: 'Ibn Taymiyyah, al-ʿAqīda al-Tadmuriyya (p. 75) — explaining plural of majesty vs. dual.' },
+      { src: 'shots/m2-we-taymiyya-2.webp', cap: 'Ibn Taymiyyah, al-Tadmuriyya — why Allah never uses the dual for Himself.' },
+      { src: 'shots/m2-we-taymiyya-3.webp', cap: 'Ibn Taymiyyah, al-Tadmuriyya — grammatical shift between singular \'I\' and majestic \'We\'.' },
+      { src: 'shots/m2-saeh-iltifat-p82.webp', cap: 'Bassam Saeh, The Miraculous Language of the Qur\'an (p. 82) — rhetorical shifts (iltifāt) in divine pronouns.' }
     ]
   });
 
@@ -624,8 +697,10 @@
     },
     p: [
       'Non-Muslim beekeeping sources: honeybeesuite.com, “Do honey bees eat fruit?”; buzzbeekeepingsupplies.com: bees target overripe fruit.',
-      'Arabic usage of “eat”: “Eat” as general sustenance: 2:168; 5:88; 16:114; 20:81.',
-      'Archived evidence: Screenshots in the channel (to capture).'
+      'Arabic usage of “eat”: “Eat” as general sustenance: 2:168; 5:88; 16:114; 20:81.'
+    ],
+    shots: [
+      { src: 'shots/m2-bees-fruit.webp', cap: 'Honeybees feeding directly on ripe fruit, confirming Q 16:69\'s literal wording alongside Arabic kul (\'take sustenance\').' }
     ]
   });
 
@@ -1129,6 +1204,9 @@
         ref: 'Muslim 2135 (ṣaḥīḥ)'
       }
     ],
+    shots: [
+      { src: 'shots/m2-maria-q19-28.webp', cap: 'Qurʾān 19:28 — "O sister of Aaron" (yā ukhta Hārūn) in its full Arabic and English moral-lineage context.' }
+    ],
     visual: {
       kind: 'steps',
       items: [
@@ -1139,8 +1217,7 @@
     },
     p: [
       'Ḥadīth of al-Mughīra (Muslim 2135): Al-Mughīra ibn Shuʿba: when I came to Najrān, the Christian monks asked me: “You recite ‘O sister of Aaron’ (19:28), but Moses was born long before Jesus.” When I came back to the Messenger of Allah ﷺ I asked him, and he said: “They used to name people after the prophets and righteous people who came before them” (Muslim 2135, ṣaḥīḥ).',
-      'Ibn Kathīr on tribal idiom: Ibn Kathīr: it\'s like saying to someone from Tamīm “O brother of Tamīm”, or to someone from Muḍar “O brother of Muḍar” (Tafsīr Ibn Kathīr 19:28).',
-      'Archived scan: A scan in the channel adds more (to capture).'
+      'Ibn Kathīr on tribal idiom: Ibn Kathīr: it\'s like saying to someone from Tamīm “O brother of Tamīm”, or to someone from Muḍar “O brother of Muḍar” (Tafsīr Ibn Kathīr 19:28).'
     ]
   });
 
@@ -1216,7 +1293,20 @@
         by: 'Proverbs (attributed to Solomon)',
         en: 'Go to the ant, O sluggard; consider her ways and be wise.',
         ref: 'Proverbs 6:6'
+      },
+      {
+        by: 'Norman Stillman (1974)',
+        en: 'In some instances what was thought to be a Jewish haggadic influence in an Islamic text might well be quite the reverse. The Pirqe de Rabbi Eli\'ezer, for example, would seem to have been finally redacted after the advent of Islam.',
+        ref: 'Averroes #the-legend-of-jews PDF, p. 3'
+      },
+      {
+        by: 'Michael Pregill (2020)',
+        en: 'The opposite may be the case, namely, that Jews quite likely "borrowed" from the Quran, or even from later Islamic literature.',
+        ref: 'The Golden Calf between Bible and Qur\'an (OUP 2020), p. 4'
       }
+    ],
+    shots: [
+      { src: 'shots/m2-suyuti-ant-27-18-p249.webp', cap: 'Al-Suyūṭī, al-Itqān fī ʿUlūm al-Qurʾān (p. 249) — analyzing the rhetorical forms in Q 27:18 (Solomon and the ant).' }
     ],
     visual: {
       kind: 'compare',
@@ -1240,8 +1330,7 @@
     p: [
       'Qurʾān 27 (verse 19) — humble prophet: Solomon smiles at the ant\'s words, shows humility and gratitude and prays to Allah: an exemplary prophet. The ant warns, wise but not set above him.',
       'Legend — proud ruler: Solomon reacts angrily and proudly, throws the ant down; the ant declares itself greater than him because God led him to it, and lectures him until he leaves ashamed: a fable about pride.',
-      'Biblical Solomonic memory (Proverbs): Proverbs 6:6, attributed to Solomon: “Go to the ant, O sluggard; consider her ways and be wise.” The Qurʾān may confirm an authentic memory of Solomon and the ant.',
-      'Archived reference: A PDF on the Legends of the Jews is in the channel (to capture).'
+      'Biblical Solomonic memory (Proverbs): Proverbs 6:6, attributed to Solomon: “Go to the ant, O sluggard; consider her ways and be wise.” The Qurʾān may confirm an authentic memory of Solomon and the ant.'
     ]
   });
 
@@ -1300,6 +1389,22 @@
       ['Qurʾānic verses', '27:17; 34:12; 38:37; 5:48'],
       ['Core principle', 'Talmud preserves earlier oral/written lore']
     ],
+    quotes: [
+      {
+        by: 'Babylonian Talmud, Giṭṭin 68a',
+        en: 'The Gemara asks: Why was it necessary for Solomon, the author of Ecclesiastes, to have male demons and female demons?',
+        ref: 'Giṭṭin 68a (William Davidson Talmud)'
+      },
+      {
+        by: 'Michael Pregill (2020)',
+        en: 'The opposite may be the case, namely, that Jews quite likely "borrowed" from the Quran, or even from later Islamic literature.',
+        ref: 'The Golden Calf between Bible and Qur\'an, OUP 2020'
+      }
+    ],
+    shots: [
+      { src: 'shots/m2-talmud-gittin-68a.webp', cap: 'Babylonian Talmud, Giṭṭin 68a — Solomon\'s command over demons.' },
+      { src: 'shots/m2-talmud-apoc-adam.webp', cap: 'Apocalypse of Adam (Nag Hammadi V,5) — earlier extra-biblical attestation of Solomon commanding demons.' }
+    ],
     visual: {
       kind: 'steps',
       items: [
@@ -1310,9 +1415,9 @@
       ]
     },
     p: [
-      'Babylonian Talmud (Giṭṭin 68): The Talmud tells of Solomon having demons under his control (scan in the channel).',
-      'Testimony of Truth (1st c. CE): The same appears in the Testimony of Truth, a 1st-century CE (pre-Talmudic) apocryphal text (scans in the channel).',
-      'Apocalypse of Adam (1st c. CE): It\'s also in the Apocalypse of Adam, another 1st-century CE pre-Talmudic text (scans in the channel).'
+      'Babylonian Talmud (Giṭṭin 68a): The Talmud tells of Solomon having male and female demons under his control to build the Temple.',
+      'Testimony of Truth (1st c. CE): The same appears in the Testimony of Truth (Nag Hammadi IX,3), an earlier pre-Talmudic apocryphal text.',
+      'Apocalypse of Adam (1st c. CE): It\'s also attested in the Apocalypse of Adam (Nag Hammadi V,5), another pre-Talmudic witness.'
     ]
   });
 
@@ -1335,14 +1440,24 @@
     quotes: [
       {
         by: 'Qurʾān — Sūrat al-Māʾida',
-        en: '…when you fashioned from clay the likeness of a bird with My permission, then breathed into it, and it became a bird with My permission.',
+        ar: 'وَإِذْ تَخْلُقُ مِنَ الطِّينِ كَهَيْئَةِ الطَّيْرِ بِإِذْنِي فَتَنفُخُ فِيهَا فَتَكُونُ طَيْرًا بِإِذْنِي',
+        en: 'And [remember] when you designed from clay [what was] like the form of a bird with My permission, then you breathed into it and it became a bird with My permission.',
         ref: '5:110'
       },
       {
+        by: 'Irenaeus of Lyons (c. 180 CE)',
+        en: 'Besides this, they adduce an unspeakable number of apocryphal and spurious writings, which they themselves have forged, to bewilder the minds of foolish men… They adduce, too, that false and wicked story which relates that our Lord, when He was a boy learning His letters, on the teacher saying to Him, as is usual, "Pronounce Alpha," replied [as He was bid], "Alpha."',
+        ref: 'Against Heresies 1.20.1'
+      },
+      {
         by: 'Paul — 2 Timothy',
-        en: 'Just as Jannes and Jambres opposed Moses, so also these men oppose the truth.',
+        en: 'Just as Jannes and Jambres opposed Moses, so these men also oppose the truth, men corrupted in mind and disqualified regarding the faith.',
         ref: '2 Timothy 3:8'
       }
+    ],
+    shots: [
+      { src: 'shots/m2-apocrypha-q5-110.webp', cap: 'Qurʾān 5:110 — Jesus fashioning clay into the likeness of a bird by Allah\'s permission.' },
+      { src: 'shots/m2-apocrypha-irenaeus.webp', cap: 'Irenaeus, Against Heresies 1.20.1 (c. 180 CE) — earliest patristic witness citing material from the Infancy Gospel of Thomas.' }
     ],
     visual: {
       kind: 'steps',
@@ -1355,7 +1470,7 @@
     },
     p: [
       'Sūrat al-Māʾida (verse 110) text: “…when you fashioned from clay the likeness of a bird with My permission, then breathed into it, and it became a bird with My permission.”',
-      'Early witness of Irenaeus: Irenaeus quotes the Infancy Gospel\'s material in the 2nd century (scan in the channel). Thomas most likely didn\'t write it, but an anonymous text can still preserve true reports.'
+      'Early witness of Irenaeus: Irenaeus quotes the Infancy Gospel\'s material in the 2nd century (Against Heresies 1.20.1). Thomas most likely didn\'t write it, but an anonymous text can still preserve true reports.'
     ]
   });
 
@@ -1427,7 +1542,15 @@
         by: 'Qurʾān — Sūrat al-Aʿrāf',
         en: 'Recite to them the story of the one to whom We gave Our signs, but he detached himself from them, so Satan pursued him.',
         ref: '7:175'
+      },
+      {
+        by: 'Tilman Seidensticker',
+        en: 'The authenticity of the poems ascribed to Umaiya Ibn Abī ṣ-Ṣalt (died ca. 630 ce) is a long-disputed matter. The number of opinions is equivalent to Umaiya\'s importance as a possible source for the history of religion immediately before the rise of Islam.',
+        ref: 'Die Authentizität der Umaiya Ibn Abī ṣ-Ṣalt zugeschriebenen Gedichte II, p. 1'
       }
+    ],
+    shots: [
+      { src: 'shots/m2-seidensticker-umayya-p1.webp', cap: 'Tilman Seidensticker, \'Die Authentizität der Umaiya Ibn Abī ṣ-Ṣalt zugeschriebenen Gedichte II\' (p. 1) — English summary.' }
     ],
     visual: {
       kind: 'steps',
@@ -1442,7 +1565,7 @@
       'Influence of later commentary: Tor Andrae and others found elements in the poems taken from later Qurʾān commentaries. Many poems are therefore products of later Islamic tradition, not Umayya\'s time.',
       'Jewish and Christian sources: Hirschberg and others showed parallels with Jewish and Christian texts, especially the Haggada. Umayya and later Islamic sources may have drawn on the same pre-Islamic traditions, or the themes were inserted later to fit Islamic theology.',
       'Scholarly scepticism: researchers such as ʿAbd al-Ḥafīẓ al-Saṭlī accept only a very small number of verses as authentic; the bulk is skilfully forged or derives from later Islamic tradition.',
-      'Overall: the closeness to the Qurʾān, the later Islamic and biblical influences and the critical assessments lead to the conclusion that most of the poetry attributed to Umayya isn\'t authentic. (A scan in the channel; to capture.)'
+      'Overall: the closeness to the Qurʾān, the later Islamic and biblical influences and the critical assessments lead to the conclusion that most of the poetry attributed to Umayya isn\'t authentic.'
     ]
   });
 })();

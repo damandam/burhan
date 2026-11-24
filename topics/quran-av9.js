@@ -1,11 +1,10 @@
 /* Qurʾān AV batch 9 — 2026-11-20. Averroes “Koran von apokhyrphen” (8 channels, not on the site before).
    add(): clay birds / Infancy Gospel card ← #kindheits-evangelium + #pseudo-evangelium; plagiarism card ← #allgemeine-widerlegeung + #apocalypse-von-abraham.
    NEW Qurʾān › Sources: Solomon and the ant (27:18–19) vs Ginzberg's Legends of the Jews (#the-legend-of-jews, + #salomon-und-teppisch-teppich),
-   Abraham in the fire (21:51–70) (#abraham-feuer: Targum, Genesis Rabbah, Jerome, Bede).
-   #apokalypse-von-moses-leben-von-adam-und-eva-höhle-der-schätze… is 2 images only (to capture). Also #the-legend-of-jews PDF. */
+   Abraham in the fire (21:51–70) (#abraham-feuer: Targum, Genesis Rabbah, Jerome, Bede). */
 (()=>{
 const AV=(n,id)=>({credit:'Averroes · #'+n+' (translated from German)',link:'https://discord.com/channels/1275832106949283962/'+id});
-const N=(cr,they,we,h,p,src,next)=>({they,we,more:Object.assign({h,p,src},cr),next:next||[]});
+const N=(cr,they,we,h,p,src,next,extra)=>({they,we,more:Object.assign({h,p,src},cr,extra||{}),next:next||[]});
 const card=(path,o)=>topic(path.split('/'),{title:o.title,k:o.k,blurb:o.blurb,article:{claim:o.claim,tree:o.tree,sum:o.sum}});
 const add=(key,branch)=>{ for(let i=TOPICS.length-1;i>=0;i--){ const t=TOPICS[i], k=t.path.join('/'); let a=null; if(k===key) a=t.node.article; else if(key.startsWith(k+'/')&&t.node.children){ const c=t.node.children[key.slice(k.length+1)]; a=c&&c.article; } if(!a) continue;
   if(a.type==='explainer'){ const m=branch.more||{}; (a.cards=a.cards||[]).push({h:m.h,short:branch.we,sub:branch.we,p:[(branch.they?'They say: '+branch.they+' — ':'')+branch.we,...(m.p||[])],more:{credit:m.credit,link:m.link,src:m.src}}); return; }
@@ -19,7 +18,8 @@ add('islam/quran/d-dr-the-quran-uses-apocrypha-texts',N(AV('kindheits-evangelium
  "Dating the infancy gospels",["Bart D. Ehrman: the Infancy Gospel of Thomas poses some of the hardest textual problems in early Christian literature; its Greek manuscripts “differ radically”.","Tony Chartrand-Burke and Benjamin Harris: Arabic version 8th or 9th century. Stephen Davis: originally Syriac.","The Prophet ﷺ couldn't read or write (29:48)."],["Qurʾān 5:110; 3:49; 29:48","Ehrman, Lost Scriptures"],
  [N(AV('pseudo-evangelium','1287478772722831463'),"Then the palm tree giving Maryam dates (19:23–25) comes from Pseudo-Matthew.",
    "Pseudo-Matthew is later than the Qurʾān. Ellicott: in its present form perhaps 8th century; Stephen Shoemaker: written in Latin in the Christian West and wholly unknown in the Christian East; HarperCollins: an 8th-century Latin work; Lynette Muir: first manuscripts after the 8th century; Mikeal Parsons: 8th or 9th century.",
-   "Pseudo-Matthew's date",[],["Qurʾān 19:23–25"])]));
+   "Pseudo-Matthew's date",["Western and biblical scholars consistently date the Gospel of Pseudo-Matthew after the rise of Islam—making it impossible as a Qurʾānic source: Ellicott notes its present form may belong to the 8th century; Stephen J. Shoemaker emphasizes it was composed in Latin in the Western Church and was unknown in the Christian East; HarperCollins and Mikeal Parsons date it to the 8th–9th century, and Lynette Muir notes its earliest manuscripts postdate the 8th century.","Additionally, Q 19:23–25 places the palm tree episode at Jesus' birth rather than during the later flight into Egypt as in Pseudo-Matthew, reflecting independent narrative traditions."],["Qurʾān 19:23–25"])],
+ {shots:[{src:'shots/m2-apocrypha-ehrman-p128.webp',cap:"Bart D. Ehrman, Lost Scriptures (p. 128) — textual instability and divergent Greek recensions of the Infancy Gospel of Thomas."}]}));
 
 /* plagiarism card ← general answer + Apocalypse of Abraham */
 add('islam/quran/d-ia-plagiarism-charges-against-the-quran',N(AV('allgemeine-widerlegeung','1369588743589068851'),
@@ -33,10 +33,16 @@ card(SO+'solomon-and-the-ant-27-18',{title:"Solomon and the ant (27:18–19): fr
  claim:"The story of Solomon and the ant was copied from Jewish legend (Ginzberg's Legends of the Jews).",
  tree:N(SA,"Ginzberg's Legends of the Jews has Solomon and the ant, so the Qurʾān copied it.",
   "The Legends of the Jews was compiled in the 20th century, and Ginzberg gives no source for the ant story; it can't be found in his other works either. He also drew on medieval material from after Islam: later midrash collections (Tanḥuma, Pirkei de-Rabbi Eliezer), Targums, Rashi, Sefer ha-Yashar, the Zohar. And the stories differ in their theology.",
-  "Two different stories",["Qurʾān 27:19: Solomon smiles at the ant's words, shows humility and gratitude and prays to Allah: an exemplary prophet. The ant warns, wise but not set above him.","Legend: Solomon reacts angrily and proudly, throws the ant down; the ant declares itself greater than him because God led him to it, and lectures him until he leaves ashamed: a fable about pride.","Proverbs 6:6, attributed to Solomon: “Go to the ant, O sluggard; consider her ways and be wise.” The Qurʾān may confirm an authentic memory of Solomon and the ant.","A PDF on the Legends of the Jews is in the channel (to capture)."],["Qurʾān 27:18–19","Proverbs 6:6"],
+  "Two different stories",["Qurʾān 27:19: Solomon smiles at the ant's words, shows humility and gratitude and prays to Allah: an exemplary prophet. The ant warns, wise but not set above him.","Legend: Solomon reacts angrily and proudly, throws the ant down; the ant declares itself greater than him because God led him to it, and lectures him until he leaves ashamed: a fable about pride.","Proverbs 6:6, attributed to Solomon: “Go to the ant, O sluggard; consider her ways and be wise.” The Qurʾān may confirm an authentic memory of Solomon and the ant."],["Qurʾān 27:18–19","Proverbs 6:6"],
   [N(AV('salomon-und-teppisch-teppich','1369573400397348916'),"And Solomon's flying carpet is pure folklore.",
     "The carpet isn't in the Qurʾān. It's in Ibn Kathīr's tafsīr quoting al-Ḥasan al-Baṣrī, with no ḥadīth from the Prophet ﷺ. The Qurʾān only says the wind was subjected to Solomon (21:81; 34:12).",
-    "Not in the Qurʾān",[],["Qurʾān 21:81; 34:12"])]),
+    "Not in the Qurʾān",["Qurʾān 21:81 and 34:12 state only that Allah subjected the wind (al-rīḥ) to Solomon's command—making no mention of any flying carpet.","The carpet motif appears in post-Qurʾānic storytelling and exegetical lore (such as reports cited via al-Ḥasan al-Baṣrī in Tafsīr Ibn Kathīr without a prophetic isnād), not in the Qurʾānic revelation itself."],["Qurʾān 21:81; 34:12"])],
+  {quotes:[
+    {by:"Norman Stillman (1974)",en:"In some instances what was thought to be a Jewish haggadic influence in an Islamic text might well be quite the reverse. The Pirqe de Rabbi Eli'ezer, for example, would seem to have been finally redacted after the advent of Islam.",ref:"Quoted in Averroes #the-legend-of-jews PDF, p. 3"},
+    {by:"Eliezer Segal & Guy Ron-Gilboa (2022)",en:"Ma'aseh bi-Shelomoh ha-Melekh is 'a medieval Hebrew work, evidently translated from an Arabic original' and 'most likely took shape within a Muslim milieu.'",ref:"Mizan Journal 2022 (Averroes #the-legend-of-jews PDF, p. 3)"},
+    {by:"Michael Pregill (2020)",en:"The opposite may be the case, namely, that Jews quite likely 'borrowed' from the Quran, or even from later Islamic literature.",ref:"The Golden Calf between Bible and Qur'an, OUP 2020 (p. 4)"}
+   ],
+   shots:[{src:'shots/m2-suyuti-ant-27-18-p249.webp',cap:"Al-Suyūṭī, al-Itqān fī ʿUlūm al-Qurʾān (p. 249) — analyzing the rhetorical forms in Q 27:18 (Solomon and the ant)."}]}),
  sum:"Ginzberg's 20th-century compilation gives no source and uses post-Islamic material; its proud Solomon contradicts the Qurʾān's humble prophet."});
 
 /* Abraham in the fire */

@@ -158,7 +158,6 @@ def all_health(force=False):
         'keys': len(gkeys),
         'ready': bool(gkeys or gb),
         'activeKeyPrefix': (gkeys[0][:10] + '…') if gkeys else None,
-        'browserKey': gkeys[0] if gkeys else None,  # Shared with localhost browser so mobile/localStorage can cache it if desired
     }
 
     # 3. ChatGPT / Codex status
@@ -230,7 +229,6 @@ ui_clients, ui_waits, ui_lock = {}, {}, threading.Lock()
 
 def ui_events(handler, client):
     handler.send_response(200)
-    handler._cors()
     handler.send_header('Content-Type', 'text/event-stream; charset=utf-8')
     handler.send_header('Cache-Control', 'no-cache')
     handler.end_headers()
@@ -607,7 +605,6 @@ def handle_ask(handler, req):
     api_key = str(req.get('apiKey') or '').strip() or None
 
     handler.send_response(200)
-    handler._cors()
     handler.send_header('Content-Type', 'text/event-stream; charset=utf-8')
     handler.send_header('Cache-Control', 'no-cache')
     handler.end_headers()
@@ -678,20 +675,29 @@ def canvas_pdf(html):
             return f.read()
 
 
+def allowed_origins():
+    p = PORT['n']
+    return {f'http://127.0.0.1:{p}', f'http://localhost:{p}', 'https://damandam.github.io'}
+
+
 class Handler(http.server.SimpleHTTPRequestHandler):
     def _cors(self):
-        origin = self.headers.get('Origin') or '*'
-        self.send_header('Access-Control-Allow-Origin', origin)
-        self.send_header('Vary', 'Origin')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
-        self.send_header('Access-Control-Allow-Private-Network', 'true')
+        origin = self.headers.get('Origin')
+        if origin in allowed_origins():
+            self.send_header('Access-Control-Allow-Origin', origin)
+            self.send_header('Vary', 'Origin')
+            self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+            self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+            self.send_header('Access-Control-Allow-Private-Network', 'true')
 
     def end_headers(self):
         self._cors()
         super().end_headers()
 
     def do_OPTIONS(self):
+        origin = self.headers.get('Origin')
+        if origin and origin not in allowed_origins():
+            return self._json(403, {'error': 'forbidden origin'})
         self.send_response(204)
         self.end_headers()
 
@@ -721,6 +727,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):
+        origin = self.headers.get('Origin')
+        if origin and origin not in allowed_origins():
+            return self._json(403, {'error': 'forbidden origin'})
         route = self.path.split('?')[0]
         if route in ('/ask', '/ask/login', '/ask/key', '/ui/push', '/ui/ack'):
             try:
@@ -793,8 +802,8 @@ def main():
         srv = http.server.ThreadingHTTPServer((args.host, args.port), functools.partial(Handler, directory=ROOT))
     except OSError as e:
         if getattr(e, 'errno', None) in (48, 98):  # Address already in use
-            print(f"✓ Burhān Helper Server läuft bereits im Hintergrund auf http://{args.host}:{args.port} ({len(db['cards'])} Karten aktiv)!", flush=True)
-            print("  (Tipp: Nutze 'python3 server.py --restart', falls du ihn neu starten willst.)", flush=True)
+            print(f"✓ Burhān Helper Server is already running in the background at http://{args.host}:{args.port} ({len(db['cards'])} cards active)!", flush=True)
+            print("  (Tip: Use 'python3 server.py --restart' if you want to restart it.)", flush=True)
             return
         raise
     print(f"Burhān Helper Server ready ({len(db['cards'])} cards indexed): http://{args.host}:{args.port}", flush=True)
