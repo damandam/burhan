@@ -325,7 +325,8 @@ def mcp_config(client):
     cfg = json.load(open(MCP_JSON, encoding='utf-8'))
     srv = cfg['mcpServers']['burhan']
     srv['command'] = sys.executable or shutil.which('python3') or shutil.which('python') or '/opt/homebrew/bin/python3'
-    srv['args'] = ['-I', os.path.join(ROOT, 'mcp', 'burhan_server.py')]
+    # Avoid -I on Windows where Store/venv Python may fail to locate stdlib or user paths cleanly
+    srv['args'] = [os.path.join(ROOT, 'mcp', 'burhan_server.py')] if os.name == 'nt' else ['-I', os.path.join(ROOT, 'mcp', 'burhan_server.py')]
     srv['env'] = dict(srv.get('env') or {}, BURHAN_URL=f"http://127.0.0.1:{PORT['n']}", BURHAN_CLIENT=client or '', PYTHONUTF8='1', PYTHONIOENCODING='utf-8')
     os.makedirs(CLAUDE_CWD, exist_ok=True)
     cfg_path = os.path.join(CLAUDE_CWD, f"mcp-{re.sub(r'[^A-Za-z0-9_-]', '', client or 'default')}.json")
@@ -361,7 +362,8 @@ def claude_cli_run(prompt, system, client, emit, session='', account='default'):
     cmd = [
         b, '-p', '--output-format', 'stream-json', '--verbose', '--include-partial-messages',
         '--model', os.environ.get('BURHAN_CLAUDE_MODEL', 'sonnet'),
-        '--mcp-config', mcp_config(client), '--strict-mcp-config', '--allowedTools', 'mcp__burhan', '--tools', '',
+        '--mcp-config', mcp_config(client), '--strict-mcp-config',
+        '--allowedTools', 'mcp__burhan__*', '--tools', '',
         '--disable-slash-commands', '--system-prompt-file', sys_path,
     ]
     if session and re.fullmatch(r'[0-9a-fA-F-]{36}', session):

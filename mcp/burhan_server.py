@@ -415,6 +415,12 @@ INSTRUCTIONS = (
 
 
 def main():
+    # Force UTF-8 + Unix LF on stdio so MCP JSON-RPC never breaks on Windows cp1252 / CRLF!
+    try:
+        sys.stdin.reconfigure(encoding='utf-8', errors='replace')
+        sys.stdout.reconfigure(encoding='utf-8', newline='\n')
+    except Exception:
+        pass
     for line in sys.stdin:
         if not line.strip():
             continue
