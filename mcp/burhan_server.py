@@ -54,7 +54,11 @@ sandbox.window = sandbox;
 sandbox.globalThis = sandbox;
 sandbox.TOPICS = [];
 sandbox.MOVES = [];
+sandbox.MOUNTS = [];
+sandbox.AFTER = [];
 sandbox.topic = (p, node) => sandbox.TOPICS.push({path: p, node});
+sandbox.mount = (p, node) => sandbox.MOUNTS.push({path: p, node});
+sandbox.after = fn => sandbox.AFTER.push(fn);
 vm.createContext(sandbox);
 const files = vm.runInContext(mTopics[1], sandbox);
 for (const f of files) {
@@ -298,16 +302,22 @@ TARGET = {
 }
 
 TOOLS = [
-    ('search', 'Search all 634 Burhān Tactical Debate Playbooks and Explainers by keyword, verse reference (e.g. "John 17:3", "Q. 5:47", "Exodus 23:20"), topic ("Islamic Dilemma", "Angel of the LORD", "Satanic Verses", "Ahruf"), scholar, or Arabic/English quote. Optional door filter: "islam", "christianity", "debate", "atheism", "comparative".',
+    ('search', 'Search all 766+ Burhān Tactical Debate Playbooks and Explainers by keyword, verse reference (e.g. "John 17:3", "Q. 5:47", "Exodus 23:20", "Isaiah 53"), topic ("Islamic Dilemma", "Angel of the LORD", "Satanic Verses", "Ahruf", "Jesus slept"), scholar, or Arabic/English quote. Optional door filter: "islam", "christianity", "debate", "atheism", "comparative".',
      {'query': S, 'k': I, 'door': S}, ['query'], t_search),
     ('card', 'Read the complete structured data of one Burhān card by its path (from search): every debate tree node and branch, "They say", "We answer", full proof points (p), verbatim Arabic/English quotes, facts, comparison visuals, primary scan captions (shots), and academic/classical sources (src).',
      {'path': S}, ['path'], t_card),
-    ('sections', 'Browse Burhān doors, categories, and subcategories. Call with no path to list the 5 main doors and their categories, or pass a section path (e.g. "christianity/trinity/ot-trinity") to list its cards.',
+    ('sections', 'Browse Burhān doors, categories, and subcategories. Call with no path to list all main doors and their categories, or pass a section path (e.g. "christianity/trinity/ot-trinity") to list its cards.',
      {'path': S}, [], t_sections),
-    ('goto', 'Navigate the user\'s open Burhān page to a card or section path (e.g. "christianity/trinity/ot-trinity/angel-of-the-lord"). Set open_proof: true (or step: 1..N) to also open the Full proof drawer immediately.',
+    ('goto', 'Navigate the user\'s open Burhān page to a card or section path (e.g. "christianity/trinity/ot-trinity/angel-of-the-lord") or pass path: "" to go Home. Set open_proof: true (or step: 1..N) to also open the Full proof drawer immediately.',
      {'path': S, 'open_proof': B, 'step': I}, ['path'], lambda a: ui('goto', a, 12)),
-    ('open_proof', 'Open the "Full proof & sources" drawer (#drawer) for a specific answer node on the currently open card (by step number 1..N, or by matching words in the node heading). Call this before pointing at or circling a quote, proof point, fact, or scan inside that node\'s full proof!',
+    ('open_proof', 'Open or close the "Full proof & sources" drawer (#drawer) for a specific answer node or explainer card on the currently open page (by step number 1..N, or by matching words in the heading). Call this before pointing at or circling a quote, proof point, fact, or scan inside that node\'s full proof!',
      {'step': I, 'words': S, 'close': B}, [], lambda a: ui('open_proof', a, 8)),
+    ('open_shot', 'Zoom in on a primary manuscript photo or book scan in the full-screen Lightbox (#light) so the user can read the highlighted primary scan clearly! Pass index (1..N) or words matching the scan caption, or close: true to close the lightbox.',
+     {'index': I, 'words': S, 'close': B}, [], lambda a: ui('open_shot', a, 8)),
+    ('scroll', 'Scroll the active view (article or open Full-proof drawer) up, down, to top/bottom, or directly to a target ("node:3", "quote:2", "shot:1", "verdict", "text:<words>").',
+     {'direction': S, 'target': S}, [], lambda a: ui('scroll', a, 6)),
+    ('go_back', 'Navigate one level up (back to the parent category or home) and close any open drawer/lightbox.',
+     {}, [], lambda a: ui('go_back', a, 8)),
     ('pick_branch', 'Click one of the fork branch buttons ("If they say A / B / C") on the currently open debate playbook card to expand that branch of the argument tree. Pass branch: "A" | "B" | "C" (or words matching the branch label).',
      {'branch': S, 'words': S, 'fork': I}, [], lambda a: ui('pick_branch', a, 8)),
     ('circle', 'The pixel-art lantern scribe walks to a target on the page and draws a hand-drawn gold ring around it. Returns {ok, visible, where, around, note}. Only claim you circled it if visible is true.',

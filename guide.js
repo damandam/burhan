@@ -57,8 +57,8 @@
     <div id="guideSay" hidden role="status" aria-live="polite"></div>
     <button type="button" id="guideAsk" class="guide-ask" title="Ask the Burhān Guide (Claude · Gemini · ChatGPT)"><span class="guide-dot"></span><span>Ask the Guide</span></button>
     <aside id="guidePanel" class="guide-panel" hidden aria-label="Ask the Burhān Guide">
-      <div class="guide-top">
-        <div class="guide-title"><span class="guide-dot"></span><span>The Burhān Guide</span><span class="guide-sub">634 Playbooks · Scribe</span></div>
+      <div class="guide-top" id="guideDragBar" title="Drag to move window (double-click to reset position)">
+        <div class="guide-title"><span class="guide-grip" aria-hidden="true">⋮⋮</span><span class="guide-dot"></span><span>The Burhān Guide</span><span class="guide-sub">766 Playbooks · Scribe</span></div>
         <div class="guide-acts">
           <button type="button" id="guideAuthBtn" title="Connect / Switch AI Login">Login ▾</button>
           <button type="button" id="guideHide" title="Hide or show the pixel scribe">${G.hidden ? 'Show scribe' : 'Hide scribe'}</button>
@@ -142,11 +142,25 @@
     const p = $g('guidePanel');
     if (p && !p.hidden) {
       const r = p.getBoundingClientRect();
-      return [Math.max(54, r.left - 44), Math.min(innerHeight - 54, Math.max(64, r.bottom - 44))];
+      // Pick the side with more room so the scribe never gets trapped against the left edge
+      if (r.left >= 88) {
+        return [r.left - 44, Math.min(innerHeight - 44, Math.max(66, r.bottom - 44))];
+      }
+      if (innerWidth - r.right >= 88) {
+        return [r.right + 44, Math.min(innerHeight - 44, Math.max(66, r.bottom - 44))];
+      }
+      return [Math.min(innerWidth - 44, Math.max(44, r.left + 44)), Math.max(66, r.top - 32)];
     }
     return [innerWidth - 78, innerHeight - 110];
   };
   [AV.x, AV.y] = home(); [AV.tx, AV.ty] = [AV.x, AV.y];
+
+  // Clicking the pixel scribe toggles the panel or calls him home if stuck
+  av.title = 'Burhān Scribe — click to open Guide or call scribe home';
+  av.addEventListener('click', () => {
+    if ($g('guidePanel').hidden) togglePanel(true);
+    else { clearMarks(); say(''); goHome(); }
+  });
 
   function drawRows(c, rows, y0, flip) {
     for (let y = 0; y < rows.length; y++) {
@@ -178,9 +192,14 @@
     }
   }
   function paint() { drawSprite(ctx2d, AV.state, AV.dir, AV.frame); }
+  function clampXY(x, y) {
+    return [
+      Math.max(32, Math.min(innerWidth - 36, Number.isFinite(x) ? x : innerWidth - 78)),
+      Math.max(58, Math.min(innerHeight - 36, Number.isFinite(y) ? y : innerHeight - 110))
+    ];
+  }
   function place(x, y) {
-    AV.x = Math.max(30, Math.min(innerWidth - 36, x));
-    AV.y = Math.max(54, Math.min(innerHeight - 36, y));
+    [AV.x, AV.y] = clampXY(x, y);
     av.style.transform = `translate3d(${Math.round(AV.x - 28)}px,${Math.round(AV.y - 54)}px,0)`;
     if (!sayEl.hidden) {
       const sx = Math.max(12, Math.min(innerWidth - 300, AV.x - 135));
@@ -198,20 +217,32 @@
   let raf = 0;
   function tick(t) {
     raf = 0;
+    const [ctxTx, ctxTy] = clampXY(AV.tx, AV.ty);
+    AV.tx = ctxTx; AV.ty = ctxTy;
     const dx = AV.tx - AV.x, dy = AV.ty - AV.y, d = Math.hypot(dx, dy);
     if (d > 2.5) {
       AV.state = 'walk'; AV.dir = dx < 0 ? -1 : 1;
-      const step = Math.min(d, Math.max(5, d * 0.16));
+      const step = Math.min(d, Math.min(26, Math.max(6, d * 0.18)));
       place(AV.x + dx / d * step, AV.y + dy / d * step);
     } else if (AV.state === 'walk') {
       place(AV.tx, AV.ty); AV.state = AV.afterWalk || 'idle'; AV.afterWalk = null;
       if (AV.face != null) { AV.dir = AV.face; AV.face = null; }
+      paint();
     }
-    if (t - AV.lastStep > (AV.state === 'walk' ? 110 : 380)) { AV.frame = (AV.frame + 1) % 6; AV.lastStep = t; paint(); }
-    if (d > 2.5 || AV.state !== 'idle' || !sayEl.hidden) raf = requestAnimationFrame(tick);
+    // Unstick if anchored element disappeared from the DOM
+    if (AV.anchor && AV.anchor.nodeType === 1 && !AV.anchor.isConnected) {
+      AV.anchor = null;
+      if (!G.asking) goHome();
+    }
+    if (t - AV.lastStep > (AV.state === 'walk' ? 100 : 380)) { AV.frame = (AV.frame + 1) % 6; AV.lastStep = t; paint(); }
+    if (d > 2.5 || AV.state === 'think' || AV.state === 'talk' || !sayEl.hidden) raf = requestAnimationFrame(tick);
   }
   const wake = () => { if (!raf) raf = requestAnimationFrame(tick); };
-  function moveTo(x, y, after, face) { AV.tx = x; AV.ty = y; AV.afterWalk = after || 'idle'; AV.face = face; wake(); }
+  function moveTo(x, y, after, face) {
+    const [cx, cy] = clampXY(x, y);
+    AV.tx = cx; AV.ty = cy; AV.afterWalk = after || 'idle'; AV.face = face;
+    wake();
+  }
   function goHome() { AV.anchor = null; const [x, y] = home(); moveTo(x, y, 'idle', -1); }
 
 
@@ -466,11 +497,13 @@
 
   const ACT = {
     async goto(a) {
-      const targetParts = resolveBurhanPath(a.path);
-      if (!targetParts.length) return { ok: false, note: `could not find path "${a.path}"` };
+      const raw = String(a && a.path || '').trim();
+      const targetParts = raw ? resolveBurhanPath(raw) : [];
+      if (raw && !targetParts.length) return { ok: false, note: `could not find path "${a.path}"` };
       clearMarks();
+      const L = document.getElementById('light');
+      if (L && L.classList.contains('on')) { L.classList.remove('on'); L.setAttribute('aria-hidden', 'true'); }
       if (typeof closeDrawer === 'function') closeDrawer(true);
-      // Navigate immediately without waiting for slow portal morph
       if (typeof path !== 'undefined' && typeof render === 'function') {
         path = targetParts;
         render();
@@ -478,16 +511,79 @@
         go(targetParts);
       }
       await sleep(350);
-      // Force reveal all intersection-observed nodes so they are immediately measurable
       document.querySelectorAll('#article .node .bub, #article .node, #article .fork, #article .dossier, #article .sum').forEach(el => {
         el.style.opacity = '1';
         el.style.transform = 'none';
       });
-      if (a.open_proof || a.step) {
+      if (a && (a.open_proof || a.step)) {
         await ACT.open_proof({ step: a.step || 1 });
       }
       const c = context();
-      return { ok: true, path: c.path, title: c.title, view: c.view, drawerOpen: c.drawerOpen, note: `Opened "${c.title}" (${c.path})` };
+      return { ok: true, path: c.path, title: c.title, view: c.view, drawerOpen: c.drawerOpen, note: `Opened "${c.title}" (${c.path || 'Home'})` };
+    },
+    async go_back() {
+      clearMarks();
+      const L = document.getElementById('light');
+      if (L && L.classList.contains('on')) { L.classList.remove('on'); L.setAttribute('aria-hidden', 'true'); return { ok: true, note: 'Closed lightbox' }; }
+      if (typeof closeDrawer === 'function' && document.getElementById('drawer')?.classList.contains('on')) {
+        closeDrawer(true);
+        return { ok: true, note: 'Closed Full proof drawer' };
+      }
+      if (typeof path !== 'undefined' && path.length && typeof render === 'function') {
+        path = path.slice(0, -1);
+        render();
+        await sleep(250);
+      }
+      const c = context();
+      return { ok: true, path: c.path, title: c.title, note: `Back to "${c.title}"` };
+    },
+    async open_shot(a) {
+      const L = document.getElementById('light');
+      if (a && a.close) {
+        if (L) { L.classList.remove('on'); L.setAttribute('aria-hidden', 'true'); }
+        return { ok: true, note: 'Closed scan lightbox' };
+      }
+      const scope = activeScope();
+      let shots = [...scope.querySelectorAll('.shot-btn[data-src], .th[data-src]')];
+      if (!shots.length) shots = [...document.querySelectorAll('#drawer.on [data-src], #article [data-src]')];
+      if (!shots.length) return { ok: false, note: 'No primary scans visible right now (try open_proof first!)' };
+      let chosen = null;
+      if (a && a.words) {
+        const w = fold(a.words);
+        chosen = shots.find(s => fold((s.dataset.cap || '') + ' ' + (s.dataset.src || '')).includes(w));
+      }
+      if (!chosen) {
+        const idx = Math.max(1, parseInt(a && a.index, 10) || 1);
+        chosen = shots[idx - 1] || shots[0];
+      }
+      chosen.click();
+      await sleep(300);
+      return {
+        ok: true,
+        src: chosen.dataset.src,
+        caption: chosen.dataset.cap || '',
+        total_shots: shots.length,
+        note: `Enlarged primary scan in lightbox: ${chosen.dataset.cap || chosen.dataset.src}`
+      };
+    },
+    async scroll(a) {
+      if (a && a.target) {
+        const el = findTarget(a.target);
+        if (!el) return { ok: false, note: `Could not find target "${a.target}" to scroll to` };
+        await revealTarget(el);
+        return { ok: true, note: `Scrolled to ${a.target}` };
+      }
+      const dr = document.getElementById('drawer');
+      const scroller = (dr && dr.classList.contains('on')) ? dr.querySelector('.dr-panel') : document.querySelector('.view.on');
+      if (!scroller) return { ok: false, note: 'No scrollable container active' };
+      const dir = String(a && a.direction || 'down').toLowerCase();
+      if (dir === 'top') scroller.scrollTo({ top: 0, behavior: 'smooth' });
+      else if (dir === 'bottom') scroller.scrollTo({ top: scroller.scrollHeight, behavior: 'smooth' });
+      else if (dir === 'up') scroller.scrollBy({ top: -Math.round(innerHeight * 0.65), behavior: 'smooth' });
+      else scroller.scrollBy({ top: Math.round(innerHeight * 0.65), behavior: 'smooth' });
+      await sleep(350);
+      drawMarks();
+      return { ok: true, scrollTop: Math.round(scroller.scrollTop), note: `Scrolled ${dir}` };
     },
     async open_proof(a) {
       if (a && a.close) {
@@ -893,21 +989,26 @@
 
 
   // ---------- Serverless / Mobile In-Browser Cloud Tool-Calling Engine ----------
-  const CLOUD_SYSTEM = `You are the Burhān Guide — the scholar-scribe inside Burhān (634 Tactical Debate Playbooks & Explainers).
+  const CLOUD_SYSTEM = `You are the Burhān Guide — the scholar-scribe inside Burhān (766 Tactical Debate Playbooks & Explainers).
 Answer in the user's language (German if asked in German, English if asked in English).
 Always cite verbatim primary quotes (Arabic/Greek/Hebrew + English) and exact citations from the cards.
 Use your tools to show the user on the page:
 1. Call search(query) to find the card path, then card(path) to read its full data, and goto(path, open_proof:true) to open it on screen.
 2. Call open_proof(step) before pointing at or circling a quote inside the Full proof drawer.
-3. Call point(target, label) or circle(target, label) (e.g. target:"quote:1" or target:"text:<exact words>") and only say you marked it if visible is true.
-4. Call canvas_show(title, steps) with 4–7 rich steps (title, points, quote, compare, verdicts) whenever the user asks for a step-by-step walkthrough or Canvas.`;
+3. Call open_shot(index or words) to zoom in on a primary manuscript photo or book scan in the lightbox!
+4. Call point(target, label) or circle(target, label) (e.g. target:"quote:1" or target:"text:<exact words>") and only say you marked it if visible is true.
+5. Call canvas_show(title, steps) with 4–7 rich steps (title, points, quote, compare, verdicts) whenever the user asks for a step-by-step walkthrough or Canvas.`;
 
   const CLOUD_TOOLS_GEMINI = [{
     functionDeclarations: [
-      { name: 'search', description: 'Search all 634 Burhān cards by keyword, verse, or topic.', parameters: { type: 'object', properties: { query: { type: 'string' }, k: { type: 'integer' } }, required: ['query'] } },
+      { name: 'search', description: 'Search all 766 Burhān cards by keyword, verse, or topic.', parameters: { type: 'object', properties: { query: { type: 'string' }, k: { type: 'integer' } }, required: ['query'] } },
       { name: 'card', description: 'Read full debate tree, verbatim quotes, facts, and sources of a card by path.', parameters: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] } },
-      { name: 'goto', description: 'Open a card or section path on screen.', parameters: { type: 'object', properties: { path: { type: 'string' }, open_proof: { type: 'boolean' }, step: { type: 'integer' } }, required: ['path'] } },
-      { name: 'open_proof', description: 'Open the Full proof drawer for step 1..N on the current card.', parameters: { type: 'object', properties: { step: { type: 'integer' }, words: { type: 'string' } } } },
+      { name: 'sections', description: 'List Burhān doors/categories or cards inside a section path.', parameters: { type: 'object', properties: { path: { type: 'string' } } } },
+      { name: 'goto', description: 'Open a card or section path on screen (pass "" for Home).', parameters: { type: 'object', properties: { path: { type: 'string' }, open_proof: { type: 'boolean' }, step: { type: 'integer' } }, required: ['path'] } },
+      { name: 'go_back', description: 'Go back one level or close open drawer/lightbox.', parameters: { type: 'object', properties: {} } },
+      { name: 'open_proof', description: 'Open or close the Full proof drawer for step 1..N on the current card.', parameters: { type: 'object', properties: { step: { type: 'integer' }, words: { type: 'string' }, close: { type: 'boolean' } } } },
+      { name: 'open_shot', description: 'Zoom in on a primary manuscript scan in the full-screen lightbox (index 1..N or words matching caption, or close:true).', parameters: { type: 'object', properties: { index: { type: 'integer' }, words: { type: 'string' }, close: { type: 'boolean' } } } },
+      { name: 'scroll', description: 'Scroll the active view up, down, top, bottom, or to a target.', parameters: { type: 'object', properties: { direction: { type: 'string' }, target: { type: 'string' } } } },
       { name: 'pick_branch', description: 'Expand branch A, B, or C on a fork.', parameters: { type: 'object', properties: { branch: { type: 'string' }, words: { type: 'string' } } } },
       { name: 'point', description: 'Walk the scribe to a target ("quote:1", "point:1", "text:<words>") and underline it in gold.', parameters: { type: 'object', properties: { target: { type: 'string' }, label: { type: 'string' } }, required: ['target'] } },
       { name: 'circle', description: 'Walk the scribe to a target and draw a hand-drawn gold ring around it.', parameters: { type: 'object', properties: { target: { type: 'string' }, label: { type: 'string' } }, required: ['target'] } },
@@ -1111,6 +1212,77 @@ Use your tools to show the user on the page:
     renderLog(); saveLog(); ctxChip();
     return m;
   }
+
+  // ---------- Draggable & Resizable Panel Window ----------
+  (function initPanelDrag() {
+    const bar = $g('guideDragBar');
+    if (!bar) return;
+    function applyPos(left, top) {
+      const r = panel.getBoundingClientRect();
+      const w = r.width || 420, h = r.height || 540;
+      const cl = Math.max(8, Math.min(innerWidth - Math.min(w, innerWidth - 16) - 8, left));
+      const ct = Math.max(8, Math.min(innerHeight - 60, top));
+      panel.style.left = cl + 'px';
+      panel.style.top = ct + 'px';
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+      return [cl, ct];
+    }
+    try {
+      const saved = JSON.parse(ls.get('bh-panel-pos') || 'null');
+      if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) {
+        applyPos(saved.left, saved.top);
+      }
+    } catch (e) {}
+    let drag = null;
+    bar.addEventListener('pointerdown', e => {
+      if (e.target.closest('button')) return;
+      const r = panel.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, id: e.pointerId };
+      panel.classList.add('dragging');
+      bar.setPointerCapture(e.pointerId);
+    });
+    bar.addEventListener('pointermove', e => {
+      if (!drag) return;
+      const [l, t] = applyPos(e.clientX - drag.dx, e.clientY - drag.dy);
+      drag.l = l; drag.t = t;
+      if (!AV.anchor) { const [hx, hy] = home(); place(hx, hy); AV.tx = hx; AV.ty = hy; }
+    });
+    const endDrag = () => {
+      if (!drag) return;
+      panel.classList.remove('dragging');
+      if (Number.isFinite(drag.l)) ls.set('bh-panel-pos', JSON.stringify({ left: drag.l, top: drag.t }));
+      drag = null;
+    };
+    bar.addEventListener('pointerup', endDrag);
+    bar.addEventListener('pointercancel', endDrag);
+    bar.addEventListener('dblclick', e => {
+      if (e.target.closest('button')) return;
+      panel.style.left = ''; panel.style.top = ''; panel.style.right = '20px'; panel.style.bottom = '20px';
+      panel.style.width = ''; panel.style.height = '';
+      ls.set('bh-panel-pos', null);
+      if (!AV.anchor) goHome();
+    });
+    addEventListener('resize', () => {
+      if (panel.style.left) {
+        const r = panel.getBoundingClientRect();
+        applyPos(r.left, r.top);
+      }
+      if (!AV.anchor) goHome();
+    });
+  })();
+
+  // Keep scribe & marks clean whenever the user navigates manually inside Burhān
+  document.addEventListener('click', e => {
+    if (e.target.closest('.card, .door, .back, #logo, #crumbs button, #results button')) {
+      setTimeout(() => {
+        ctxChip();
+        if (!G.asking && AV.anchor && AV.anchor.nodeType === 1 && !AV.anchor.isConnected) {
+          clearMarks(); goHome();
+        }
+      }, 450);
+    }
+  });
 
   // ---------- Event Bindings for Panel, Provider Tabs & Login Drawer ----------
   $g('guideAsk').onclick = () => togglePanel(true);
