@@ -4,6 +4,7 @@ Stand: 25.11.2026. Nächster Index in der a3/a4-Warteschlange: **158** (avereos 
 
 ## Regeln von Avereos
 - Alle Kanäle von Avereos 4 und avereos 3, aber nur starke Texte. Ältere/schwächere weglassen.
+- **Neu (25.11.):** Dünne oder überzogene Texte nicht einfach weglassen, sondern mit sauberen, prüfbaren Belegen stärken (z. B. Taufformel: Didache 9.5, Paulus, Justin). Weglassen nur bei echten Dubletten, rein privaten Inhalten oder wenn gar kein verwertbares Argument drinsteckt – und dann im PROGRESS-Eintrag begründen.
 - PDFs nur, wenn sie sicher in seinem RELEASE-Projekt liegen (dann Inhalt aus dem Projekt nehmen).
 - Kartentext auf **Deutsch**. Pro Block eine Datei `topics/2026-MM-DD-a3-blockN.js` (bzw. `a4-blockN`), ans Ende der Loader-Liste.
 - Gibt es das Thema schon (anderer Server), per `enhance("exakter Titel", …)` erweitern statt doppelt anlegen.
