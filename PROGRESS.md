@@ -403,3 +403,8 @@ Sources: Troki, Faith Strengthened (PD); Kravitz, Jewish Response to Missionarie
 - Enhanced existing: Isaiah 7:14, Isaiah 9:6, Psalm 22, Zechariah 12:10, Genesis 3:15, Genesis 1:26, Son of Man (Daniel 7). Mounted into the folder: those + Isaiah 53 Islamic reading, double standard, 30 silver, phantom prophecies, Trinity in the OT folder.
 - Slips fixed: Daniel 7 weeks = 49 (not 52), Deut 30:15, Ps 51:17, Hebrews follows LXX (not "mistranslation"), Nazareth argument-from-silence dropped, article's "Isaiah 29:6" → 26:9, "Isaiah 45" → 45:14.
 - Open: Singer lectures (Let's Get Biblical) transcribing → add as branches (esp. Daniel 9, Micah 5, Psalm 110, Isaiah 53, Zechariah 12:10, Trinity). Proverbs 30:4 has no source yet.
+
+## 2026-11-25 — Avereos' Server (Avereos 4, avereos 3) → Burhān, auf Deutsch (Wunsch von Avereos)
+- Export: 819 Kanäle (Avereos 4: 475, avereos 3: 344) per UI-Export im eingebauten Browser. Regeln von Avereos: nur starke Texte (ältere/schwächere weglassen), PDFs nur, wenn sicher in seinem RELEASE-Projekt vorhanden. Kartentexte auf Deutsch.
+- NEU `islam/hadith/unseen/hahn-unter-dem-thron` (topics/2026-11-25-hahn-unter-dem-thron.js): Hahn-unter-dem-Thron-Bericht ḍaʿīf/maʿlūl – Tafarrud Isḥāq b. Manṣūr, Isrāʾīl → Ibrāhīm b. al-Faḍl (matrūk) statt „Muʿāwiya“, iḍṭirāb Hahn/Engel. Quelle: Avereos' Belegmappe (Teil 1+2), Kanal #thron-han-huhn.
+- Checks: node --check OK; card-test bad: 0.
