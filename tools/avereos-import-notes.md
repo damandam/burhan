@@ -1,6 +1,6 @@
 # Avereos' Server → Burhān (laufender Import, auf Deutsch)
 
-Stand: 25.11.2026. Nächster Index in der a3/a4-Warteschlange: **88** (avereos 3 ist zuerst dran, Index 0–237, danach Avereos 4).
+Stand: 25.11.2026. Nächster Index in der a3/a4-Warteschlange: **98** (avereos 3 ist zuerst dran, Index 0–237, danach Avereos 4).
 
 ## Regeln von Avereos
 - Alle Kanäle von Avereos 4 und avereos 3, aber nur starke Texte. Ältere/schwächere weglassen.
