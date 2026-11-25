@@ -1,6 +1,7 @@
 # stale copy of an older session folder
-burhan/
+/burhan/
 .DS_Store
-.claude/
+.claude/*
+!.claude/skills/
 __pycache__/
 *.pyc

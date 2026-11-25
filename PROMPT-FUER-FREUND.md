@@ -12,6 +12,12 @@ Du hilfst mir, an **Burhān** mitzuarbeiten. Burhān ist eine animierte Widerleg
 3. Klonen: `gh repo clone damandam/burhan && cd burhan`
 4. Lokal starten: `python3 -m http.server 5179`, dann http://localhost:5179 öffnen.
 
+## Der Skill „burhan“ (das Wichtigste)
+Im Repo liegt der Skill `.claude/skills/burhan/SKILL.md`. Er beschreibt genau, wie man Inhalte richtig in Burhān einbaut und veröffentlicht: passende Karte finden, Karte schreiben, testen, pushen, Deploy prüfen.
+- Wenn Claude Code im Ordner `burhan` läuft, ist der Skill automatisch da. Ich kann dann einfach sagen: **„/burhan“** oder **„pack das in Burhān: …“** (Text, PDF, Link, Screenshot, Discord-Nachricht).
+- Damit er in **jedem** Chat funktioniert: kopiere den Ordner `.claude/skills/burhan` nach `~/.claude/skills/burhan` (Windows: `%USERPROFILE%\.claude\skills\burhan`). Nach einem `git pull` die Kopie erneuern, falls sich der Skill geändert hat.
+- Folge bei jeder Änderung diesem Skill, nicht der älteren Anleitung unten, falls sich etwas widerspricht.
+
 ## Bevor du etwas änderst
 Lies zuerst **`HANDOFF-GEMINI.md`** und dann **`PROGRESS.md`** im Repo. Dort steht, wie das Projekt aufgebaut ist, wie eine Karte geschrieben wird (`topics/*.js`, Helfer `N()`, `card()`, `add()`), welche Regeln gelten und was noch offen ist.
 - Die Pfade dort (`/Users/noelabedin/...`, `~/Downloads/burhan-*.json`) gelten nur auf Noels Rechner. Die Discord-Exporte habe ich nicht.
