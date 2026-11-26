@@ -1,6 +1,6 @@
 # Avereos' Server → Burhān (laufender Import, auf Deutsch)
 
-Stand: 25.11.2026. Nächster Index in der a3/a4-Warteschlange: **238** (avereos 3 fertig, Index 0–237; jetzt Avereos 4 ab 238).
+Stand: 25.11.2026. Nächster Index in der a3/a4-Warteschlange: **258** (avereos 3 fertig, Index 0–237; Avereos 4 ab 238, Block 1 = 238–257). Avereos-4-Credit: `const A4=(ch,id)=>cr({name:'Avereos 4 · #'+ch,url:'https://discord.com/channels/1350795550899048558/'+id});`.
 
 ## Regeln von Avereos
 - Alle Kanäle von Avereos 4 und avereos 3, aber nur starke Texte. Ältere/schwächere weglassen.
