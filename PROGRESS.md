@@ -449,3 +449,8 @@ Sources: Troki, Faith Strengthened (PD); Kravitz, Jewish Response to Missionarie
 - New card `christianity/trinity/indexical-omniscience` (“I am the Son”), file `topics/2026-11-27-trinity-indexical.js`.
 - P1–P4 + conclusion hardened (eternal sonship, every pair of persons, dilemma same-knowledge→modalism / different-knowledge→three minds); steps visual + fact tiles.
 - 8 replies: same fact de dicto (Perry's shopper, Lewis de se), one intellect (Lateran IV, Catechism 254, Aquinas ST I q.14; compare visual), restricted omniscience (Grim 1985, Nagasawa 2003), perichoresis (John 14:10), human-nature-only (John 17:5), mystery (Ibn Taymiyya), tu quoque against Islam (2:255), Turn the tables Mark 13:32.
+
+## 2026-11-27 · Trinity: experiential-knowledge argument (Noel's own)
+- New card `christianity/trinity/experiential-knowledge` (“He learned from what he suffered”), file `topics/2026-11-27-trinity-experiential.js`.
+- Root: P1–P4 + conclusion, the 4-question cross-examination, 35-second debate script; steps visual + fact tiles.
+- 10 replies: answers A (nothing gained: Heb 2:18, 4:15, Aquinas ST I q.14), B (gained → changed: Mal 3:6, Jas 1:17, ST I q.9), C (Father has it → patripassianism, Tertullian Adv. Prax.), D (Son knows more); excuses: new mode / phenomenal concept (Jackson's Mary; compare visual K>0 vs K=0), ability hypothesis (Lewis 1988, Nemirow), human nature only (ST III q.12 a.2; Chalcedon; Nestorianism/Ephesus), two minds (Morris 1986), timeless eternity, tu quoque (42:11, 67:14, 112:2).
