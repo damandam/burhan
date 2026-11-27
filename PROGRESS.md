@@ -444,3 +444,8 @@ Sources: Troki, Faith Strengthened (PD); Kravitz, Jewish Response to Missionarie
   `kahf-erste-oder-letzte-zehn-verse` (Muslim 809 „wie Hišām sagte“ + an-Nawwās, Muslim 2937), `daddschal-rechtes-oder-linkes-auge` (aʿwar = fehlerhaft; Qāḍī ʿIyāḍ bei an-Nawawī II 234f.).
 - Omen-Punkt: keine Doppelkarte – Zweig per `enhance()` an „“Bad omen is in three…”“ (Bedingungsform bei 3 Gefährten, ʿĀʾiša, aṭ-Ṭaḥāwī 786) und per `mount()` als `omen-in-dreien` in den neuen Ordner.
 - Belege im OpenITI-Korpus geprüft (RELEASE). Offen: restliche Punkte der Liste (Vorlage hat ≥14), sobald Avereos sie schickt.
+
+## 2026-11-27 · Trinity: indexical-knowledge argument (Noel's own)
+- New card `christianity/trinity/indexical-omniscience` (“I am the Son”), file `topics/2026-11-27-trinity-indexical.js`.
+- P1–P4 + conclusion hardened (eternal sonship, every pair of persons, dilemma same-knowledge→modalism / different-knowledge→three minds); steps visual + fact tiles.
+- 8 replies: same fact de dicto (Perry's shopper, Lewis de se), one intellect (Lateran IV, Catechism 254, Aquinas ST I q.14; compare visual), restricted omniscience (Grim 1985, Nagasawa 2003), perichoresis (John 14:10), human-nature-only (John 17:5), mystery (Ibn Taymiyya), tu quoque against Islam (2:255), Turn the tables Mark 13:32.
