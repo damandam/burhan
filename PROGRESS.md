@@ -454,3 +454,9 @@ Sources: Troki, Faith Strengthened (PD); Kravitz, Jewish Response to Missionarie
 - New card `christianity/trinity/experiential-knowledge` (“He learned from what he suffered”), file `topics/2026-11-27-trinity-experiential.js`.
 - Root: P1–P4 + conclusion, the 4-question cross-examination, 35-second debate script; steps visual + fact tiles.
 - 10 replies: answers A (nothing gained: Heb 2:18, 4:15, Aquinas ST I q.14), B (gained → changed: Mal 3:6, Jas 1:17, ST I q.9), C (Father has it → patripassianism, Tertullian Adv. Prax.), D (Son knows more); excuses: new mode / phenomenal concept (Jackson's Mary; compare visual K>0 vs K=0), ability hypothesis (Lewis 1988, Nemirow), human nature only (ST III q.12 a.2; Chalcedon; Nestorianism/Ephesus), two minds (Morris 1986), timeless eternity, tu quoque (42:11, 67:14, 112:2).
+
+## 2026-11-27 · Trinity: "Who says 'I am YHWH'?" (Noel's own, stress-tested)
+- New card `christianity/trinity/who-says-i-am-yhwh`, file `topics/2026-11-27-trinity-who-says-i.js`. Drafts v1–v3 and three rounds of simulated Trinitarian rebuttal in ~/Downloads/burhan-media/trinity-ich/.
+- Core: one "I" + proper name YHWH (Exod 3:15; ʾănî YHWH Exod 6:2, Isa 42:8, 45:5/6/18) + only subjects say "I" (Lateran IV, actiones sunt suppositorum) + Deut 6:4 + Leibniz's law. Five candidates for the "I": Father / Son / essence / whole Trinity / collective.
+- 13 replies incl. collective "I", Latin "same in reality, distinct in notion" (ST I q.28 a.3, Physics III.3; compare visual), Brower–Rea, relative identity, Bauckham/Phil 2, "besides me = rival gods" (conceded, not needed), recognition formula (Zimmerli), Gen 19:24 (1 Kgs 8:1), "apostles believed both" (their best), tu quoque (15:9, 20:14, Ashʿarī), mystery.
+- Fixed during testing: 1 Cor 8:6 has no "only"; Aquinas's ad 1 concerns relations vs essence; Brower–Rea = numerical sameness without identity; Jesus never says ʾănî YHWH.
