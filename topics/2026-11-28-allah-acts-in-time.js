@@ -61,7 +61,28 @@ card('islam/creed/attributes/allah-acts-in-time',{
           "The burden is on the objector: name the perfection Allah lacked before the act. Justice, power and will were already complete.",
           "Aquinas, ST I q.25 a.1: active power “we must assign to Him in the highest degree”; passive power is not in God."
         ],
-        ["Aquinas, Summa Theologiae I q.25 a.1"],[],
+        ["Aquinas, Summa Theologiae I q.25 a.1"],
+        [
+          N(cr(SEP),
+            "Grant it in your words: Allah had the potential to speak or avenge, and then actualized it. That is still going from potency to act, so still a deficiency.",
+            "Grant the wording; the conclusion still does not follow, and for Ibn Taymiyya it is the reverse. Perfection is not frozen changelessness but living, willing activity. One who acts by his own will when he wills is more perfect than one who cannot act at all; a God who could never do anything new would be like the dead and the mute, less than His creatures. The step from not-doing to doing comes from Allah alone, nothing outside moves Him, and the act completes nothing that was missing. That is life and will, not lack.",
+            "Ibn Taymiyya: acting is perfection",
+            [
+              "A fortiori (his method, SEP §4.2): God must be living, knowing, powerful, hearing, seeing and speaking; otherwise He would be dead, ignorant, impotent, blind, deaf and mute, less perfect than creatures who have these.",
+              "Against the Ashʿarīs (SEP §4.4): a speech that is timelessly eternal is cut off from will and power, and that impugns God's perfection. Speaking by will and power, when He wills, is the more perfect.",
+              "Wisdom (SEP §4.5): it is a greater perfection to create things for wise purposes at the right times than to create without purpose.",
+              "What would be a deficiency: (a) being moved by something outside, (b) lacking the power before, (c) needing the act to become complete. None applies: the will is His own, the power was complete, the act shows His perfection and adds none.",
+              "The Qurʾān describes exactly this God: “Doer of whatever He wills” (faʿʿālun li-mā yurīd, 85:16; 11:107); “Every day He is upon some matter” (55:29).",
+              "The objector's model, the unmoved mover that never does anything new, comes from Aristotle, not from revelation. Ibn Taymiyya refuses to measure Allah's perfection by it."
+            ],
+            ["SEP “Ibn Taymiyya” §4.2, §4.4, §4.5","Qurʾān 85:16; 11:107; 55:29"],[],
+            {visual:{kind:'steps',items:[
+              ["Grant it","“potential → act”, in their words"],
+              ["Moved from outside?","No: by His own will"],
+              ["Power missing before?","No: complete from eternity"],
+              ["Does the act complete Him?","No: it shows, it adds nothing"],
+              ["So","life and will (85:16), not lack"]]}})
+        ],
         {visual:{kind:'compare',
           left:{title:"Passive potency (a lack)",items:["Being changed by something else","Wood → chair","Gains what it did not have","Not in Allah"]},
           right:{title:"Active power (a perfection)",items:["Bringing about by one's own will","A judge giving a verdict","Shows what it already has","Allah has it fully"]}}}),
