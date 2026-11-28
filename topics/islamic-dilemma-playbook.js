@@ -720,4 +720,39 @@ card('christianity/islam-vs/d-dr-quran-2-85',{
   sum:'Read in its immediate context (Q 2:75–89), verse 85 rebukes Medinan Jewish tribes for selectively obeying the surviving Torah rule on ransoming captives while violating the surviving ban on murdering and evicting fellow Jews (2:84)—just six verses after Q 2:79 curses scribes who write forged scripture with their own hands.'
 });
 
+/* Cross-mount the Islamic Dilemma flagship card & folder prominently inside Defending Islam → The Qurʾān */
+window.AFTER = window.AFTER || [];
+window.AFTER.push(function(DATA){
+  try {
+    const quran = DATA.islam && DATA.islam.children && DATA.islam.children.quran;
+    const dilFolder = DATA.christianity && DATA.christianity.children && DATA.christianity.children['islam-vs'] && DATA.christianity.children['islam-vs'].children && DATA.christianity.children['islam-vs'].children.dilemma;
+    if (!quran || !quran.children || !dilFolder || !dilFolder.children) return;
+
+    // 1. Place the flagship card first inside christianity/islam-vs/dilemma as well so it isn't buried at #6
+    const origKids = dilFolder.children;
+    if (origKids['d-dr-islamic-dilemma']) {
+      const reordered = { 'd-dr-islamic-dilemma': origKids['d-dr-islamic-dilemma'] };
+      for (const [k, v] of Object.entries(origKids)) {
+        if (k !== 'd-dr-islamic-dilemma') reordered[k] = v;
+      }
+      dilFolder.children = reordered;
+    }
+
+    // 2. Mount both the flagship card (directly visible!) AND the full Islamic Dilemma folder at the top of Defending Islam → The Qurʾān
+    const qKids = quran.children;
+    const nextQuran = {};
+    if (qKids.preservation) nextQuran.preservation = qKids.preservation;
+    nextQuran['islamic-dilemma'] = {
+      title: 'The “Islamic dilemma”',
+      k: 'Most asked · Flagship Playbook',
+      blurb: 'Does the Qurʾān confirm today’s Bible? Full 4-angle flagship playbook + Q 5:47, Q 2:85, Q 3:78, What is the Injīl?, and Church Fathers on alteration.',
+      children: Object.assign({}, dilFolder.children)
+    };
+    for (const [k, v] of Object.entries(qKids)) {
+      if (k !== 'preservation' && k !== 'islamic-dilemma') nextQuran[k] = v;
+    }
+    quran.children = nextQuran;
+  } catch (e) {}
+});
+
 })();
