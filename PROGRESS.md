@@ -460,3 +460,9 @@ Sources: Troki, Faith Strengthened (PD); Kravitz, Jewish Response to Missionarie
 - Core: one "I" + proper name YHWH (Exod 3:15; ʾănî YHWH Exod 6:2, Isa 42:8, 45:5/6/18) + only subjects say "I" (Lateran IV, actiones sunt suppositorum) + Deut 6:4 + Leibniz's law. Five candidates for the "I": Father / Son / essence / whole Trinity / collective.
 - 13 replies incl. collective "I", Latin "same in reality, distinct in notion" (ST I q.28 a.3, Physics III.3; compare visual), Brower–Rea, relative identity, Bauckham/Phil 2, "besides me = rival gods" (conceded, not needed), recognition formula (Zimmerli), Gen 19:24 (1 Kgs 8:1), "apostles believed both" (their best), tu quoque (15:9, 20:14, Ashʿarī), mystery.
 - Fixed during testing: 1 Cor 8:6 has no "only"; Aquinas's ad 1 concerns relations vs essence; Brower–Rea = numerical sameness without identity; Jesus never says ʾănî YHWH.
+
+## 2026-11-28 · Qurʾān 5:73 "thālithu thalātha" (third person of the Trinity?)
+- New card `islam/quran/d-ia-quran-surahs/q-5-73-third-of-three` ("Verses critics quote"), file `topics/2026-11-28-quran-5-73-third-of-three.js`.
+- Steelman: Father is the first person, not the third; with 5:116 the three = God, Jesus, Mary; 5:73 attacks tritheism.
+- Answers: grammar "one of three" (Qurṭubī citing al-Zajjāj; 9:40 thāniya ithnayn; 58:7 rābiʿuhum); Ṭabarī = one essence, three hypostases (aqānīm), Qurṭubī = Father, Son, Holy Spirit; al-Suddī report with Mary noted honestly (Ṭabarī no. 12294, Ibn Kathīr); 5:116 a separate charge; 4:171 "do not say Three"; 5:72–75 three Christian claims. Compare visual + fact tiles.
+- Checked against Ṭabarī and Qurṭubī on quran.ksu.edu.sa and Ibn Kathīr (quran.com). Rāzī not obtained, so not cited.
