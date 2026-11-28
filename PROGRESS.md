@@ -466,3 +466,8 @@ Sources: Troki, Faith Strengthened (PD); Kravitz, Jewish Response to Missionarie
 - Steelman: Father is the first person, not the third; with 5:116 the three = God, Jesus, Mary; 5:73 attacks tritheism.
 - Answers: grammar "one of three" (Qurṭubī citing al-Zajjāj; 9:40 thāniya ithnayn; 58:7 rābiʿuhum); Ṭabarī = one essence, three hypostases (aqānīm), Qurṭubī = Father, Son, Holy Spirit; al-Suddī report with Mary noted honestly (Ṭabarī no. 12294, Ibn Kathīr); 5:116 a separate charge; 4:171 "do not say Three"; 5:72–75 three Christian claims. Compare visual + fact tiles.
 - Checked against Ṭabarī and Qurṭubī on quran.ksu.edu.sa and Ibn Kathīr (quran.com). Rāzī not obtained, so not cited.
+
+## 2026-11-28 · Creed: "Does Allah change when He acts in time?"
+- New card `islam/creed/attributes/allah-acts-in-time`, file `topics/2026-11-28-allah-acts-in-time.js` (Noel's study map, built from our discussion).
+- Three levels (essence/attributes · kind of act · individual act), Ibn Taymiyya's ṣifāt ikhtiyāriyya and "lam yazal mutakalliman idhā shāʾa"; branches: first act of vengeance (dhū intiqām 3:4, Ṭaḥāwiyya "Creator before any creature"), "hero" deed-titles (38:71, 2:30), active power vs passive potency (Aquinas ST I q.25 a.1, compare visual), no first act (Bukhārī 3191/7418, Muslim 2713, 11:7, negative-numbers), "speaks without pause?", "eternal universe?", first vengeance vs first act, Christian tu quoque (John 1:14). Steps visual + facts.
+- Verified: Bukhārī 3191, 7418, Muslim 2713 (sunnah.com), Ṭaḥāwiyya (shamela 10777/89), Aquinas (newadvent), SEP §4.4–4.5. Muslim 2653 left out (not verified). Ashʿarī view stated as the other Sunni position.
